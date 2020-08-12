@@ -1,10 +1,10 @@
-Package: JASPgraphs
+Package: jaspGraphs
 Type: Package
 Title: Custom Graphs for JASP
-Version: 0.4.11
+Version: 0.5
 Author: Don van den Bergh
 Maintainer: JASP-team <info@jasp-stats.nl>
-Description: ...
+Description: graph making functions and wrappers for JASP
 License: GPL
 Encoding: UTF-8
 LazyData: true
