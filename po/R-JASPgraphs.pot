@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: JASPgraphs 0.4.11\n"
+"Project-Id-Version: jaspGraphs 0.4.11\n"
 "POT-Creation-Date: 2020-04-05 00:03\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
@@ -142,7 +142,7 @@ msgstr ""
 msgid "removeXYlabels should either have length 1 or length(plotList)."
 msgstr ""
 
-msgid "JASPgraphs could not obtain axes labels from graph"
+msgid "jaspGraphs could not obtain axes labels from graph"
 msgstr ""
 
 msgid "removeXYlabels must be numeric, larger than 0 and smaller than 1"

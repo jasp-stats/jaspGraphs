@@ -1,5 +1,5 @@
 library(ggplot2)
-library(JASPgraphs)
+library(jaspGraphs)
 
 # an example plot
 graph <- ggplot(mtcars, aes(wt, mpg)) +

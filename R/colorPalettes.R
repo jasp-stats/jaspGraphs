@@ -1,7 +1,7 @@
 
 #'@importFrom ggplot2 continuous_scale discrete_scale
 
-JASPgraphs_data <- list2env(list(
+jaspGraphs_data <- list2env(list(
   # discrete color scales
   colorblind  = list(colors = RColorBrewer::brewer.pal(8L, "Dark2")),
   colorblind2 = list(colors = RColorBrewer::brewer.pal(8L, "Set2")),
@@ -28,12 +28,12 @@ JASPcolors <- function(palette = getGraphOption("palette"), asFunction = FALSE) 
 
   if (!is.character(palette)) {
     stop("palette must be character!")
-  } else if (!palette %in% names(JASPgraphs_data)) {
-    stop(sprintf("palette was %s but must be one of %s", as.character(palette), paste(names(JASPgraphs_data), collapse = ", ")))
+  } else if (!palette %in% names(jaspGraphs_data)) {
+    stop(sprintf("palette was %s but must be one of %s", as.character(palette), paste(names(jaspGraphs_data), collapse = ", ")))
   }
-  colors <- JASPgraphs_data[[palette]][["colors"]]
+  colors <- jaspGraphs_data[[palette]][["colors"]]
   if (asFunction) {
-    fun <- JASPgraphs_data[[palette]][["fun"]]
+    fun <- jaspGraphs_data[[palette]][["fun"]]
     if (!is.null(fun))
       return(fun)
 

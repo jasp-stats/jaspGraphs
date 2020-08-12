@@ -15,11 +15,11 @@
 #' x <- rnorm(100)
 #' lower <- x - .1
 #' upper <- x + .1
-#' JASPgraphs::plotQQnorm(x, lower, upper)
+#' jaspGraphs::plotQQnorm(x, lower, upper)
 #'
 #' @export
 plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineColor = "red",
-                       xName = gettext("Theoretical quantiles",domain="R-JASPgraphs"), yName = gettext("Observed quantiles",domain="R-JASPgraphs")) {
+                       xName = gettext("Theoretical quantiles",domain="R-jaspGraphs"), yName = gettext("Observed quantiles",domain="R-jaspGraphs")) {
 
   n <- length(residuals)
   hasErrorbars <- !is.null(lower) && !is.null(upper)
@@ -69,6 +69,6 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
     scale_x_continuous(name = xName, breaks = xBreaks) +
     scale_y_continuous(name = yName, breaks = yBreaks)
 
-  return(JASPgraphs::themeJasp(g))
+  return(jaspGraphs::themeJasp(g))
 
 }

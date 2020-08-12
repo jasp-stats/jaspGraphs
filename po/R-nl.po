@@ -156,8 +156,8 @@ msgstr ""
 msgid "removeXYlabels should either have length 1 or length(plotList)."
 msgstr "removeXYlabels moet of lengte 1 hebben of length(plotList)."
 
-msgid "JASPgraphs could not obtain axes labels from graph"
-msgstr "JASPgraphs kon geen assenlabels van de grafiek verkrijgen"
+msgid "jaspGraphs could not obtain axes labels from graph"
+msgstr "jaspGraphs kon geen assenlabels van de grafiek verkrijgen"
 
 msgid "removeXYlabels must be numeric, larger than 0 and smaller than 1"
 msgstr "removeXYlabels moet numeriek zijn, groter dan 0 en kleiner dan 1"

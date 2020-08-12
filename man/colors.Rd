@@ -36,7 +36,7 @@ For ggplot2s, the convenience functions \code{scale_JASPcolor_\*} and \code{scal
 }
 \examples{
 library(ggplot2)
-library(JASPgraphs)
+library(jaspGraphs)
 setGraphOption("palette", "colorblind")
 
 # use colors directly

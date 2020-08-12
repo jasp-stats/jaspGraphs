@@ -161,7 +161,7 @@ getAxesLabels <- function(g) {
   })
 
   if (inherits(axesLabels, "try-error")) {
-    warning("JASPgraphs could not obtain axes labels from graph")
+    warning("jaspGraphs could not obtain axes labels from graph")
     return(list(xtop = NULL, xbottom = NULL, yleft = NULL, yright = NULL))
   } else {
     return(axesLabels)
@@ -486,7 +486,7 @@ ggMatrixPlot.default <- function(plotList = NULL, nr = NULL, nc = NULL,
   layout[idx] <- seq_along(idx)
   layout[is.na(layout)] <- length(idx) + 1
   
-  totalGraph <- JASPgraphsPlot$new(
+  totalGraph <- jaspGraphsPlot$new(
       subplots     = c(plotList[lengths(plotList) > 0]),
       names        = c(gtNames[lengths(plotList) > 0]),
       layout       = layout,

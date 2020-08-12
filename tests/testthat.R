@@ -1,5 +1,5 @@
 library(testthat)
-library(JASPgraphs)
+library(jaspGraphs)
 library(ggplot2)
 
-test_check("JASPgraphs")
+test_check("jaspGraphs")

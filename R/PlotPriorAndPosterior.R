@@ -224,21 +224,21 @@ makeBFlabels <- function(bfSubscripts, BFvalues, subs = NULL, bfTxt = NULL) {
 hypothesis2BFtxt <- function(hypothesis = c("equal", "smaller", "greater")) {
 
   hypothesis <- match.arg(hypothesis)
-  pizzaTxt <- gettext("data | H0",domain="R-JASPgraphs")
+  pizzaTxt <- gettext("data | H0",domain="R-jaspGraphs")
   return(
     switch(
       hypothesis,
       "equal" = list(
         bfSubscripts = 0:1,
-        pizzaTxt = c(pizzaTxt, gettext("data | H1",domain="R-JASPgraphs"))
+        pizzaTxt = c(pizzaTxt, gettext("data | H1",domain="R-jaspGraphs"))
       ),
       "smaller" = list(
         bfSubscripts = c(0, "\'-\'"),
-        pizzaTxt = c(pizzaTxt, gettext("data | H-",domain="R-JASPgraphs"))
+        pizzaTxt = c(pizzaTxt, gettext("data | H-",domain="R-jaspGraphs"))
       ),
       "greater" = list(
         bfSubscripts = c(0, "\'+\'"),
-        pizzaTxt = c(pizzaTxt, gettext("data | H+",domain="R-JASPgraphs"))
+        pizzaTxt = c(pizzaTxt, gettext("data | H+",domain="R-jaspGraphs"))
       )
     )
   )
@@ -255,8 +255,8 @@ getBFSubscripts <- function(bfType = c("BF01", "BF10", "LogBF10"), hypothesis = 
   hypothesis <- match.arg(hypothesis)
 
   base <-
-    if (bfType != "LogBF10") gettext("BF%s",domain="R-JASPgraphs")
-    else                     gettext("log(BF%s)",domain="R-JASPgraphs")
+    if (bfType != "LogBF10") gettext("BF%s",domain="R-jaspGraphs")
+    else                     gettext("log(BF%s)",domain="R-jaspGraphs")
   base <- fixTranslationForExpression(base)
 
   subscripts <- switch (hypothesis,
@@ -324,14 +324,14 @@ makeBFwheelAndText <- function(BF, bfSubscripts, pizzaTxt, drawPizzaTxt = is.nul
 #"
 #' @export
 PlotPriorAndPosterior <- function(dfLines, dfPoints = NULL, BF = NULL, CRI = NULL, median = NULL, xName = NULL,
-                                  yName = gettext("Density",domain="R-JASPgraphs"), drawPizzaTxt = !is.null(BF), drawCRItxt = !is.null(CRI),
+                                  yName = gettext("Density",domain="R-jaspGraphs"), drawPizzaTxt = !is.null(BF), drawCRItxt = !is.null(CRI),
                                   bfType = c("BF01", "BF10", "LogBF10"),
                                   hypothesis = c("equal", "smaller", "greater"),
                                   bfSubscripts = NULL,
                                   pizzaTxt = hypothesis2BFtxt(hypothesis)$pizzaTxt,
                                   bty = list(type = "n", ldwX = .5, lwdY = .5),
                                   lineColors = NULL,
-                                  CRItxt = "95% CI: ", medianTxt = gettext("Median:",domain="R-JASPgraphs"),
+                                  CRItxt = "95% CI: ", medianTxt = gettext("Median:",domain="R-jaspGraphs"),
                                   ...) {
 
   errCheckPlots(dfLines, dfPoints, CRI, median, BF)
@@ -429,7 +429,7 @@ PlotPriorAndPosterior <- function(dfLines, dfPoints = NULL, BF = NULL, CRI = NUL
   topPlotList <- list(BFtext = gTextBF, BFpizza = gWheel, CItext = gTextCI)
   if (all(lengths(topPlotList) == 0)) {
     plot <- g
-    class(plot) <- c("JASPgraphs", class(plot))
+    class(plot) <- c("jaspGraphs", class(plot))
   } else {
 
     idx <- lengths(topPlotList) == 0L
@@ -441,7 +441,7 @@ PlotPriorAndPosterior <- function(dfLines, dfPoints = NULL, BF = NULL, CRI = NUL
     heights <- c(.2, .8)
     widths  <- c(.4, .2, .4)
 
-    plot <- JASPgraphsPlot$new(
+    plot <- jaspGraphsPlot$new(
       subplots     = plots2arrange,
       layout       = layout,
       heights      = heights,

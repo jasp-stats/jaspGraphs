@@ -39,6 +39,6 @@ This function is equivalent to \code{qqnorm(residuals); qqline(residuals)}, but 
 x <- rnorm(100)
 lower <- x - .1
 upper <- x + .1
-JASPgraphs::plotQQnorm(x, lower, upper)
+jaspGraphs::plotQQnorm(x, lower, upper)
 
 }

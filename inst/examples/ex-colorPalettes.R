@@ -1,5 +1,5 @@
 library(ggplot2)
-library(JASPgraphs)
+library(jaspGraphs)
 setGraphOption("palette", "colorblind")
 
 # use colors directly

@@ -16,6 +16,6 @@ needsParsing(x)
 Tell that this string should be parsed.
 }
 \details{
-\code{parseThis} adds an attribute to a character or factor such that JASPgraphs knows it should be
+\code{parseThis} adds an attribute to a character or factor such that jaspGraphs knows it should be
 parsed. \code{needsParsing} return \code{TRUE} if a character has said attribute.
 }

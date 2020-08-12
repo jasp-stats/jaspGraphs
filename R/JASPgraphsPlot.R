@@ -1,9 +1,9 @@
 #' @importFrom ggplot2 is.ggplot
 
-JASPgraphsPlot <- R6::R6Class(
-  classname = "JASPgraphsPlot",
+jaspGraphsPlot <- R6::R6Class(
+  classname = "jaspGraphsPlot",
   public = list(
-    initialize = function(subplots, plotFunction = reDrawJASPgraphsPlot, ...) {
+    initialize = function(subplots, plotFunction = reDrawJaspGraphsPlot, ...) {
 
       if (!all(vapply(subplots, is.ggplot, TRUE)))
         stop("all subplots should be of class ggplot!")
@@ -12,7 +12,7 @@ JASPgraphsPlot <- R6::R6Class(
       plotArgs <- list(...)
       if (!length(names(plotArgs)) == length(plotArgs))
         stop("all arguments in ... should be named.")
-      if (is.null(plotArgs[["names"]]) && identical(plotFunction, reDrawJASPgraphsPlot))
+      if (is.null(plotArgs[["names"]]) && identical(plotFunction, reDrawJaspGraphsPlot))
         plotArgs[["names"]] <- paste0("plot", seq_along(subplots))
 
       self$subplots     <- subplots
@@ -27,16 +27,16 @@ JASPgraphsPlot <- R6::R6Class(
 )
 
 #' @export
-`[[.JASPgraphsPlot` <- function(x, field) x$subplots[[field]]
+`[[.jaspGraphsPlot` <- function(x, field) x$subplots[[field]]
 
 #' @export
-`[[<-.JASPgraphsPlot` <- function(x, field, value) {
+`[[<-.jaspGraphsPlot` <- function(x, field, value) {
   x$subplots[[field]] <- value
   return(x)
 }
 
 
-reDrawJASPgraphsPlot <- function(subplots, args, grob = FALSE, newpage = FALSE,
+reDrawJaspGraphsPlot <- function(subplots, args, grob = FALSE, newpage = FALSE,
                                  decodeplotFun = get0("decodeplot"), ...) {
   # redraws plots from PlotPriorAndPosterior, PlotRobustnessSequential, and ggMatrixplot
   g <- gridExtra::arrangeGrob(

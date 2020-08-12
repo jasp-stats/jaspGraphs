@@ -6,9 +6,9 @@
 #' @param labels String vector of length 2, text to be shown above and below plot.
 #'
 #' @examples
-#' JASPgraphs::drawBFpizza(c(1, 4))
+#' jaspGraphs::drawBFpizza(c(1, 4))
 #'
-#' JASPgraphs::drawBFpizza(
+#' jaspGraphs::drawBFpizza(
 #'   dat = data.frame(y = c(1, 4)),
 #'  labels = c("data | H0", "data | H1")
 #' )

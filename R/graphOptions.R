@@ -70,6 +70,6 @@ graphOptions <- function(...) {
 }
 
 .onAttach <- function(libname, pkgname)
-  assign(".graphOptions", .graphOptions, envir = as.environment("package:JASPgraphs"))
+  assign(".graphOptions", .graphOptions, envir = as.environment("package:jaspGraphs"))
 
 
