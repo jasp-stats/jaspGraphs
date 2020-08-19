@@ -13,7 +13,7 @@
 fromJSON  <- function(x) jsonlite::fromJSON(x, TRUE, FALSE, FALSE)
 toJSON    <- function(x) jsonlite::toJSON(x, auto_unbox = TRUE, digits = NA, null = "null")
 .extractErrorMessage <- function(error) {
-  
+
   split <- base::strsplit(as.character(error), ":")[[1]]
   last <- split[[length(split)]]
   stringr::str_trim(last)
@@ -84,7 +84,7 @@ expand_default <- function(scale, discrete = c(0, 0.6, 0, 0.6), continuous = c(0
     return(a)
   else if (scale$is_discrete())
     return(discrete)
-  else 
+  else
     return(continuous)
 }
 
@@ -133,7 +133,7 @@ internalUpdateAxis.ScaleContinuousPosition <- function(currentAxis, newSettings)
   if (!is.null(newSettings[["breaks"]])) {
     currentAxis[["breaks"]] <- sort(newSettings[["breaks"]])
 
-    if (is.numeric(currentAxis[["limits"]])) 
+    if (is.numeric(currentAxis[["limits"]]))
       currentAxis[["limits"]] <- range(currentAxis[["limits"]], newSettings[["breaks"]])
     else
       currentAxis[["limits"]] <- range(newSettings[["breaks"]])
@@ -175,7 +175,7 @@ validateOptions <- function(newOptions, oldOptions) {
   return(newOptions)
 }
 
-#' @title Get the editable options for a graph 
+#' @title Get the editable options for a graph
 #' @param graph a ggplot2 object
 #' @param asJSON should the list be converted to JSON?
 #'
@@ -205,10 +205,10 @@ plotEditingOptions.ggplot_built <- function(graph, asJSON = FALSE) {
     opts <- graph[["layout"]][["coord"]][["labels"]](graph[["layout"]][["panel_params"]])[[1L]]
     axisTypes <- getAxisType(graph)
     currentAxis <- graph[["layout"]][["get_scales"]](1L)
-    
+
     xSettings <- getAxisInfo(currentAxis[["x"]], opts, graph)
     ySettings <- getAxisInfo(currentAxis[["y"]], opts, graph)
-    
+
     out <- list(xAxis = list(
       type     = axisTypes[["x"]],
       settings = xSettings
@@ -217,8 +217,8 @@ plotEditingOptions.ggplot_built <- function(graph, asJSON = FALSE) {
       settings = ySettings
     )
     )
-  })
-  
+  }, silent = TRUE)
+
   if (inherits(e, "try-error")) {
     out <- list(error = paste("computing plotEditingOptions gave an error:", .extractErrorMessage(e)))
     if (asJSON)

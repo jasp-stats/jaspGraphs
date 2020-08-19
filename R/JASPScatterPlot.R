@@ -30,7 +30,7 @@
 JASPScatterPlot <- function(x, y, group = NULL, xName = NULL, yName = NULL,
                             addSmooth = TRUE, addSmoothCI = TRUE,
                             smoothCIValue = 0.95, forceLinearSmooth = FALSE,
-                            plotAbove = c("density", "histogram", "none"), 
+                            plotAbove = c("density", "histogram", "none"),
                             plotRight = c("density", "histogram", "none"),
                             colorAreaUnderDensity = TRUE,
                             alphaAreaUnderDensity = .5,
@@ -38,7 +38,7 @@ JASPScatterPlot <- function(x, y, group = NULL, xName = NULL, yName = NULL,
                             legendTitle = NULL,
                             emulateGgMarginal = FALSE,
                             ...) {
-  
+
   # TODO: make actual error messages
   stopifnot(
     is.numeric(x),
@@ -56,7 +56,7 @@ JASPScatterPlot <- function(x, y, group = NULL, xName = NULL, yName = NULL,
 
   # can't make a legend without group
   showLegend <- showLegend && !is.null(group)
-  
+
   if (emulateGgMarginal)
     colorAreaUnderDensity <- FALSE
 
@@ -78,9 +78,9 @@ JASPScatterPlot <- function(x, y, group = NULL, xName = NULL, yName = NULL,
   if (showLegend)
     dots <- setDefaults(dots, legend.position = "right")
 
-  mainPlot <- ggplot(df, mapping) + 
+  mainPlot <- ggplot(df, mapping) +
     geom_point() +
-    geomSmooth + 
+    geomSmooth +
     ggplot2::labs(x = xName, y = yName, color = legendTitle, fill = legendTitle) +
     geom_rangeframe() +
     do.call(themeJaspRaw, dots)
@@ -98,11 +98,11 @@ JASPScatterPlot <- function(x, y, group = NULL, xName = NULL, yName = NULL,
 
   topPlot   <- JASPScatterSubPlot(x, group, plotAbove, x.range, colorAreaUnderDensity, alphaAreaUnderDensity)
   rightPlot <- JASPScatterSubPlot(y, group, plotRight, y.range, colorAreaUnderDensity, alphaAreaUnderDensity, flip = TRUE)
-  
+
   plotList <- list(mainPlot = mainPlot, topPlot = topPlot, rightPlot = rightPlot)
   plotList <- plotList[lengths(plotList) > 0L]
-  
-  plot <- jaspGraphsPlot$new(
+
+  plot <- JASPgraphsPlot$new(
     subplots     = plotList,
     plotFunction = reDrawAlignedPlot,
     size         = 5,
@@ -111,20 +111,20 @@ JASPScatterPlot <- function(x, y, group = NULL, xName = NULL, yName = NULL,
   return(plot)
 }
 
-JASPScatterSubPlot <- function(x, group = NULL, type = c("density", "histogram", "none"), range, 
+JASPScatterSubPlot <- function(x, group = NULL, type = c("density", "histogram", "none"), range,
                                colorAreaUnderDensity = TRUE, alpha = 0.5, flip = FALSE) {
-  
+
   if (type == "none")
     return()
 
-  groupIsNull <- is.null(group) 
+  groupIsNull <- is.null(group)
   if (groupIsNull) {
     mapping <- aes(x = .data$x, y = .data$y)
     group <- rep(1L, length(x))
   } else {
     mapping <- aes(x = .data$x, y = .data$y, group = .data$g, color = .data$g, fill = .data$g)
   }
-  
+
   if (type == "density") {
     foo <- function(x, ...) as.data.frame(stats::density(x, from = range[1L], to = range[2L])[c("x", "y")])
     geom <- geom_line(size = 0.5, show.legend = FALSE)
@@ -152,5 +152,5 @@ JASPScatterSubPlot <- function(x, group = NULL, type = c("density", "histogram",
   if (flip)
     plot <- plot + coord_flip()
   return(plot)
-  
+
 }
