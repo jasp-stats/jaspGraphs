@@ -35,37 +35,37 @@ setGraphOption <- function(name, value) {
 #' @rdname graphOptions
 #' @title Global graph options
 #' @param ... modify options using name = value.
-#' @param name characyer string of the value to get or set.
+#' @param name character string of the value to get or set.
 #' @param value the value to change x into.
 #'
 #' @export
 graphOptions <- function(...) {
-  
+
   args <- list(...)
   if (length(args) == 1L && is.list(args[[1L]]))
     args <- args[[1L]]
-  
+
   if (!(length(args) && is.null(names(args)))) {
     if (length(args)) {
       for (i in seq_along(args)) {
         setGraphOption(names(args)[[i]], args[[i]])
       }
-      
+
       return(invisible(args))
-      
+
     } else {
-      
+
       return(as.list(.graphOptions))
-      
+
     }
   }
-  
+
   args <- unlist(args)
   out <- as.list(.graphOptions)[args]
-  
+
   if (length(out) == 1)
     out <- out[[1]]
-  
+
   return(out)
 }
 

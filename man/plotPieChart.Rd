@@ -30,7 +30,7 @@ plotPieChart(
 
 \item{showAxisText}{Logical, should the axis text be shown?}
 
-\item{showAxisTicks}{Logical, should the ticks on the polar coodinates be shown?}
+\item{showAxisTicks}{Logical, should the ticks on the polar coordinates be shown?}
 
 \item{asPercentages}{Logical, should value be transformed to percentages? Recommended to be true.}
 

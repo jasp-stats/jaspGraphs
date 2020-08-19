@@ -313,7 +313,7 @@ makeBFwheelAndText <- function(BF, bfSubscripts, pizzaTxt, drawPizzaTxt = is.nul
 #' @param bfSubscripts String, manually specify the BF labels.
 #' @param pizzaTxt String vector of length 2, text to be drawn above and below pizza plot.
 #' @param bty List of three elements. Type specifies the box type, ldwX the width of the x-axis, lwdY the width of the y-axis.
-#' @param lineColors NULL to omit line colors, a character vector with colors, or any other value to add \code{color = g} to the aestethics of the main plot.
+#' @param lineColors NULL to omit line colors, a character vector with colors, or any other value to add \code{color = g} to the aesthetics of the main plot.
 #' @param CRItxt String, display the credible interval as \code{paste0(CRItxt, "[", lower, ", ", upper, "]")}.
 #' @param medianTxt String, display the median as \code{paste(medianTxt, formatC(median, 3, format = "f"))}.
 #' @param ... Unused.

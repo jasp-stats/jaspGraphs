@@ -5,7 +5,7 @@ makeRect <- function(col = "red", size = 2, fill = scales::alpha("black", 0)) {
   dfrect <- data.frame(xmin = 0, xmax = 1, ymin = 0, ymax = 1)
 
   return(invisible(
-    ggplot2::ggplot(data = dfrect, aes(xmin = .data$xmin, xmax = .data$xmax, ymin = .data$ymin, 
+    ggplot2::ggplot(data = dfrect, aes(xmin = .data$xmin, xmax = .data$xmax, ymin = .data$ymin,
                                        ymax = .data$ymax)) +
       ggplot2::geom_rect(fill = fill, size = size, color = col) +
       ggplot2::theme_void()
@@ -241,10 +241,10 @@ scaleAxesLabels <- function(scaleXYlabels, plotList) {
 #' @param removeXYlabels Whether to remove the x and y axes titles.
 #' @param labelSize two scalars for the magnification of the the x and y labels respectively.
 #' @param labelPos relative position for the labels around the plots. The first column contains x-coordinates and the second y-coordinates. The first row is top, second right, third bottom, and fourth left (TRouBLe).
-#' @param scaleXYlabels two scalars for the magnification of the the x and y labels respectively. 
+#' @param scaleXYlabels two scalars for the magnification of the the x and y labels respectively.
 #' @param debug create an debug plot (see examples).
 #'
-#' @details This function is intended to be calles with a matrix as first argument, althought other input is also supported.
+#' @details This function is intended to be called with a matrix as first argument, although other input is also supported.
 #'
 #' @example inst/examples/ex-ggMatrixPlot.R
 #' @export
@@ -418,7 +418,7 @@ ggMatrixPlot.default <- function(plotList = NULL, nr = NULL, nc = NULL,
   h <- .25
   width <- rep(1, nc)
   height <- rep(1, nr)
-  
+
   # names for the gtable to ease further work
   gtNames <- matrix(paste0("graph-", rep(seq_len(nr), nc), "-", rep(seq_len(nc), each = nr)), nr, nc)
 
@@ -485,7 +485,7 @@ ggMatrixPlot.default <- function(plotList = NULL, nr = NULL, nc = NULL,
   idx <- which(lengths(plotList) > 0)
   layout[idx] <- seq_along(idx)
   layout[is.na(layout)] <- length(idx) + 1
-  
+
   totalGraph <- jaspGraphsPlot$new(
       subplots     = c(plotList[lengths(plotList) > 0]),
       names        = c(gtNames[lengths(plotList) > 0]),

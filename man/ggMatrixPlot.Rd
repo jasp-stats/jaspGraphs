@@ -107,7 +107,7 @@ ggMatrixPlot(
 ggMatrixPlot
 }
 \details{
-This function is intended to be calles with a matrix as first argument, althought other input is also supported.
+This function is intended to be called with a matrix as first argument, although other input is also supported.
 }
 \examples{
 ## Not run:

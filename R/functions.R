@@ -72,7 +72,7 @@ addAxis <- function(graph, breaks = NULL, name = waiver(), labels = waiver(), li
 }
 
 #' @title (Deprecated) draw an empty ggplot with just axes.
-#' 
+#'
 #' @param graph ggplot object.
 #' @param xName name for x-axis.
 #' @param yName name for y-axis.
@@ -149,24 +149,24 @@ drawAxis <- function(graph = NULL, xName = waiver(), yName = waiver(), breaks = 
 
 # # @export
 # drawBars <- function(graph = drawAxis(), dat, mapping = NULL, stat="identity", fill="gray80", width = NULL, show.legend = FALSE, ...) {
-# 
+#
 #     if (is.null(mapping)) {
-# 
+#
 #         nms <- colnames(dat)
-# 
+#
 #         mapping <- switch(as.character(length(nms)),
 #                           "1" = ggplot2::aes_string(x = nms[1]),
 #                           "2" = ggplot2::aes_string(x = nms[1], y = nms[2]),
 #                           "3" = ggplot2::aes_string(x = nms[1], y = nms[2], group = nms[3], linetype = nms[3])
 #         )
-# 
+#
 #     }
-# 
+#
 #     args = list(data = dat, mapping = mapping, fill = fill, stat=stat, width = width, show.legend = show.legend, ...)
 #     args[names(args) %in% names(mapping)] <- NULL
-# 
+#
 #     return(graph + do.call(ggplot2::geom_bar, args))
-# 
+#
 # }
 
 #' @title Deprecated: use \code{ggplot2::geom_line} instead.
@@ -175,7 +175,7 @@ drawAxis <- function(graph = NULL, xName = waiver(), yName = waiver(), breaks = 
 #' @param dat data frame
 #' @param mapping mapping from aes
 #' @param size size
-#' @param alpha transparancy
+#' @param alpha transparency
 #' @param show.legend show legend?
 #' @param ... other arguments to geom_line
 #'
@@ -191,18 +191,18 @@ drawLines <- function(graph = drawAxis(), dat, mapping = NULL, size = 1.25,
                         "2" = ggplot2::aes_string(x = nms[1], y = nms[2]),
                         "3" = ggplot2::aes_string(x = nms[1], y = nms[2], color = nms[3])
       )
-      
+
   } else if (is.character(mapping)) {
-      
+
       mapping <- switch(mapping,
                         "PriorPosterior" = ggplot2::aes_string(x = nms[1], y = nms[2], linetype = nms[3])
       )
-      
+
   }
-    
+
     args = list(data = dat, mapping = mapping, size = size, alpha = alpha, show.legend = show.legend, ...)
     args[names(args) %in% names(mapping)] <- NULL
-    
+
     return(graph + do.call(ggplot2::geom_line, args))
 }
 
@@ -249,7 +249,7 @@ drawPoints <- function(graph = drawAxis(), dat, mapping = NULL, size = 1.25,
 #' @param color line color
 #' @param show.legend show legend?
 #' @param se show standard errors?
-#' @param alpha transparancy
+#' @param alpha transparency
 #' @param ... other arguments to geom_smooth
 #'
 #' @export

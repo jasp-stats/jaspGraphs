@@ -54,7 +54,7 @@ PlotPriorAndPosterior(
 
 \item{bty}{List of three elements. Type specifies the box type, ldwX the width of the x-axis, lwdY the width of the y-axis.}
 
-\item{lineColors}{NULL to omit line colors, a character vector with colors, or any other value to add \code{color = g} to the aestethics of the main plot.}
+\item{lineColors}{NULL to omit line colors, a character vector with colors, or any other value to add \code{color = g} to the aesthetics of the main plot.}
 
 \item{CRItxt}{String, display the credible interval as \code{paste0(CRItxt, "[", lower, ", ", upper, "]")}.}
 

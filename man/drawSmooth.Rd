@@ -34,7 +34,7 @@ drawSmooth(
 
 \item{se}{show standard errors?}
 
-\item{alpha}{transparancy}
+\item{alpha}{transparency}
 
 \item{...}{other arguments to geom_smooth}
 }

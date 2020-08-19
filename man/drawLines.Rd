@@ -23,7 +23,7 @@ drawLines(
 
 \item{size}{size}
 
-\item{alpha}{transparancy}
+\item{alpha}{transparency}
 
 \item{show.legend}{show legend?}
 
