@@ -21,7 +21,7 @@
 #' @param lineTypes String vector, line types if \code{dfLines$g} is not \code{NULL}.
 #' @param addLineAtOne Logical, should a black line be draw at BF = 1?
 #' @param bty List of three elements. Type specifies the box type, ldwX the width of the x-axis, lwdY the width of the y-axis.
-#' @param plotLineOrPoint String, should the main geom in the plot be a line or a point? If set to auto, points are shown whenevever \code{nrow(dfLines) <= 60}.
+#' @param plotLineOrPoint String, should the main geom in the plot be a line or a point? If set to auto, points are shown whenever \code{nrow(dfLines) <= 60}.
 #' @param pointShape String, if \code{plotLineOrPoint == "point"} then this controls the shape aesthetic.
 #' @param pointFill String, if \code{plotLineOrPoint == "point"} then this controls the fill aesthetic.
 #' @param pointColor String, if \code{plotLineOrPoint == "point"} then this controls the color aesthetic.
@@ -37,7 +37,7 @@ PlotRobustnessSequential <- function(
   dfLines, dfPoints = NULL, BF = NULL, hasRightAxis = TRUE, xName = NULL, yName = NULL,
   addEvidenceArrowText = TRUE, drawPizzaTxt = !is.null(BF), evidenceLeveltxt = !is.null(BF),
   pointLegend = !is.null(dfPoints), linesLegend = !is.null(dfLines$g), bfSubscripts = NULL,
-  pizzaTxt = hypothesis2BFtxt(hypothesis)$pizzaTxt, 
+  pizzaTxt = hypothesis2BFtxt(hypothesis)$pizzaTxt,
   bfType = c("BF01", "BF10", "LogBF10"),
   hypothesis = c("equal", "smaller", "greater"),
   pointColors  = c("red", "grey", "black", "white"),
@@ -59,7 +59,7 @@ PlotRobustnessSequential <- function(
   if (plotLineOrPoint == "auto") plotLineOrPoint <- if (nrow(dfLines) <= 60) "point" else "line"
   hypothesis <- match.arg(hypothesis)
   emptyPlot <- list()
-  
+
   if (is.null(yName)) {
     if (bfType == "BF01") {
       yName <- getBFSubscripts(bfType, hypothesis)[2L]
@@ -71,7 +71,7 @@ PlotRobustnessSequential <- function(
   if (!is.null(dfPoints) && !is.null(BF)) {
     stop("Cannot provide both a BF pizzaplot and a points legend!")
   }
-  
+
   yRange <- range(dfLines$y)
   parseYaxisLabels <- TRUE
 
@@ -101,13 +101,13 @@ PlotRobustnessSequential <- function(
   } else {
     # adaptive steps
     hasRightAxis <- FALSE # make no sense to display this anymore
-    
+
     # convert base e to base 10
     yRange <- yRange * log10(exp(1))
     dfLines$y <- dfLines$y * log10(exp(1))
     if (!is.null(dfPoints))
-      dfPoints$y <- dfPoints$y * log10(exp(1)) 
-    
+      dfPoints$y <- dfPoints$y * log10(exp(1))
+
     # round to ensure all point lie within the breaks
     from <- floor(yRange[1L])
     to <- ceiling(yRange[2L])
@@ -128,7 +128,7 @@ PlotRobustnessSequential <- function(
       # unused parsed version (EJ didn't like that)
       # yLabelsL <- c(paste0("frac(1, ", yBreaksL[idx], ")"), yBreaksL[!idx])
       # formatC(x, format = "fg") ensures 1e5 is shown as 100000 not 1e+05
-      yLabelsL <- c(paste("1 /", formatC(10^abs(yBreaksL[idx]), format = "fg")), 
+      yLabelsL <- c(paste("1 /", formatC(10^abs(yBreaksL[idx]), format = "fg")),
                     formatC(10^yBreaksL[!idx], format = "fg"))
       parseYaxisLabels <- FALSE
     } else { # above 1 000 000
@@ -192,7 +192,7 @@ PlotRobustnessSequential <- function(
   } else {
     if (length(unique(dfLines$g)) != length(lineColors) || length(lineColors) != length(lineTypes))
       stop("lineColors and lineTypes must have the same length as the number of groups in dfLines.")
-    
+
     if (plotLineOrPoint == "line") {
       mapping    <- aes(x = .data$x, y = .data$y, group = .data$g, linetype = .data$g, color = .data$g)
       scaleCol   <- ggplot2::scale_color_manual(values = lineColors)
@@ -224,7 +224,7 @@ PlotRobustnessSequential <- function(
     colour   = gridCols,
     linetype = gridLtys
   )
-  
+
   geom <- switch(plotLineOrPoint,
                  "line"  = geom_line,
                  "point" = geom_point)
@@ -264,7 +264,7 @@ PlotRobustnessSequential <- function(
   if (!is.null(BF)) {
     if (is.null(bfSubscripts))
       bfSubscripts <- getBFSubscripts(bfType, hypothesis)
-    
+
     tmp <- makeBFwheelAndText(BF, bfSubscripts, pizzaTxt, drawPizzaTxt, bfType)
     gTextBF <- tmp$gTextBF
     gWheel <- tmp$gWheel
@@ -288,7 +288,7 @@ PlotRobustnessSequential <- function(
       # returns 1 if val in [1, 3], 2 if val in [3, 10], ...
       idx <- findInterval(val, c(1, 3, 10, 30, 100), rightmost.closed = FALSE)
       evidenceLevel <- fixTranslationForExpression(allEvidenceLabels[idx])
-      
+
       BF01 <- if (bfType == "BF01") BF else if (bfType == "LogBF10") exp(BF) else 1 / BF
       if (BF01 > 1)
         hypothesisSymbol <- "[0]"
@@ -296,7 +296,7 @@ PlotRobustnessSequential <- function(
         hypothesisSymbol <- "['+']"
       else if (hypothesis == "smaller")
         hypothesisSymbol <- "['-']"
-      else 
+      else
         hypothesisSymbol <- '[1]'
 
       evidenceFor <- gettextf("Evidence for H%s:", hypothesisSymbol, domain="R-jaspGraphs")
@@ -324,7 +324,7 @@ PlotRobustnessSequential <- function(
       y    = c(yBreaksL[2L] + 0.25 * d1, yBreaksL[n] + 0.25 * d2),
       yend = c(yBreaksL[2L] + 0.75 * d1, yBreaksL[n] + 0.75 * d2)
     )
-    
+
     if (is.null(arrowLabel)) {
       # only translate this once
       evidenceBase <- fixTranslationForExpression(gettext("Evidence for H%s",domain="R-jaspGraphs"))
@@ -342,12 +342,12 @@ PlotRobustnessSequential <- function(
     } else {
       parseArrowLabel <- needsParsing(arrowLabel)
     }
-    
+
     dfArrowTxt <- data.frame(
       y = (dfArrow$y + dfArrow$yend) / 2,
       x = 1.5 * xlocation, # 15% of x-range
       # additional '' around for are necessary because otherwise it's parsed as a for loop
-      label = arrowLabel, 
+      label = arrowLabel,
       stringsAsFactors = FALSE
     )
 
@@ -387,7 +387,7 @@ PlotRobustnessSequential <- function(
   g <- themeJasp(g, bty = bty) + rightAxisLine + thm
 
   if (pointLegend && !is.null(dfPoints)) {
-    
+
     plot <- jaspGraphsPlot$new(
       subplots     = list(legendPlot, g),
       layout       = matrix(1:2, 2),
@@ -406,7 +406,7 @@ PlotRobustnessSequential <- function(
     layout <- matrix(1:3, 1, 3)
     layout[idx] <- NA_integer_
     layout <- rbind(layout, 4)
-    
+
     heights <- c(.2, .8)
     widths  <- c(.4, .2, .4)
 

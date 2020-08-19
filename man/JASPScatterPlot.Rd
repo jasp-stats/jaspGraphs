@@ -49,7 +49,7 @@ JASPScatterPlot(
 
 \item{colorAreaUnderDensity}{Logical, should the area under the density be colored?}
 
-\item{alphaAreaUnderDensity}{Real in [0, 1], transparancy for area under density.}
+\item{alphaAreaUnderDensity}{Real in [0, 1], transparency for area under density.}
 
 \item{showLegend}{Should the legend be shown?}
 

@@ -7,7 +7,7 @@
 #' @param legendColors Character vector with colors.
 #' @param showAxisText Logical, should the axis text be shown?
 #' @param asPercentages Logical, should value be transformed to percentages? Recommended to be true.
-#' @param showAxisTicks Logical, should the ticks on the polar coodinates be shown?
+#' @param showAxisTicks Logical, should the ticks on the polar coordinates be shown?
 #' @param palette Character vector with palette name. If this option is set then legendColors is ignored. If palette is NULL then legendColors are used.
 #' @param ... Arguments to be passed to \code{\link{themeJasp}}.
 #'
@@ -46,7 +46,7 @@ plotPieChart <- function(value, group,
     legendColors <- jaspGraphs_data[[legendColors]][["colors"]]
     legendColors <- scales::gradient_n_pal(legendColors)(seq(0, 1, length.out = nUnique))
   }
-  
+
   df <- data.frame(
     y = value,
     g = factor(group)

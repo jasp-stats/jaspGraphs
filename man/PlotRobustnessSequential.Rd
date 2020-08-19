@@ -77,7 +77,7 @@ Ignored if \code{!is.null(dfLines$g) && linesLegend}.}
 
 \item{bty}{List of three elements. Type specifies the box type, ldwX the width of the x-axis, lwdY the width of the y-axis.}
 
-\item{plotLineOrPoint}{String, should the main geom in the plot be a line or a point? If set to auto, points are shown whenevever \code{nrow(dfLines) <= 60}.}
+\item{plotLineOrPoint}{String, should the main geom in the plot be a line or a point? If set to auto, points are shown whenever \code{nrow(dfLines) <= 60}.}
 
 \item{pointShape}{String, if \code{plotLineOrPoint == "point"} then this controls the shape aesthetic.}
 

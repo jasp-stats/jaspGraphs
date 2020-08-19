@@ -20,7 +20,7 @@ setGraphOption(name, value)
 graphOptions(...)
 }
 \arguments{
-\item{name}{characyer string of the value to get or set.}
+\item{name}{character string of the value to get or set.}
 
 \item{value}{the value to change x into.}
 
