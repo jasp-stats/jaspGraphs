@@ -25,15 +25,15 @@ ggname <- function(prefix, grob) {
 #' @inheritParams ggplot2::geom_point
 #' @param sides A string that controls which sides of the plot the frames appear on.
 #'   It can be set to a string containing any of \code{'trbl'}, for top, right,
-#'   bottom, and left. By default, only the bottom and left axes lines are drawn. 
+#'   bottom, and left. By default, only the bottom and left axes lines are drawn.
 #'   Note that this is checked at drawing time, so 'b' always means bottom even when using \code{\link[ggplot2]{coord_flip}}.
-#' @param panelInfo A list that specifies what information is drawn from what component of panel_scales. 
-#' Usually, \code{x.major} corresponds to the bottom axis. However, if a scale is used to move e.g., 
+#' @param panelInfo A list that specifies what information is drawn from what component of panel_scales.
+#' Usually, \code{x.major} corresponds to the bottom axis. However, if a scale is used to move e.g.,
 #' the x-axis to be above the plot then this needs to be adjusted to \code{x.sec.major_source}. By default,
 #' this argument assumes that axis lines above and right of a plot use \code{\link[ggplot2]{sec_axis}} and are
-#' therefore draw information from \code{*.sec.major_source}. You can partially set this list; if e.g., 
+#' therefore draw information from \code{*.sec.major_source}. You can partially set this list; if e.g.,
 #' \code{"t"} is missing it will be filled with its default value.
-#' 
+#'
 #'
 #' @references Tufte, Edward R. (2001) The Visual Display of Quantitative Information, Chapter 6.
 #' @references Jeffrey B. Arnold (2019). ggthemes: Extra Themes, Scales and Geoms for 'ggplot2'. R package version 4.2.0. https://CRAN.R-project.org/package=ggthemes
@@ -71,6 +71,30 @@ geom_rangeframe <- function(mapping = NULL,
   )
 }
 
+getMajor <- function(x) {
+  if (getGraphOption("ggVersion") >= "3.3.0")
+    x$break_positions()
+  else
+    x
+}
+
+correctPanelInfo <- function(panelInfo) {
+
+  if (getGraphOption("ggVersion") >= "3.3.0") {
+    panelInfo <- lapply(panelInfo, function(x) {
+      return(switch(x,
+                    "x.major"     = "x",
+                    "x.sec.major" = "x.sec",
+                    "y.major"     = "y",
+                    "y.sec.major" = "y.sec",
+                    x
+      ))
+    })
+  }
+
+  return(panelInfo)
+}
+
 #' @rdname geom_rangeframe
 #' @usage NULL
 #' @format NULL
@@ -79,14 +103,26 @@ GeomRangeFrame <- ggplot2::ggproto("GeomRangeFrame", ggplot2::Geom,
   optional_aes = c("x", "y"),
 
   draw_panel = function(data, panel_scales, coord, sides = "bl",
-                        panelInfo = list("t" = "x.sec.major", "r" = "y.sec.major",
-                                         "b" = "x.major", "l" = "y.major"),
+                        panelInfo = if (getGraphOption("ggVersion") >= "3.3.0") {
+                          list("t" = "x.sec", "r" = "y.sec", "b" = "x", "l" = "y")
+                        } else {
+                          list("t" = "x.sec.major", "r" = "y.sec.major", "b" = "x.major", "l" = "y.major")
+                        },
                         lineend = "butt", color = "black",
                         alpha = 1, linetype = 1, size = getGraphOption("bty")[["lwdX"]],
                         adj = getGraphOption("axisTickWidth"), extendForAxisTicks = TRUE) {
 
-    panelInfo <- setDefaults(lst = panelInfo,
-                             "t" = "x.sec.major", "r" = "y.sec.major", "b" = "x.major", "l" = "y.major")
+    panelInfo <- if (getGraphOption("ggVersion") >= "3.3.0") {
+      setDefaults(lst = panelInfo,
+                  "t" = "x.sec", "r" = "y.sec", "b" = "x", "l" = "y")
+
+    } else {
+      setDefaults(lst = panelInfo,
+                  "t" = "x.sec.major", "r" = "y.sec.major", "b" = "x.major", "l" = "y.major")
+    }
+
+    # correct any mistakes caused by people have multiple versions of ggplot2 on their system...
+    panelInfo <- correctPanelInfo(panelInfo)
 
     rugs <- list()
     data <- coord[["transform"]](data, panel_scales)
@@ -99,7 +135,10 @@ GeomRangeFrame <- ggplot2::ggproto("GeomRangeFrame", ggplot2::Geom,
     adj <- unit(0.375 * .pt * adj, "pt")
 
     if (grepl("b", sides)) {
-      rr <- range(panel_scales[[panelInfo[["b"]]]])
+
+      major <- getMajor(panel_scales[[panelInfo[["b"]]]])
+      rr <- range(major, na.rm = TRUE)
+
       rugs[["x_b"]] <- ggname(
         "range_x_b",
         segmentsGrob(x0 = unit(rr[1L], "native") - adj,
@@ -110,7 +149,10 @@ GeomRangeFrame <- ggplot2::ggproto("GeomRangeFrame", ggplot2::Geom,
     }
 
     if (grepl("t", sides)) {
-      rr <- range(panel_scales[[panelInfo[["t"]]]])
+
+      major <- getMajor(panel_scales[[panelInfo[["t"]]]])
+      rr <- range(major, na.rm = TRUE)
+
       rugs[["x_t"]] <- ggname(
         "range_x_t",
         segmentsGrob(x0 = unit(rr[1L], "native") - adj,
@@ -121,7 +163,10 @@ GeomRangeFrame <- ggplot2::ggproto("GeomRangeFrame", ggplot2::Geom,
     }
 
     if (grepl("l", sides)) {
-      rr <- range(panel_scales[[panelInfo[["l"]]]])
+
+      major <- getMajor(panel_scales[[panelInfo[["l"]]]])
+      rr <- range(major, na.rm = TRUE)
+
       rugs[["y_l"]] <- ggname(
         "range_y_l",
         segmentsGrob(y0 = unit(rr[1L], "native") - adj,
@@ -132,7 +177,10 @@ GeomRangeFrame <- ggplot2::ggproto("GeomRangeFrame", ggplot2::Geom,
     }
 
     if (grepl("r", sides)) {
-      rr <- range(panel_scales[[panelInfo[["r"]]]])
+
+      major <- getMajor(panel_scales[[panelInfo[["r"]]]])
+      rr <- range(major, na.rm = TRUE)
+
       rugs[["y_r"]] <- ggname(
         "range_y_r",
         segmentsGrob(y0 = unit(rr[1L], "native") - adj,
@@ -147,4 +195,3 @@ GeomRangeFrame <- ggplot2::ggproto("GeomRangeFrame", ggplot2::Geom,
 
   draw_key = ggplot2::draw_key_path
 )
-
