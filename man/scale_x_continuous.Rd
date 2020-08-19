@@ -9,12 +9,14 @@ scale_x_continuous(
   name = waiver(),
   breaks = getPrettyAxisBreaks,
   minor_breaks = waiver(),
+  n.breaks = NULL,
   labels = axesLabeller,
   limits = "JASP",
   expand = waiver(),
   oob = censor,
   na.value = NA_real_,
   trans = "identity",
+  guide = waiver(),
   position = "bottom",
   sec.axis = waiver()
 )
@@ -23,12 +25,14 @@ scale_y_continuous(
   name = waiver(),
   breaks = getPrettyAxisBreaks,
   minor_breaks = waiver(),
+  n.breaks = NULL,
   labels = axesLabeller,
   limits = "JASP",
   expand = waiver(),
   oob = censor,
   na.value = NA_real_,
   trans = "identity",
+  guide = waiver(),
   position = "left",
   sec.axis = waiver()
 )
