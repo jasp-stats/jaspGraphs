@@ -7,7 +7,9 @@
 \alias{setGraphOption}
 \alias{graphOptions}
 \title{Global graph options}
-\format{An object of class \code{environment} of length 13.}
+\format{
+An object of class \code{environment} of length 13.
+}
 \usage{
 .graphOptions
 

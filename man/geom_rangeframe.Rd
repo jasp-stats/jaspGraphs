@@ -53,14 +53,14 @@ to the paired geom/stat.}
 
 \item{sides}{A string that controls which sides of the plot the frames appear on.
 It can be set to a string containing any of \code{'trbl'}, for top, right,
-bottom, and left. By default, only the bottom and left axes lines are drawn. 
+bottom, and left. By default, only the bottom and left axes lines are drawn.
 Note that this is checked at drawing time, so 'b' always means bottom even when using \code{\link[ggplot2]{coord_flip}}.}
 
-\item{panelInfo}{A list that specifies what information is drawn from what component of panel_scales. 
-Usually, \code{x.major} corresponds to the bottom axis. However, if a scale is used to move e.g., 
+\item{panelInfo}{A list that specifies what information is drawn from what component of panel_scales.
+Usually, \code{x.major} corresponds to the bottom axis. However, if a scale is used to move e.g.,
 the x-axis to be above the plot then this needs to be adjusted to \code{x.sec.major_source}. By default,
 this argument assumes that axis lines above and right of a plot use \code{\link[ggplot2]{sec_axis}} and are
-therefore draw information from \code{*.sec.major_source}. You can partially set this list; if e.g., 
+therefore draw information from \code{*.sec.major_source}. You can partially set this list; if e.g.,
 \code{"t"} is missing it will be filled with its default value.}
 
 \item{na.rm}{If \code{FALSE}, the default, missing values are removed with
