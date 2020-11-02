@@ -1,3 +1,9 @@
+hasFont <- function(font) {
+  font %in% sysfonts::font_families()
+}
+
+getFamily <- function() if (hasFont("JASP_FONT")) "JASP_FONT" else NULL
+
 #' @rdname graphOptions
 #' @export
 .graphOptions <- list2env(list(
@@ -5,7 +11,7 @@
   fontsize        = 17L,
   legend.cex      = 1.25,
   axis.title.cex  = 1.2,
-  family          = NULL,
+  family          = getFamily,
   legend.coordinates = list(left = .15,
                             mid = .5,
                             right = .8,
@@ -23,7 +29,13 @@
 
 #' @rdname graphOptions
 #' @export
-getGraphOption <- function(name) return(get(name, envir = .graphOptions))
+getGraphOption <- function(name) {
+  ans <- get(name, envir = .graphOptions)
+  # this allows family to be a function that is only evaluated when requested, like an active method of an R6 object
+  if (identical(name, "family") && is.function(ans))
+    ans <- ans()
+  return(ans)
+}
 
 #' @rdname graphOptions
 #' @export
@@ -37,6 +49,7 @@ setGraphOption <- function(name, value) {
 #' @param ... modify options using name = value.
 #' @param name character string of the value to get or set.
 #' @param value the value to change x into.
+#' @param path path to use for JASP_FONT
 #'
 #' @export
 graphOptions <- function(...) {
@@ -69,7 +82,12 @@ graphOptions <- function(...) {
   return(out)
 }
 
-.onAttach <- function(libname, pkgname)
+.onAttach <- function(libname, pkgname) {
   assign(".graphOptions", .graphOptions, envir = as.environment("package:jaspGraphs"))
+}
 
-
+#' @rdname graphOptions
+#' @export
+setJASPFont <- function(path) {
+  sysfonts::font_add("JASP_FONT", path)
+}
