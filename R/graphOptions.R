@@ -88,6 +88,6 @@ graphOptions <- function(...) {
 
 #' @rdname graphOptions
 #' @export
-setJASPFont <- function(path) {
+setJaspFont <- function(path) {
   sysfonts::font_add("JASP_FONT", path)
 }
