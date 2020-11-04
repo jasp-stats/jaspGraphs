@@ -8,6 +8,12 @@
 # for example, breaks may be NULL, waiver(), a numeric vector, or a function
 #
 #
+# - testing with vdiffr. test if original plot is retrieved by applying original options after editing plot
+# - probably use limits
+# - rename "title" to "name"?
+
+# for multiple panel plots, examine https://github.com/zeehio/facetscales to manipulate individual axes.
+
 
 # TODO: copied from common, do this more elegantly!
 fromJSON  <- function(x) jsonlite::fromJSON(x, TRUE, FALSE, FALSE)
@@ -24,146 +30,11 @@ toJSON    <- function(x) jsonlite::toJSON(x, auto_unbox = TRUE, digits = NA, nul
 #' @importFrom ggplot2 layer_scales is.ggplot ggplot_build
 
 `%|NW|%` <- function(a, b) if (!(is.null(a) || is.waive(a))) a else b
-
-# all axis types in ggplot
-AxisTypes <- c(
-  "ScaleContinuous",
-  "ScaleContinuousDate",
-  "ScaleContinuousDatetime",
-  "ScaleDiscrete"
-)
-
-getAxisType <- function(x) {
-  UseMethod("getAxisType", x)
-}
-
-getAxisType.list <- function(x) {
-  # for output of layer_scales(plot)
-  scaleX <- match(class(x[[1L]]), AxisTypes)
-  scaleY <- match(class(x[[2L]]), AxisTypes)
-  scaleX <- scaleX[!is.na(scaleX)]
-  scaleY <- scaleY[!is.na(scaleY)]
-  scaleX <- AxisTypes[scaleX]
-  scaleY <- AxisTypes[scaleY]
-  return(c("x" = scaleX, "y" = scaleY))
-}
-
-getAxisType.ggplot_built <- function(x) {
-  return(c(
-    "x" = class(x[["layout"]][["panel_scales_x"]][[1L]])[[2L]],
-    "y" = class(x[["layout"]][["panel_scales_y"]][[1L]])[[2L]]
-  ))
-}
-
-getAxisType.ggplot <- function(x) {
-  return(getAxisType.list(layer_scales(x, i = 1L, j = 1L)))
-}
-
-getAxisTitle <- function(x, xory) {
-  if (xory == "x") {
-    return(x[["layout"]][["panel_scales_x"]][[1L]][["name"]] %|NW|% x[["plot"]][["labels"]][["x"]])
-  } else {
-    return(x[["layout"]][["panel_scales_y"]][[1L]][["name"]] %|NW|% x[["plot"]][["labels"]][["y"]])
-  }
-}
-
-
-evenly_spaced <- function(x) {
-  by <- x[2L] - x[1L]
-  return(all((x[-length(x)] - x[-1L] - by) <= .Machine[["double.eps"]]))
-}
-
-getAxisInfo <- function(x, opts, ggbuild) {
-  UseMethod("getAxisInfo", x)
-}
-
-expand_default <- function(scale, discrete = c(0, 0.6, 0, 0.6), continuous = c(0.05, 0, 0.05, 0)) {
-  # copy of ggplot2:::expand_default to please R CMD check about :::
-  a <- scale$expand
-  if (!is.waive(a))
-    return(a)
-  else if (scale$is_discrete())
-    return(discrete)
-  else
-    return(continuous)
-}
-
-getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
-
-  xory <- x[["aesthetics"]][1L]
-  nms2keep <- c("labels", "major_source")
-  nms2give <- c("labels", "breaks")
-  opts2keep <- opts[paste(xory, nms2keep, sep = ".")]
-  names(opts2keep) <- nms2give
-  if (is.waive(x[["expand"]])) {
-    opts2keep[["expand"]] <- expand_default(x)
-  } else {
-    opts2keep[["expand"]] <- x[["expand"]]
-  }
-
-  opts2keep[["title"]] <- getAxisTitle(ggbuild, xory)
-
-  return(opts2keep)
-
-}
-
-getAxisInfo.ScaleDiscretePosition <- function(x, opts, ggbuild) {
-
-  xory <- x[["aesthetics"]][1L]
-  return(list(
-    labels = x[["get_labels"]](),
-    shown  = x[["get_limits"]](),
-    title  = getAxisTitle(ggbuild, xory)
-  ))
-
-}
-
-internalUpdateAxis <- function(currentAxis, newSettings) {
-  if (!is.null(newSettings[["title"]]))
-    currentAxis[["name"]] <- newSettings[["title"]]
-  UseMethod("internalUpdateAxis", currentAxis)
-}
-
-internalUpdateAxis.ScaleContinuousPosition <- function(currentAxis, newSettings) {
-
-  # newSettings only contains modified settings!
-  if (!is.null(newSettings[["labels"]]))
-    currentAxis[["labels"]] <- c(newSettings[["labels"]])
-
-  if (!is.null(newSettings[["breaks"]])) {
-    currentAxis[["breaks"]] <- sort(newSettings[["breaks"]])
-
-    if (is.numeric(currentAxis[["limits"]]))
-      currentAxis[["limits"]] <- range(currentAxis[["limits"]], newSettings[["breaks"]])
-    else
-      currentAxis[["limits"]] <- range(newSettings[["breaks"]])
-    # TODO: see if some plot element fall outside of the new limits!
-  }
-
-  if (!is.null(newSettings[["expand"]])) {
-    currentAxis[["expand"]] <- newSettings[["expand"]]
-  }
-
-  return(currentAxis)
-}
-
-internalUpdateAxis.ScaleDiscretePosition <- function(currentAxis, newSettings) {
-
-  # newSettings only contains not modified settings!
-  if (!is.null(newSettings[["shown"]]))
-    currentAxis[["limits"]] <- newSettings[["shown"]]
-
-  if (!is.null(newSettings[["labels"]]))
-    currentAxis[["labels"]] <- newSettings[["labels"]]
-
-  return(currentAxis)
-}
+`%|W|%`  <- function(a, b) if (                !is.waive(a)) a else b
 
 validateOptions <- function(newOptions, oldOptions) {
 
-  if (is.character(newOptions)) {
-    newOptions <- fromJSON(newOptions)
-  } else if (!is.list(newOptions)) {
+  if (!is.list(newOptions)) {
     stop("options should be an R list or a json string!")
   }
 
@@ -172,7 +43,6 @@ validateOptions <- function(newOptions, oldOptions) {
     stop("The axis type in the new options list does not match the graph!")
   }
 
-  return(newOptions)
 }
 
 #' @title Get the editable options for a graph
@@ -184,8 +54,12 @@ plotEditingOptions <- function(graph, asJSON = FALSE) {
   UseMethod("plotEditingOptions", graph)
 }
 
+# TODO: is the 'gg' class even necessary?
 #' @export
 plotEditingOptions.gg <- function(graph, asJSON = FALSE) {
+  # ensures    that loading an edited graph returns the final set of options
+  if (!is.null(graph[["plot_env"]][[".____plotEditingOptions____"]][["oldOptions"]]))
+    return(graph[["plot_env"]][[".____plotEditingOptions____"]][["oldOptions"]])
   return(plotEditingOptions.ggplot(graph, asJSON))
 }
 
@@ -201,9 +75,12 @@ plotEditingOptions.ggplot <- function(graph, asJSON = FALSE) {
 plotEditingOptions.ggplot_built <- function(graph, asJSON = FALSE) {
 
   # only relevant for continuous scales?
+
   e <- try({
-    opts <- graph[["layout"]][["coord"]][["labels"]](graph[["layout"]][["panel_params"]])[[1L]]
-    axisTypes <- getAxisType(graph)
+
+    opts <- graph[["layout"]][["panel_params"]]
+    axisTypes <- getAxisType(opts)
+
     currentAxis <- graph[["layout"]][["get_scales"]](1L)
 
     xSettings <- getAxisInfo(currentAxis[["x"]], opts, graph)
@@ -217,6 +94,7 @@ plotEditingOptions.ggplot_built <- function(graph, asJSON = FALSE) {
       settings = ySettings
     )
     )
+
   }, silent = TRUE)
 
   if (inherits(e, "try-error")) {
@@ -228,7 +106,7 @@ plotEditingOptions.ggplot_built <- function(graph, asJSON = FALSE) {
   }
 
   if (asJSON) {
-    out <- try(toJSON(out))
+    out <- try(toJSON(out), silent = TRUE)
     if (inherits(out, "try-error"))
       out <- toJSON(list(error = paste("converting plotEditingOptions to JSON gave an error:", .extractErrorMessage(out))))
   }
@@ -245,19 +123,28 @@ plotEditingOptions.default <- function(graph, asJSON = FALSE) {
     return(out)
 }
 
-optionsDiff <- function(lst1, lst2) {
+optionsDiff <- function(new, old) {
 
-  lst1[["xAxis"]][["settings"]] <- lst1[["xAxis"]][["settings"]][
-    !unlist(mapply(identical, lst1[["xAxis"]][["settings"]], lst2[["xAxis"]][["settings"]],
-                   SIMPLIFY = FALSE, USE.NAMES = FALSE))
+  # do we really need this function? reassigning is not too bad...
+  tempFun <- function(nm, new, old) !identical(new[[nm]], old[[nm]])
+
+  new[["xAxis"]][["settings"]] <- new[["xAxis"]][["settings"]][
+    vapply(names(new[["xAxis"]][["settings"]]), tempFun,
+      FUN.VALUE = logical(1L),
+      new = new[["xAxis"]][["settings"]], old = old[["xAxis"]][["settings"]],
+      USE.NAMES = FALSE
+    )
   ]
 
-  lst1[["yAxis"]][["settings"]] <- lst1[["yAxis"]][["settings"]][
-    !unlist(mapply(identical, lst1[["yAxis"]][["settings"]], lst2[["yAxis"]][["settings"]],
-                   SIMPLIFY = FALSE, USE.NAMES = FALSE))
+  new[["yAxis"]][["settings"]] <- new[["yAxis"]][["settings"]][
+    vapply(names(new[["yAxis"]][["settings"]]), tempFun,
+           FUN.VALUE = logical(1L),
+           new = new[["yAxis"]][["settings"]], old = old[["yAxis"]][["settings"]],
+           USE.NAMES = FALSE
+    )
   ]
 
-  return(lst1)
+  return(new)
 }
 
 #' @title Edit a plot
@@ -271,17 +158,29 @@ plotEditing <- function(graph, newOptions) {
     stop("graph should be a ggplot2")
 
   ggbuild     <- ggplot_build(graph)
+  # TODO: first check if plot was previously edited, if so use those options
   oldOptions  <- plotEditingOptions(ggbuild)
-  newOptions  <- validateOptions(newOptions, oldOptions)
-  diffOptions <- optionsDiff(newOptions, oldOptions)
+  validateOptions(newOptions, oldOptions)
 
+  # CONSIDER: since a diff takes place here and some options may interact, logic should be moved outside of
+  # internalUpdateAxis and into earlier functions. internalUpdateAxis then no longer needs to be an S3 method.
+  # diffOptions <- optionsDiff(newOptions, oldOptions)
+
+  # could be a loop over all scales from e.g., facetted plots
   currentAxis <- ggbuild[["layout"]][["get_scales"]](1L)
 
-  if (length(diffOptions[["xAxis"]][["settings"]]) > 0L)
-    graph <- graph + internalUpdateAxis(currentAxis[["x"]], diffOptions[["xAxis"]][["settings"]])
+  graph <- graph + internalUpdateAxis(currentAxis[["x"]], newOptions[["xAxis"]][["settings"]])
+  graph <- graph + internalUpdateAxis(currentAxis[["y"]], newOptions[["yAxis"]][["settings"]])
 
-  if (length(diffOptions[["yAxis"]][["settings"]]) > 0L)
-    graph <- graph + internalUpdateAxis(currentAxis[["y"]], diffOptions[["yAxis"]][["settings"]])
+  # if (length(diffOptions[["xAxis"]][["settings"]]) > 0L)
+  #   graph <- graph + internalUpdateAxis(currentAxis[["x"]], diffOptions[["xAxis"]][["settings"]])
+  #
+  # if (length(diffOptions[["yAxis"]][["settings"]]) > 0L)
+  #   graph <- graph + internalUpdateAxis(currentAxis[["y"]], diffOptions[["yAxis"]][["settings"]])
+
+  # 'remember' if an edited plot had options set to automatic or manual
+  env <- list2env(list(oldOptions = newOptions), parent = emptyenv())
+  graph[["plot_env"]][[".____plotEditingOptions____"]] <- env
 
   return(graph)
 
