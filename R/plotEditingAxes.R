@@ -38,11 +38,34 @@ getAxisType.ggplot <- function(x) {
 }
 
 getAxisTitle <- function(x, xory) {
-  if (xory == "x") {
-    return(x[["layout"]][["panel_scales_x"]][[1L]][["name"]] %|NW|% x[["plot"]][["labels"]][["x"]])
+  title <- if (xory == "x") {
+    x[["layout"]][["panel_scales_x"]][[1L]][["name"]] %|NW|% x[["plot"]][["labels"]][["x"]]
   } else {
-    return(x[["layout"]][["panel_scales_y"]][[1L]][["name"]] %|NW|% x[["plot"]][["labels"]][["y"]])
+    x[["layout"]][["panel_scales_y"]][[1L]][["name"]] %|NW|% x[["plot"]][["labels"]][["y"]]
   }
+
+  # TODO: this could be an S3 method that dispatches on the class of the title. We should get an idea of what all allowed classes are somehow
+  if (is.call(title) || is.expression(title)) {
+    titleType <- "expression"
+    title     <- Reduce(paste, trimws(deparse(title)))
+  } else if (is.character(title)) {
+    titleType <- "character"
+  } else {
+    titleTypeWarning(title)
+    titleType <- "character"
+    # this conversion may fail...
+    tmp <- try(as.character(title))
+    if (!inherits(tmp, "try-error"))
+      title <- tmp
+  }
+
+  if (titleType == "expression")
+    title <- Reduce(paste, trimws(deparse(title)))
+
+  return(list(
+    title     = title,
+    titleType = titleType
+  ))
 }
 
 
@@ -74,9 +97,10 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
     labels = opts[[1]][[xory]][["get_labels"]](),
     breaks = opts[[1]][[xory]][["get_breaks"]](),
     limits = opts[[1]][[xory]][["get_limits"]](),
-    expand = x[["expand"]] %|W|% expand_default(x),
-    title  = getAxisTitle(ggbuild, xory)
+    expand = x[["expand"]] %|W|% expand_default(x)
   )
+
+  opts2keep[c("title", "titleType")] <- getAxisTitle(ggbuild, xory)
 
   if (anyNA(opts2keep[["breaks"]])) {
     idx <- which(!is.na(opts2keep[["breaks"]]))
@@ -90,7 +114,11 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
   by   <- (to - from) / (length(breaks) - 1)
 
   opts2keep[["range"]] <- c(from, to, by)
-  opts2keep[["breaksType"]] <- if (all(seq(from, to, by) == breaks)) "range" else "manual"
+  # this is ugly, but seq can crash in many ways..
+  opts2keep[["breaksType"]] <- tryCatch({
+    if (all(seq(from, to, by) == breaks)) "range" else "manual"
+  }, error = function(e) return("manual")
+  )
   # opts2keep[["limitsType"]] <- if (all(range(breaks) == opts2keep[["limits"]])) "automatic" else "manual"
   opts2keep[["limitsType"]] <- if (is.null(x[["limits"]])) "data" else "manual"
 
@@ -101,17 +129,19 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
 getAxisInfo.ScaleDiscretePosition <- function(x, opts, ggbuild) {
 
   xory <- x[["aesthetics"]][1L]
-  return(list(
+  opts2keep <- list(
     labels = x[["get_labels"]](),
     shown  = x[["get_limits"]](),
     title  = getAxisTitle(ggbuild, xory)
-  ))
+  )
+  opts2keep[c("title", "titleType")] <- getAxisTitle(ggbuild, xory)
+  return(opts2keep)
 
 }
 
 internalUpdateAxis <- function(currentAxis, newSettings) {
   if (!is.null(newSettings[["title"]]))
-    currentAxis[["name"]] <- newSettings[["title"]]
+    currentAxis[["name"]] <- internalUpdateTitle(newSettings[["titleType"]], newSettings[["title"]])
   UseMethod("internalUpdateAxis", currentAxis)
 }
 
@@ -119,7 +149,8 @@ internalUpdateAxis.ScaleContinuousPosition <- function(currentAxis, newSettings)
 
   if (newSettings[["breaksType"]] == "range") {
     tmp <- newSettings[["range"]]
-    currentAxis[["breaks"]] <- seq(tmp[1L], tmp[2L], tmp[3L])
+    # zapsmall avoids floating point artefacts (e.g., try as.character(seq(-0.6, 0.2, 0.2)))
+    currentAxis[["breaks"]] <- zapsmall(seq(tmp[1L], tmp[2L], tmp[3L]))
     currentAxis[["labels"]] <- as.character(currentAxis[["breaks"]])
   } else {
     currentAxis[["breaks"]] <- sort(newSettings[["breaks"]])
@@ -152,4 +183,23 @@ internalUpdateAxis.ScaleDiscretePosition <- function(currentAxis, newSettings) {
     currentAxis[["labels"]] <- newSettings[["labels"]]
 
   return(currentAxis)
+}
+
+internalUpdateTitle <- function(titleType, title) {
+  return(switch(titleType,
+    "character"  = title,
+    "expression" = parse(text = title),
+    {
+      titleTypeWarning(titleType)
+      title
+    }
+  ))
+}
+
+titleTypeWarning <- function(title) {
+  msg <- if (is.character(title))
+    title
+  else
+    paste(class(title), collapse = ", ")
+  warning(sprintf("Unknown title type: %s. I'm pretending it works as character and hope for the best...", msg))
 }

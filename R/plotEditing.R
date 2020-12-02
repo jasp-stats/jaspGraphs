@@ -157,6 +157,14 @@ plotEditing <- function(graph, newOptions) {
   if (!is.ggplot(graph))
     stop("graph should be a ggplot2")
 
+  if (isTRUE(newOptions[["resetPlot"]])) {
+    if (hasOriginalEditingOptions(graph)) {
+      return(Recall(graph, as.list(graph[["plot_env"]][[".____originalPlotEditingOptions____"]][["oldOptions"]])))
+    } else {
+      return(graph)
+    }
+  }
+
   ggbuild     <- ggplot_build(graph)
   # TODO: first check if plot was previously edited, if so use those options
   oldOptions  <- plotEditingOptions(ggbuild)
@@ -179,9 +187,14 @@ plotEditing <- function(graph, newOptions) {
   #   graph <- graph + internalUpdateAxis(currentAxis[["y"]], diffOptions[["yAxis"]][["settings"]])
 
   # 'remember' if an edited plot had options set to automatic or manual
+  newOptions[["resetPlot"]] <- FALSE
   env <- list2env(list(oldOptions = newOptions), parent = emptyenv())
+  if (!hasOriginalEditingOptions(graph))
+    graph[["plot_env"]][[".____originalPlotEditingOptions____"]] <- env
   graph[["plot_env"]][[".____plotEditingOptions____"]] <- env
 
   return(graph)
 
 }
+
+hasOriginalEditingOptions <- function(graph) !is.null(graph[["plot_env"]][[".____originalPlotEditingOptions____"]])
