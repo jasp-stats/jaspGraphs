@@ -1,7 +1,7 @@
 #' @title APA theme for ggplot2 objects based on \code{jtools::theme_apa}
-#' @description Set a APA theme and additional options with \code{themeApa(graph)}, or add the theme to a graph like
-#' with other themes, \code{graph + themeApaRaw()}.
-#' @rdname themeApa
+#' @description Set a APA theme and additional options to a graph like
+#' other themes, \code{graph + themeApaRaw()}.
+#' @rdname themeApaRaw
 #'
 #' @param legend.pos One of `"right"`, `"left"`, `"top"`, `"bottom"`,
 #'   `"topleft"`, `"topright"`, `"topmiddle"`, `"bottomleft"`,
@@ -56,41 +56,6 @@
 #'   required updating for newer versions of \code{ggplot2} and adaptations for
 #'   APA style.
 #'
-#' @export
-themeApa <- function(graph,
-                     legend.pos       = getGraphOption("legend.position"),
-                     legend.use.title = FALSE,
-                     legend.font.size = getGraphOption("axis.title.cex"),
-                     font.size        = getGraphOption("fontsize"),
-                     x.font.size      = getGraphOption("fontsize"),
-                     y.font.size      = getGraphOption("fontsize"),
-                     facet.title.size = getGraphOption("fontsize"),
-                     remove.y.gridlines = TRUE,
-                     remove.x.gridlines = TRUE,
-                     family         = getGraphOption("family"),
-                     axisTickLength = getGraphOption("axisTickLength"),
-                     axisTickWidth  = getGraphOption("axisTickWidth")){
-
-
-  graph <- graph + themeApaRaw(legend.pos       = legend.pos,
-                               legend.use.title = legend.use.title,
-                               legend.font.size = legend.font.size,
-                               font.size        = font.size,
-                               x.font.size      = x.font.size,
-                               y.font.size      = y.font.size,
-                               facet.title.size = facet.title.size,
-                               remove.y.gridlines = remove.y.gridlines,
-                               remove.x.gridlines = remove.x.gridlines,
-                               family         = family,
-                               axisTickLength = axisTickLength,
-                               axisTickWidth  = axisTickWidth)
-
-  return(graph)
-
-}
-
-# for manual usage
-#' @rdname themeApa
 #' @export
 themeApaRaw <- function(legend.pos       = getGraphOption("legend.position"),
                         legend.use.title = FALSE,

@@ -1,7 +1,7 @@
 #' @title Pubr theme for ggplot2 objects based on \code{ggpubr::theme_pubr}
-#' @description Set a Pubr theme and additional options with \code{themePubr(graph)}, or add the theme to a graph like
-#' with other themes, \code{graph + themePubrRaw()}.
-#' @rdname themePubr
+#' @description Set a Pubr theme and additional options like other themes,
+#' \code{graph + themePubrRaw()}.
+#' @rdname themePubrRaw
 #'
 #' @description This function is a modification of 
 #'  \code{\link[ggpubr:theme_pubr]{ggpubr::theme_pubr}} that create a publication ready
@@ -24,32 +24,6 @@
 #'  axis.
 #' @param axisTickLength length of axis ticks.
 #' @param axisTickWidth width of axis ticks.
-#' @export
-themePubr <- function(base_size = getGraphOption("fontsize"),
-                      base_family = getGraphOption("family"),
-                      border = FALSE,
-                      margin = TRUE,
-                      legend = getGraphOption("legend.position"),
-                      x.text.angle = 0,
-                      axisTickLength = getGraphOption("axisTickLength"),
-                      axisTickWidth  = getGraphOption("axisTickWidth")){
-  
-  
-  graph <- graph + themePubrRaw(base_size   = base_size,
-                                base_family = base_family,
-                                border = FALSE,
-                                margin = TRUE,
-                                legend = legend,
-                                x.text.angle = 0,
-                                axisTickLength = axisTickLength,
-                                axisTickWidth  = axisTickWidth)
-  
-  return(graph)
-  
-}
-
-# for manual usage
-#' @rdname themeRpur
 #' @export
 themePubrRaw <- function(base_size = getGraphOption("fontsize"),
                          base_family = getGraphOption("family"),
