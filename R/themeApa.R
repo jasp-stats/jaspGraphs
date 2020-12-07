@@ -90,9 +90,16 @@ themeApaRaw <- function(legend.pos       = getGraphOption("legend.position"),
       axis.ticks.length    = axisTickLength,
       axis.ticks           = element_line(size = axisTickWidth, color = "black"))
 
-  if (legend.pos == "topleft") {
-    theme <- theme + ggplot2::theme(legend.position = c(0.05, 0.95), legend.justification = c(0.05, 0.95))
-  }
+if (is.character(legend.pos)) {
+  theme <- theme + switch(legend.pos
+    "topleft"   = theme(legend.position = c(0.05, 0.95), legend.justification = c(0.05, 0.95)),
+    "topmiddle" = theme(legend.position = c(0.5, 0.95), legend.justification = c(0.5, 0.95)),
+    ...,
+    stop("unknown legend position string)
+  )
+} else {
+  theme <- theme + theme(legend.position = legend.pos)
+}
   else if (legend.pos == "topright") {
     theme <- theme + ggplot2::theme(legend.position = c(0.95, 0.95), legend.justification = c(0.95, 0.95))
   }
@@ -153,7 +160,7 @@ themeApaRaw <- function(legend.pos       = getGraphOption("legend.position"),
 
 .drop_gridlines <- function(x = TRUE, y = TRUE, minor.only = FALSE) {
   plot <- ggplot2::theme()
-  if (y == TRUE) {
+  if (y) {
     plot <- plot + ggplot2::theme(panel.grid.minor.y = ggplot2::element_blank())
     if (minor.only == FALSE) {
       plot <- plot + ggplot2::theme(panel.grid.major.y = ggplot2::element_blank())
@@ -184,4 +191,3 @@ themeApaRaw <- function(legend.pos       = getGraphOption("legend.position"),
   }
   return(plot)
 }
-
