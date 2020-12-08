@@ -56,6 +56,8 @@
 #'   required updating for newer versions of \code{ggplot2} and adaptations for
 #'   APA style.
 #'
+#' @importFrom ggplot2 theme_bw
+#'
 #' @export
 themeApaRaw <- function(legend.pos       = getGraphOption("legend.position"),
                         legend.use.title = FALSE,
@@ -70,29 +72,30 @@ themeApaRaw <- function(legend.pos       = getGraphOption("legend.position"),
                         axisTickLength = getGraphOption("axisTickLength"),
                         axisTickWidth  = getGraphOption("axisTickWidth")) {
 
-  theme <- ggplot2::theme_bw() +
-    ggplot2::theme(
-      plot.title           = ggplot2::element_text(family = family, face = "bold", hjust = 0, size = 14),
-      axis.title.x         = ggplot2::element_text(size = x.font.size),
-      axis.title.y         = ggplot2::element_text(size = y.font.size, angle = 90),
-      legend.text          = ggplot2::element_text(size = legend.font.size),
-      legend.key.size      = ggplot2::unit(1.5, "lines"),
-      legend.key           = ggplot2::element_blank(),
-      legend.key.width     = grid::unit(2,  "lines"),
-      strip.text.x         = ggplot2::element_text(size = facet.title.size),
-      strip.text.y         = ggplot2::element_text(size = facet.title.size),
-      strip.background     = ggplot2::element_rect(colour = "white", fill = "white"),
-      panel.background     = ggplot2::element_rect(fill = "white"),
+  theme <- theme_bw() +
+    theme(
+      plot.title           = element_text(family = family, face = "bold", hjust = 0, size = 14),
+      axis.title.x         = element_text(size = x.font.size),
+      axis.title.y         = element_text(size = y.font.size, angle = 90),
+      legend.text          = element_text(size = legend.font.size),
+      legend.key.size      = unit(1.5, "lines"),
+      legend.key           = element_blank(),
+      legend.key.width     = unit(2,  "lines"),
+      strip.text.x         = element_text(size = facet.title.size),
+      strip.text.y         = element_text(size = facet.title.size),
+      strip.background     = element_rect(colour = "white", fill = "white"),
+      panel.background     = element_rect(fill = "white"),
       plot.title.position  = "panel",
 
       # additional options copied from themeJasp
       text                 = element_text(family = family, size = font.size),
       axis.ticks.length    = axisTickLength,
-      axis.ticks           = element_line(size = axisTickWidth, color = "black"))
+      axis.ticks           = element_line(size = axisTickWidth, color = "black")
+    )
 
   if (is.character(legend.pos))
     theme <- theme + switch(
-      legend.pos
+      legend.pos,
       "topleft"      = theme(legend.position = c(0.05, 0.95), legend.justification = c(0.05, 0.95)),
       "topmiddle"    = theme(legend.position = c(0.5, 0.95),  legend.justification = c(0.5, 0.95)),
       "topright"     = theme(legend.position = c(0.95, 0.95), legend.justification = c(0.95, 0.95)),
@@ -104,24 +107,18 @@ themeApaRaw <- function(legend.pos       = getGraphOption("legend.position"),
       stop("unknown legend position string")
     )
 
-  if (legend.use.title == FALSE)
-    theme <- theme + ggplot2::theme(legend.title = ggplot2::element_blank())
-  else
-    theme <- theme + ggplot2::theme(legend.title = ggplot2::element_text(size = 12, face = "bold"))
+  theme <- theme + theme(
+    legend.title = if (!legend.use.title) element_blank() else element_text(size = 12, face = "bold")
+  )
 
-  if (remove.y.gridlines == TRUE)
-    theme <- theme + .drop_y_gridlines()
-  else
-    theme <- theme + .add_y_gridlines()
+  theme <- theme + if (remove.y.gridlines) .drop_y_gridlines() else .add_y_gridlines()
 
-  if (remove.x.gridlines == TRUE)
-    theme <- theme + .drop_x_gridlines()
-  else
-    theme <- theme + .add_x_gridlines()
+  theme <- theme + if (remove.x.gridlines) .drop_x_gridlines() else .add_x_gridlines()
 
   return(theme)
 }
 
+# TODO merge this into one function!
 .drop_x_gridlines <- function(minor.only = FALSE) {
   .drop_gridlines(x = TRUE, y = FALSE, minor.only = minor.only)
 }

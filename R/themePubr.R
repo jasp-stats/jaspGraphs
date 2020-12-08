@@ -3,7 +3,7 @@
 #' \code{graph + themePubrRaw()}.
 #' @rdname themePubrRaw
 #'
-#' @description This function is a modification of 
+#' @description This function is a modification of
 #'  \code{\link[ggpubr:theme_pubr]{ggpubr::theme_pubr}} that create a publication ready
 #'  theme.
 #' @param base_size base font size
@@ -33,45 +33,37 @@ themePubrRaw <- function(base_size = getGraphOption("fontsize"),
                          x.text.angle = 0,
                          axisTickLength = getGraphOption("axisTickLength"),
                          axisTickWidth  = getGraphOption("axisTickWidth")){
-  
-  half_line <- base_size/2
-  
-  if (!is.numeric(legend)) 
-    legend <- match.arg(legend)
-  
-  if (x.text.angle > 5) 
+
+  half_line <- base_size / 2
+
+  xhjust <- NULL
+  if (x.text.angle > 5)
     xhjust <- 1
-  else
-    xhjust <- NULL
-  
+
   if (border) {
-    panel.border <- ggplot2::element_rect(fill = NA, colour = "black", size = 0.7)
-    axis.line    <- ggplot2::element_blank()
+    panel.border <- element_rect(fill = NA, colour = "black", size = 0.7)
+    axis.line    <- element_blank()
+  } else {
+    panel.border <- element_blank()
+    axis.line    <- element_line(colour = "black", size = 0.5)
   }
-  else {
-    panel.border <- ggplot2::element_blank()
-    axis.line    <- ggplot2::element_line(colour = "black", size = 0.5)
-  }
-  
-  if (margin) 
-    plot.margin <- ggplot2::margin(half_line, half_line, half_line, half_line)
-  else
-    plot.margin <- ggplot2::unit(c(0.5, 0.3, 0.3, 0.3), "mm")
-  
-  .theme <- ggplot2::theme_bw(base_size = base_size, base_family = base_family) +
+
+  plot.margin <- if (margin) margin(half_line, half_line, half_line, half_line) else unit(c(0.5, 0.3, 0.3, 0.3), "mm")
+
+  .theme <- theme_bw(base_size = base_size, base_family = base_family) +
     theme(panel.border     = panel.border,
-          panel.grid.major = ggplot2::element_blank(), 
-          panel.grid.minor = ggplot2::element_blank(),
-          axis.line        = axis.line, 
-          axis.text        = ggplot2::element_text(color = "black"), 
-          legend.key       = ggplot2::element_blank(),
-          strip.background = ggplot2::element_rect(fill = "#F2F2F2", colour = "black", size = 0.7),
-          plot.margin      = plot.margin, 
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.line        = axis.line,
+          axis.text        = element_text(color = "black"),
+          legend.key       = element_blank(),
+          strip.background = element_rect(fill = "#F2F2F2", colour = "black", size = 0.7),
+          plot.margin      = plot.margin,
           legend.position  = legend,
           complete         = TRUE)
-  
-  if (x.text.angle != 0) 
-    .theme <- .theme + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = x.text.angle, hjust = xhjust))
-  
+
+  if (x.text.angle != 0)
+    .theme <- .theme + theme(axis.text.x = element_text(angle = x.text.angle, hjust = xhjust))
+
   return(.theme)
 }
