@@ -44,6 +44,8 @@ scale_y_continuous(
 
 \item{minor_breaks}{see details}
 
+\item{n.breaks}{see details}
+
 \item{labels}{see details}
 
 \item{limits}{see details}
@@ -55,6 +57,8 @@ scale_y_continuous(
 \item{na.value}{see details}
 
 \item{trans}{see details}
+
+\item{guide}{see details}
 
 \item{position}{see details}
 
