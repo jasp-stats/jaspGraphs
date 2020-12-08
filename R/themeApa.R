@@ -90,55 +90,35 @@ themeApaRaw <- function(legend.pos       = getGraphOption("legend.position"),
       axis.ticks.length    = axisTickLength,
       axis.ticks           = element_line(size = axisTickWidth, color = "black"))
 
-if (is.character(legend.pos)) {
-  theme <- theme + switch(legend.pos
-    "topleft"   = theme(legend.position = c(0.05, 0.95), legend.justification = c(0.05, 0.95)),
-    "topmiddle" = theme(legend.position = c(0.5, 0.95), legend.justification = c(0.5, 0.95)),
-    ...,
-    stop("unknown legend position string)
-  )
-} else {
-  theme <- theme + theme(legend.position = legend.pos)
-}
-  else if (legend.pos == "topright") {
-    theme <- theme + ggplot2::theme(legend.position = c(0.95, 0.95), legend.justification = c(0.95, 0.95))
-  }
-  else if (legend.pos == "topmiddle") {
-    theme <- theme + ggplot2::theme(legend.position = c(0.5, 0.95), legend.justification = c(0.5, 0.95))
-  }
-  else if (legend.pos == "bottomleft") {
-    theme <- theme + ggplot2::theme(legend.position = c(0.05, 0.05), legend.justification = c(0.05, 0.05))
-  }
-  else if (legend.pos == "bottomright") {
-    theme <- theme + ggplot2::theme(legend.position = c(0.95, 0.05), legend.justification = c(0.95, 0.05))
-  }
-  else if (legend.pos == "bottommiddle") {
-    theme <- theme + ggplot2::theme(legend.position = c(0.5, 0.05), legend.justification = c(0.5, 0.05))
-  }
-  else if (legend.pos == "none") {
-    theme <- theme + ggplot2::theme(legend.position = "none")
-  }
-  else {
-    theme <- theme + ggplot2::theme(legend.position = legend.pos)
-  }
-  if (legend.use.title == FALSE) {
+  if (is.character(legend.pos))
+    theme <- theme + switch(
+      legend.pos
+      "topleft"      = theme(legend.position = c(0.05, 0.95), legend.justification = c(0.05, 0.95)),
+      "topmiddle"    = theme(legend.position = c(0.5, 0.95),  legend.justification = c(0.5, 0.95)),
+      "topright"     = theme(legend.position = c(0.95, 0.95), legend.justification = c(0.95, 0.95)),
+      "topmiddle"    = theme(legend.position = c(0.95, 0.95), legend.justification = c(0.95, 0.95)),
+      "bottomleft"   = theme(legend.position = c(0.5, 0.95),  legend.justification = c(0.5, 0.95)),
+      "bottomright"  = theme(legend.position = c(0.95, 0.05), legend.justification = c(0.95, 0.05)),
+      "bottommiddle" = theme(legend.position = c(0.5, 0.05),  legend.justification = c(0.5, 0.05)),
+      "none" = theme(legend.position = "none"),
+      stop("unknown legend position string")
+    )
+
+  if (legend.use.title == FALSE)
     theme <- theme + ggplot2::theme(legend.title = ggplot2::element_blank())
-  }
-  else {
+  else
     theme <- theme + ggplot2::theme(legend.title = ggplot2::element_text(size = 12, face = "bold"))
-  }
-  if (remove.y.gridlines == TRUE) {
+
+  if (remove.y.gridlines == TRUE)
     theme <- theme + .drop_y_gridlines()
-  }
-  else {
+  else
     theme <- theme + .add_y_gridlines()
-  }
-  if (remove.x.gridlines == TRUE) {
+
+  if (remove.x.gridlines == TRUE)
     theme <- theme + .drop_x_gridlines()
-  }
-  else {
+  else
     theme <- theme + .add_x_gridlines()
-  }
+
   return(theme)
 }
 
