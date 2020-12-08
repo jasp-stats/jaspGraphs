@@ -20,8 +20,6 @@
 #'  instance use legend = c(0.8, 0.2).
 #' @param x.text.angle Rotation angle of x axis tick labels. Default value is 0.
 #'  Use 90 for vertical text.
-#' @param flip logical. If TRUE, grid lines are added to y axis instead of x
-#'  axis.
 #' @param axisTickLength length of axis ticks.
 #' @param axisTickWidth width of axis ticks.
 #' @export

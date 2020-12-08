@@ -39,9 +39,6 @@ Use 90 for vertical text.}
 \item{axisTickLength}{length of axis ticks.}
 
 \item{axisTickWidth}{width of axis ticks.}
-
-\item{flip}{logical. If TRUE, grid lines are added to y axis instead of x
-axis.}
 }
 \description{
 Set a Pubr theme and additional options like other themes,

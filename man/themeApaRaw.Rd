@@ -32,6 +32,8 @@ Defaults to \code{FALSE}.}
 legend. Default and APA-recommended is 12, but if there are many labels it
 may be necessary to choose a smaller size.}
 
+\item{font.size}{General font size.}
+
 \item{x.font.size}{Font size of x-axis label.}
 
 \item{y.font.size}{Font size of x-axis label.}

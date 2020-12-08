@@ -5,12 +5,14 @@
 #' @param name see details
 #' @param breaks see details
 #' @param minor_breaks see details
+#' @param n.breaks see details
 #' @param labels see details
 #' @param limits see details
 #' @param expand see details
 #' @param oob see details
 #' @param na.value see details
 #' @param trans see details
+#' @param guide see details
 #' @param position see details
 #' @param sec.axis see details
 #' @details These functions are virtually identical to \code{\link[ggplot2]{scale_x_continuous}} and \code{\link[ggplot2]{scale_y_continuous}}
