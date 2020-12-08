@@ -1,4 +1,5 @@
 context("Plot Editing")
+skip("All tests need to be updated!")
 
 expect_equal_opts <- function(newPlot, oldOpts, ...) {
 
