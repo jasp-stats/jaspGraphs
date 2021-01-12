@@ -39,13 +39,15 @@ getAxisType.ggplot <- function(x) {
 
 getAxisTitle <- function(x, xory) {
   title <- if (xory == "x") {
-    x[["layout"]][["panel_scales_x"]][[1L]][["name"]] %|NW|% x[["plot"]][["labels"]][["x"]]
+    x[["layout"]][["panel_scales_x"]][[1L]][["name"]] %|W|% x[["plot"]][["labels"]][["x"]]
   } else {
-    x[["layout"]][["panel_scales_y"]][[1L]][["name"]] %|NW|% x[["plot"]][["labels"]][["y"]]
+    x[["layout"]][["panel_scales_y"]][[1L]][["name"]] %|W|% x[["plot"]][["labels"]][["y"]]
   }
 
   # TODO: this could be an S3 method that dispatches on the class of the title. We should get an idea of what all allowed classes are somehow
-  if (is.call(title) || is.expression(title)) {
+  if (is.null(title)) {
+    titleType <- "NULL"
+  } else if (is.call(title) || is.expression(title)) {
     titleType <- "expression"
     title     <- Reduce(paste, trimws(deparse(title)))
   } else if (is.character(title)) {
@@ -187,6 +189,7 @@ internalUpdateAxis.ScaleDiscretePosition <- function(currentAxis, newSettings) {
 
 internalUpdateTitle <- function(titleType, title) {
   return(switch(titleType,
+    "NULL"       = NULL,
     "character"  = title,
     "expression" = parse(text = title),
     {
