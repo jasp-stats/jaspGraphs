@@ -104,25 +104,47 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
 
   opts2keep[c("title", "titleType")] <- getAxisTitle(ggbuild, xory)
 
-  if (anyNA(opts2keep[["breaks"]])) {
-    idx <- which(!is.na(opts2keep[["breaks"]]))
-    opts2keep[["breaks"]] <- opts2keep[["breaks"]][idx]
-    opts2keep[["labels"]] <- opts2keep[["labels"]][idx]
+
+  if (is.null(opts2keep[["breaks"]])) {
+
+    opts2keep[["breaksType"]] <- "NULL"
+    opts2keep[["range"]]      <- "NULL"
+    # set reasonable defaults for this
+    breaks <- getPrettyAxisBreaks(opts2keep[["limits"]])
+    opts2keep[["breaks"]] <- breaks
+    opts2keep[["labels"]] <- breaks
+
+  } else {
+
+    if (anyNA(opts2keep[["breaks"]])) {
+      idx <- which(!is.na(opts2keep[["breaks"]]))
+      opts2keep[["breaks"]] <- opts2keep[["breaks"]][idx]
+      opts2keep[["labels"]] <- opts2keep[["labels"]][idx]
+    }
+    breaks <- opts2keep[["breaks"]]
+
   }
 
-  breaks <- opts2keep[["breaks"]]
   from <- breaks[1L]
   to   <- breaks[length(breaks)]
   by   <- (to - from) / (length(breaks) - 1)
 
   opts2keep[["range"]] <- c(from, to, by)
-  # this is ugly, but seq can crash in many ways..
-  opts2keep[["breaksType"]] <- tryCatch({
-    if (all(seq(from, to, by) == breaks)) "range" else "manual"
-  }, error = function(e) return("manual")
-  )
-  # opts2keep[["limitsType"]] <- if (all(range(breaks) == opts2keep[["limits"]])) "automatic" else "manual"
-  opts2keep[["limitsType"]] <- if (is.null(x[["limits"]])) "data" else "manual"
+  if (is.null(opts2keep[["breaksType"]])) { # only set this if breaks weren't NULL
+    # this tryCatch is ugly, but seq can crash in many ways..
+    opts2keep[["breaksType"]] <- tryCatch(
+      if (all(seq(from, to, by) == breaks)) "range" else "manual",
+      error = function(e) return("manual")
+    )
+  }
+
+  opts2keep[["limitsType"]] <- if (is.null(x[["limits"]]))
+    "data"
+  else if (isTRUE(all.equal(range(breaks), x[["limits"]])))
+    "breaks"
+  else
+    "manual"
+
 
   return(opts2keep)
 
@@ -149,23 +171,24 @@ internalUpdateAxis <- function(currentAxis, newSettings) {
 
 internalUpdateAxis.ScaleContinuousPosition <- function(currentAxis, newSettings) {
 
-  if (newSettings[["breaksType"]] == "range") {
-    tmp <- newSettings[["range"]]
-    # zapsmall avoids floating point artefacts (e.g., try as.character(seq(-0.6, 0.2, 0.2)))
-    currentAxis[["breaks"]] <- zapsmall(seq(tmp[1L], tmp[2L], tmp[3L]))
-    currentAxis[["labels"]] <- as.character(currentAxis[["breaks"]])
-  } else {
-    currentAxis[["breaks"]] <- sort(newSettings[["breaks"]])
-    currentAxis[["labels"]] <- newSettings[["labels"]]
+  if (newSettings[["breaksType"]] != "NULL") {
+    if (newSettings[["breaksType"]] == "range") {
+      tmp <- newSettings[["range"]]
+      # zapsmall avoids floating point artefacts (e.g., try as.character(seq(-0.6, 0.2, 0.2)))
+      currentAxis[["breaks"]] <- zapsmall(seq(tmp[1L], tmp[2L], tmp[3L]))
+      currentAxis[["labels"]] <- as.character(currentAxis[["breaks"]])
+    } else {
+      currentAxis[["breaks"]] <- sort(newSettings[["breaks"]])
+      currentAxis[["labels"]] <- newSettings[["labels"]]
+    }
   }
 
-  if (newSettings[["limitsType"]] == "data") {
-    currentAxis[["limits"]] <- NULL
-  } else if (newSettings[["limitsType"]] == "breaks") {
-    currentAxis[["limits"]] <- range(currentAxis[["breaks"]])
-  } else if (newSettings[["limitsType"]] == "manual") {
-    currentAxis[["limits"]] <- newSettings[["limits"]]
-  }
+  currentAxis[["limits"]] <- switch(newSettings[["limitsType"]],
+    "data"   = NULL, # let ggplot2 figure it out
+    "breaks" = range(currentAxis[["breaks"]]),
+    "manual" = newSettings[["limits"]]
+  )
+
   # TODO: see if some plot element fall outside of the new limits, i.e., currentAxis[["range"]][["range"]] is wider than user limits
 
   if (!is.null(newSettings[["expand"]])) {
