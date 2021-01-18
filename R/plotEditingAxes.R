@@ -171,16 +171,21 @@ internalUpdateAxis <- function(currentAxis, newSettings) {
 
 internalUpdateAxis.ScaleContinuousPosition <- function(currentAxis, newSettings) {
 
-  if (newSettings[["breaksType"]] != "NULL") {
-    if (newSettings[["breaksType"]] == "range") {
-      tmp <- newSettings[["range"]]
-      # zapsmall avoids floating point artefacts (e.g., try as.character(seq(-0.6, 0.2, 0.2)))
-      currentAxis[["breaks"]] <- zapsmall(seq(tmp[1L], tmp[2L], tmp[3L]))
-      currentAxis[["labels"]] <- as.character(currentAxis[["breaks"]])
-    } else {
-      currentAxis[["breaks"]] <- sort(newSettings[["breaks"]])
-      currentAxis[["labels"]] <- newSettings[["labels"]]
-    }
+  if (newSettings[["breaksType"]] == "NULL") {
+     currentAxis[["breaks"]] <- NULL
+     currentAxis[["labels"]] <- NULL
+     # shouldn't be possible, but will do bad things if it happens
+     if (newSettings[["limitsType"]] == "breaks")
+       newSettings[["limitsType"]] <- "manual"
+
+  } else if (newSettings[["breaksType"]] == "range") {
+    tmp <- newSettings[["range"]]
+    # zapsmall avoids floating point artefacts (e.g., try as.character(seq(-0.6, 0.2, 0.2)))
+    currentAxis[["breaks"]] <- zapsmall(seq(tmp[1L], tmp[2L], tmp[3L]))
+    currentAxis[["labels"]] <- as.character(currentAxis[["breaks"]])
+  } else {
+    currentAxis[["breaks"]] <- sort(newSettings[["breaks"]])
+    currentAxis[["labels"]] <- newSettings[["labels"]]
   }
 
   currentAxis[["limits"]] <- switch(newSettings[["limitsType"]],
