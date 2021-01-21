@@ -46,23 +46,23 @@ getAxisTitle <- function(x, xory) {
 
   # TODO: this could be an S3 method that dispatches on the class of the title. We should get an idea of what all allowed classes are somehow
   if (is.null(title)) {
-    titleType <- "NULL"
-  } else if (is.call(title) || is.expression(title)) {
-    titleType <- "expression"
+    titleType <- TitleType$Null
+  } else if (is.call(title)) {
+    titleType <- TitleType$Expression
     title     <- Reduce(paste, trimws(deparse(title)))
+  } else if (is.expression(title)) {
+    titleType <- TitleType$Expression
+    title     <- as.character(title) #Reduce(paste, trimws(deparse(title)))
   } else if (is.character(title)) {
-    titleType <- "character"
+    titleType <- TitleType$Character
   } else {
     titleTypeWarning(title)
-    titleType <- "character"
+    titleType <- TitleType$Character
     # this conversion may fail...
     tmp <- try(as.character(title))
     if (!inherits(tmp, "try-error"))
       title <- tmp
   }
-
-  if (titleType == "expression")
-    title <- Reduce(paste, trimws(deparse(title)))
 
   return(list(
     title     = title,
@@ -76,10 +76,6 @@ evenly_spaced <- function(x) {
   return(all((x[-length(x)] - x[-1L] - by) <= .Machine[["double.eps"]]))
 }
 
-getAxisInfo <- function(x, opts, ggbuild) {
-  UseMethod("getAxisInfo", x)
-}
-
 expand_default <- function(scale, discrete = c(0, 0.6, 0, 0.6), continuous = c(0.05, 0, 0.05, 0)) {
   # copy of ggplot2:::expand_default to please R CMD check about :::
   a <- scale$expand
@@ -89,6 +85,10 @@ expand_default <- function(scale, discrete = c(0, 0.6, 0, 0.6), continuous = c(0
     return(discrete)
   else
     return(continuous)
+}
+
+getAxisInfo <- function(x, opts, ggbuild) {
+  UseMethod("getAxisInfo", x)
 }
 
 getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
@@ -107,8 +107,8 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
 
   if (is.null(opts2keep[["breaks"]])) {
 
-    opts2keep[["breaksType"]] <- "NULL"
-    opts2keep[["range"]]      <- "NULL"
+    opts2keep[["breaksType"]] <- BreaksType$Null
+    opts2keep[["range"]]      <- "NULL" # TODO: fix this!
     # set reasonable defaults for this
     breaks <- getPrettyAxisBreaks(opts2keep[["limits"]])
     opts2keep[["breaks"]] <- breaks
@@ -127,23 +127,21 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
 
   from <- breaks[1L]
   to   <- breaks[length(breaks)]
-  by   <- (to - from) / (length(breaks) - 1)
+  by   <- if (length(breaks) > 1L) (to - from) / (length(breaks) - 1) else 0
 
   opts2keep[["range"]] <- c(from, to, by)
   if (is.null(opts2keep[["breaksType"]])) { # only set this if breaks weren't NULL
     # this tryCatch is ugly, but seq can crash in many ways..
     opts2keep[["breaksType"]] <- tryCatch(
-      if (all(seq(from, to, by) == breaks)) "range" else "manual",
+      if (isTRUE(all.equal(seq(from, to, by), breaks))) "range" else "manual",
       error = function(e) return("manual")
     )
   }
 
-  opts2keep[["limitsType"]] <- if (is.null(x[["limits"]]))
-    "data"
-  else if (isTRUE(all.equal(range(breaks), x[["limits"]])))
-    "breaks"
-  else
-    "manual"
+  opts2keep[["limitsType"]] <-
+    if (is.null(x[["limits"]]))                                LimitsType$Data
+    else if (isTRUE(all.equal(range(breaks), x[["limits"]])))  LimitsType$Breaks
+    else                                                       LimitsType$Manual
 
 
   return(opts2keep)
@@ -158,7 +156,11 @@ getAxisInfo.ScaleDiscretePosition <- function(x, opts, ggbuild) {
     shown  = x[["get_limits"]](),
     title  = getAxisTitle(ggbuild, xory)
   )
+
   opts2keep[c("title", "titleType")] <- getAxisTitle(ggbuild, xory)
+
+  if (is.null(opts2keep[["breaksType"]]))
+
   return(opts2keep)
 
 }
@@ -171,14 +173,14 @@ internalUpdateAxis <- function(currentAxis, newSettings) {
 
 internalUpdateAxis.ScaleContinuousPosition <- function(currentAxis, newSettings) {
 
-  if (newSettings[["breaksType"]] == "NULL") {
+  if (newSettings[["breaksType"]] == BreaksType$Null) {
      currentAxis[["breaks"]] <- NULL
      currentAxis[["labels"]] <- NULL
      # shouldn't be possible, but will do bad things if it happens
-     if (newSettings[["limitsType"]] == "breaks")
-       newSettings[["limitsType"]] <- "manual"
+     if (newSettings[["limitsType"]] == LimitsType$Breaks)
+       newSettings[["limitsType"]] <- LimitsType$Manual
 
-  } else if (newSettings[["breaksType"]] == "range") {
+  } else if (newSettings[["breaksType"]] == BreaksType$Range) {
     tmp <- newSettings[["range"]]
     # zapsmall avoids floating point artefacts (e.g., try as.character(seq(-0.6, 0.2, 0.2)))
     currentAxis[["breaks"]] <- zapsmall(seq(tmp[1L], tmp[2L], tmp[3L]))
@@ -188,10 +190,10 @@ internalUpdateAxis.ScaleContinuousPosition <- function(currentAxis, newSettings)
     currentAxis[["labels"]] <- newSettings[["labels"]]
   }
 
-  currentAxis[["limits"]] <- switch(newSettings[["limitsType"]],
-    "data"   = NULL, # let ggplot2 figure it out
-    "breaks" = range(currentAxis[["breaks"]]),
-    "manual" = newSettings[["limits"]]
+  currentAxis[["limits"]] <- switchEnum(newSettings[["limitsType"]], LimitsType,
+    Data   = NULL, # let ggplot2 figure it out
+    Breaks = range(currentAxis[["breaks"]]),
+    Manual = newSettings[["limits"]]
   )
 
   # TODO: see if some plot element fall outside of the new limits, i.e., currentAxis[["range"]][["range"]] is wider than user limits
@@ -216,10 +218,17 @@ internalUpdateAxis.ScaleDiscretePosition <- function(currentAxis, newSettings) {
 }
 
 internalUpdateTitle <- function(titleType, title) {
-  return(switch(titleType,
-    "NULL"       = NULL,
-    "character"  = title,
-    "expression" = parse(text = title),
+  return(switchEnum(titleType, TitleType,
+    Null       = NULL,
+    Character  = title,
+    Expression = {
+      expr <- try(parse(text = title))
+      if (inherits(expr, "try-error")) {
+        warning("input was not a valid R expression, reinterpreting as character")
+        return(title)
+      }
+      return(expr)
+    },
     {
       titleTypeWarning(titleType)
       title
