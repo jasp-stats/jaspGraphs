@@ -1,15 +1,13 @@
-#' @title Get the editable options for a graph
-#' @param graph a plot object
+#' @title Get the editable options for a plot
+#' @param plot a plot object
 #' @param asJSON should the list be converted to JSON?
 #'
 #' @export
-plotEditingOptions <- function(graph, asJSON = FALSE) {
+plotEditingOptions <- function(plot, asJSON = FALSE) {
   options <- tryCatch(
-    expr = getPlotEditingOptions(graph),
+    expr = getPlotEditingOptions(plot),
     unsupportedFigureError = function(e) {
-      plotEditingOptionsError(
-        gettextf("This figure is a %s", e)
-      )
+      plotEditingOptionsError(e[["message"]])
     },
     error = function(e) {
       plotEditingOptionsError(
@@ -19,7 +17,10 @@ plotEditingOptions <- function(graph, asJSON = FALSE) {
       )
     }
   )
-  return(rListToJson(options, asJSON))
+  if (asJSON)
+    return(rListToJson(options))
+  else
+    return(options)
 }
 
 getPlotEditingOptions <- function(graph) {
@@ -40,6 +41,7 @@ getPlotEditingOptions.ggplot <- function(graph) {
 getPlotEditingOptions.ggplot_built <- function(graph) {
 
   # TODO: test if graph can be edited at all!
+  validateGraphType(graph)
 
   # only relevant for continuous scales?
   opts <- graph[["layout"]][["panel_params"]]
@@ -57,7 +59,8 @@ getPlotEditingOptions.ggplot_built <- function(graph) {
     ), yAxis = list(
       type     = axisTypes[["y"]],
       settings = ySettings
-    )
+    ),
+    error = ErrorType$Success
   )
 
   return(out)
@@ -78,8 +81,7 @@ getPlotEditingOptions.default <- function(graph) {
   )
 }
 
-rListToJson <- function(lst, asJSON = FALSE) {
-  if (!asJSON) return(lst)
+rListToJson <- function(lst) {
   tryCatch(
     toJSON(lst),
     error = function(e) {
@@ -93,9 +95,31 @@ rListToJson <- function(lst, asJSON = FALSE) {
 }
 
 plotEditingOptionsError <- function(error, unexpected = FALSE) {
-  reason <- if (unexpected)
-    gettextf("Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s To receive assistance with this problem, please report the message above at: https://jasp-stats.org/bug-reports", error)
-  else
-    gettextf("This plot can not be edited because: %s", error)
-  list(reasonNotEditable = reason)
+  reason <- if (unexpected) {
+    list(
+      reasonNotEditable = gettextf("Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s To receive assistance with this problem, please report the message above at: https://jasp-stats.org/bug-reports", error),
+      errorType = ErrorType$FatalError
+    )
+  } else {
+    list(
+      reasonNotEditable = gettextf("This plot can not be edited because: %s", error),
+      errorType = ErrorType$ValidationError
+    )
+  }
+}
+
+validateGraphType <- function(graph) {
+
+  # more to come!
+  if (is.coordPolar(graph[["layout"]][["coord"]]))
+    unsupportedFigureError("This plot uses polar coordinates (e.g., pie chart)")
+
+}
+
+is.coordPolar <- function(x) inherits(x, "CoordPolar")
+
+unsupportedFigureError <- function(message) {
+  e <- structure(class = c("unsupportedFigureError", "error", "condition"),
+                 list(message=message, call=sys.call(-1)))
+  stop(e)
 }

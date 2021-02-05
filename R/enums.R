@@ -48,3 +48,6 @@ switchEnum <- function(EXPR, ENUM, ..., warnIfNonExhaustive = TRUE, checkValidCa
 BreaksType <- createEnum(list(Manual     = "manual",     Range     = "range",     Null   = "NULL"))
 LimitsType <- createEnum(list(Manual     = "manual",     Data      = "data",      Breaks = "breaks"))
 TitleType  <- createEnum(list(Expression = "expression", Character = "character", Null   = "NULL"))
+
+
+ErrorType <- createEnum(list(Success = "success", ValidationError = "validationError", FatalError = "fatalError"))

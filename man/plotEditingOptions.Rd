@@ -2,15 +2,15 @@
 % Please edit documentation in R/plotEditingOptions.R
 \name{plotEditingOptions}
 \alias{plotEditingOptions}
-\title{Get the editable options for a graph}
+\title{Get the editable options for a plot}
 \usage{
-plotEditingOptions(graph, asJSON = FALSE)
+plotEditingOptions(plot, asJSON = FALSE)
 }
 \arguments{
-\item{graph}{a plot object}
+\item{plot}{a plot object}
 
 \item{asJSON}{should the list be converted to JSON?}
 }
 \description{
-Get the editable options for a graph
+Get the editable options for a plot
 }
