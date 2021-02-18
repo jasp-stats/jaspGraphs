@@ -137,57 +137,73 @@ GeomRangeFrame <- ggplot2::ggproto("GeomRangeFrame", ggplot2::Geom,
     if (grepl("b", sides)) {
 
       major <- getMajor(panel_scales[[panelInfo[["b"]]]])
-      rr <- range(major, na.rm = TRUE)
 
-      rugs[["x_b"]] <- ggname(
-        "range_x_b",
-        segmentsGrob(x0 = unit(rr[1L], "native") - adj,
-                     x1 = unit(rr[2L], "native") + adj,
-                     y0 = unit(0, "npc"),
-                     y1 = unit(0, "npc"),
-                     gp = gp))
+      if (!is.null(major)) {
+
+        rr <- range(major, na.rm = TRUE)
+
+        rugs[["x_b"]] <- ggname(
+          "range_x_b",
+          segmentsGrob(x0 = unit(rr[1L], "native") - adj,
+                       x1 = unit(rr[2L], "native") + adj,
+                       y0 = unit(0, "npc"),
+                       y1 = unit(0, "npc"),
+                       gp = gp))
+      }
     }
 
     if (grepl("t", sides)) {
 
       major <- getMajor(panel_scales[[panelInfo[["t"]]]])
-      rr <- range(major, na.rm = TRUE)
 
-      rugs[["x_t"]] <- ggname(
-        "range_x_t",
-        segmentsGrob(x0 = unit(rr[1L], "native") - adj,
-                     x1 = unit(rr[2L], "native") + adj,
-                     y0 = unit(1, "npc"),
-                     y1 = unit(1, "npc"),
-                     gp = gp))
+      if (!is.null(major)) {
+
+        rr <- range(major, na.rm = TRUE)
+
+        rugs[["x_t"]] <- ggname(
+          "range_x_t",
+          segmentsGrob(x0 = unit(rr[1L], "native") - adj,
+                       x1 = unit(rr[2L], "native") + adj,
+                       y0 = unit(1, "npc"),
+                       y1 = unit(1, "npc"),
+                       gp = gp))
+      }
     }
 
     if (grepl("l", sides)) {
 
       major <- getMajor(panel_scales[[panelInfo[["l"]]]])
-      rr <- range(major, na.rm = TRUE)
 
-      rugs[["y_l"]] <- ggname(
-        "range_y_l",
-        segmentsGrob(y0 = unit(rr[1L], "native") - adj,
-                     y1 = unit(rr[2L], "native") + adj,
-                     x0 = unit(0, "npc"),
-                     x1 = unit(0, "npc"),
-                     gp = gp))
+      if (!is.null(major)) {
+
+        rr <- range(major, na.rm = TRUE)
+
+        rugs[["y_l"]] <- ggname(
+          "range_y_l",
+          segmentsGrob(y0 = unit(rr[1L], "native") - adj,
+                       y1 = unit(rr[2L], "native") + adj,
+                       x0 = unit(0, "npc"),
+                       x1 = unit(0, "npc"),
+                       gp = gp))
+      }
     }
 
     if (grepl("r", sides)) {
 
       major <- getMajor(panel_scales[[panelInfo[["r"]]]])
-      rr <- range(major, na.rm = TRUE)
 
-      rugs[["y_r"]] <- ggname(
-        "range_y_r",
-        segmentsGrob(y0 = unit(rr[1L], "native") - adj,
-                     y1 = unit(rr[2L], "native") + adj,
-                     x0 = unit(1, "npc"),
-                     x1 = unit(1, "npc"),
-                     gp = gp))
+      if (!is.null(major)) {
+
+        rr <- range(major, na.rm = TRUE)
+
+        rugs[["y_r"]] <- ggname(
+          "range_y_r",
+          segmentsGrob(y0 = unit(rr[1L], "native") - adj,
+                       y1 = unit(rr[2L], "native") + adj,
+                       x0 = unit(1, "npc"),
+                       x1 = unit(1, "npc"),
+                       gp = gp))
+      }
     }
     ggname("geom_rangeframe", gTree(children = do.call("gList", rugs)))
   },
