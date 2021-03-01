@@ -35,6 +35,10 @@ jaspGraphsPlot <- R6::R6Class(
   return(x)
 }
 
+#' @export
+is.jaspGraphsPlot <- function(x) {
+  inherits(x, "jaspGraphsPlot")
+}
 
 reDrawJaspGraphsPlot <- function(subplots, args, grob = FALSE, newpage = FALSE,
                                  decodeplotFun = get0("decodeplot"), ...) {
