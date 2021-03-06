@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2021-01-08 22:51\n"
+"POT-Creation-Date: 2021-03-06 14:27\n"
 "PO-Revision-Date: 2020-01-29 14:35\n"
 "Last-Translator: JASP <info@jasp-stats.org>\n"
 "Language-Team: JASP <info@jasp-stats.org>\n"
@@ -127,6 +127,32 @@ msgstr "palet was %s maar moet een van de %s zijn"
 msgid ","
 msgstr ","
 
+msgid "createEnum: nameValuePairs should be a list!"
+msgstr ""
+
+#, fuzzy
+msgid "createEnum: unique names and values have different length!"
+msgstr "bfSubscripts en BFvalues hebben verschillende lengte!"
+
+msgid "nonexisting enum type %s!"
+msgstr ""
+
+#, fuzzy
+msgid "EXPR should be character!"
+msgstr "groep moet een karakter of factor zijn!"
+
+msgid "ENUM should an enum!"
+msgstr ""
+
+msgid "switchEnum: no default case nor an exhaustive set of cases!"
+msgstr ""
+
+msgid "switchEnum: Invalid case(s) detected:"
+msgstr ""
+
+msgid "Valid cases are:"
+msgstr ""
+
 msgid "This function will be deprecated."
 msgstr "Deze functie zal niet meer gebruikt worden."
 
@@ -204,9 +230,37 @@ msgstr "Het astype in de nieuwe optielijst stemt niet overeen met de grafiek!"
 msgid "graph should be a ggplot2"
 msgstr "grafiek moet een ggplot2 zijn"
 
+msgid "input was not a valid R expression, reinterpreting as character"
+msgstr ""
+
 msgid ""
 "Unknown title type: %s. I'm pretending it works as character and hope for "
 "the best..."
+msgstr ""
+
+msgid "Computing plotEditingOptions gave an error: %s"
+msgstr ""
+
+msgid "This figure was created with qgraph."
+msgstr ""
+
+msgid "This figure consists of multiple smaller figures."
+msgstr ""
+
+#, fuzzy
+msgid "cannot create plotEditingOptions for object of class: %s."
+msgstr "niet ondersteund plot object van klasse: %s"
+
+msgid "Converting plotEditingOptions to JSON gave an error: %s."
+msgstr ""
+
+msgid ""
+"Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s "
+"To receive assistance with this problem, please report the message above at: "
+"https://jasp-stats.org/bug-reports"
+msgstr ""
+
+msgid "This plot can not be edited because: %s"
 msgstr ""
 
 msgid "Theoretical quantiles"

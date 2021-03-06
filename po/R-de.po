@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2021-01-08 22:51\n"
+"POT-Creation-Date: 2021-03-06 14:27\n"
 "PO-Revision-Date: 2021-01-17 18:32+0000\n"
 "Last-Translator: Thomas Langkamp <thomas.lassdiesonnerein@gmx.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspgraphs/"
@@ -131,6 +131,32 @@ msgstr "Palette war %s aber muss eine von %s sein"
 msgid ","
 msgstr ","
 
+msgid "createEnum: nameValuePairs should be a list!"
+msgstr ""
+
+#, fuzzy
+msgid "createEnum: unique names and values have different length!"
+msgstr "bfSubscripts und BFvalues haben verschiedene Längen!"
+
+msgid "nonexisting enum type %s!"
+msgstr ""
+
+#, fuzzy
+msgid "EXPR should be character!"
+msgstr "Gruppe muss ein Zeichen oder Faktor sein!"
+
+msgid "ENUM should an enum!"
+msgstr ""
+
+msgid "switchEnum: no default case nor an exhaustive set of cases!"
+msgstr ""
+
+msgid "switchEnum: Invalid case(s) detected:"
+msgstr ""
+
+msgid "Valid cases are:"
+msgstr ""
+
 msgid "This function will be deprecated."
 msgstr "Diese Funktion wird überholt werden - nicht mehr gebrauchen."
 
@@ -208,12 +234,40 @@ msgstr "Der Achsentyp in der neuen Optionenliste passt nicht zur Abbildung!"
 msgid "graph should be a ggplot2"
 msgstr "Abbildung muss ein ggplot2 sein"
 
+msgid "input was not a valid R expression, reinterpreting as character"
+msgstr ""
+
 msgid ""
 "Unknown title type: %s. I'm pretending it works as character and hope for "
 "the best..."
 msgstr ""
 "Unbekannter Titeltyp: %s. Ich tu mal so als wären es Buchstaben sind und "
 "hoffe, dass es funktioniert..."
+
+msgid "Computing plotEditingOptions gave an error: %s"
+msgstr ""
+
+msgid "This figure was created with qgraph."
+msgstr ""
+
+msgid "This figure consists of multiple smaller figures."
+msgstr ""
+
+#, fuzzy
+msgid "cannot create plotEditingOptions for object of class: %s."
+msgstr "nicht unterstütztes Abbildungsobjekt mit Klasse: %s"
+
+msgid "Converting plotEditingOptions to JSON gave an error: %s."
+msgstr ""
+
+msgid ""
+"Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s "
+"To receive assistance with this problem, please report the message above at: "
+"https://jasp-stats.org/bug-reports"
+msgstr ""
+
+msgid "This plot can not be edited because: %s"
+msgstr ""
 
 msgid "Theoretical quantiles"
 msgstr "Theoretische Quantile"

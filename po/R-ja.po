@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspGraphs 0.5.2\n"
-"POT-Creation-Date: 2021-01-08 22:51\n"
+"POT-Creation-Date: 2021-03-06 14:27\n"
 "PO-Revision-Date: 2021-01-26 11:51+0000\n"
 "Last-Translator: Koji Kosugi <kosugitti@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspgraphs/"
@@ -106,7 +106,9 @@ msgstr ""
 msgid "Evidence"
 msgstr ""
 
-msgid "lineColors and lineTypes must have the same length as the number of groups in dfLines."
+msgid ""
+"lineColors and lineTypes must have the same length as the number of groups "
+"in dfLines."
 msgstr ""
 
 msgid "Evidence for H%s:"
@@ -124,6 +126,30 @@ msgstr ""
 msgid ","
 msgstr ""
 
+msgid "createEnum: nameValuePairs should be a list!"
+msgstr ""
+
+msgid "createEnum: unique names and values have different length!"
+msgstr ""
+
+msgid "nonexisting enum type %s!"
+msgstr ""
+
+msgid "EXPR should be character!"
+msgstr ""
+
+msgid "ENUM should an enum!"
+msgstr ""
+
+msgid "switchEnum: no default case nor an exhaustive set of cases!"
+msgstr ""
+
+msgid "switchEnum: Invalid case(s) detected:"
+msgstr ""
+
+msgid "Valid cases are:"
+msgstr ""
+
 msgid "This function will be deprecated."
 msgstr ""
 
@@ -136,10 +162,14 @@ msgstr ""
 msgid "Argument %s should either have length 1 or length %d."
 msgstr ""
 
-msgid "removeXYlabels must be a character and contain either 'x', 'y', 'xy', or 'none'"
+msgid ""
+"removeXYlabels must be a character and contain either 'x', 'y', 'xy', or "
+"'none'"
 msgstr ""
 
-msgid "Dim(removeXYlabels) does not match dim(plotList) / layout. Got (%d, %d) and expected: (%d, %d)."
+msgid ""
+"Dim(removeXYlabels) does not match dim(plotList) / layout. Got (%d, %d) and "
+"expected: (%d, %d)."
 msgstr ""
 
 msgid "removeXYlabels should either have length 1 or length(plotList)."
@@ -151,7 +181,9 @@ msgstr ""
 msgid "removeXYlabels must be numeric, larger than 0 and smaller than 1"
 msgstr ""
 
-msgid "dim(removeXYlabels)[1] does not match prod(dim(plotList)) / layout. Got (%d, %d) and expected: prod(%d, %d)."
+msgid ""
+"dim(removeXYlabels)[1] does not match prod(dim(plotList)) / layout. Got (%d, "
+"%d) and expected: prod(%d, %d)."
 msgstr ""
 
 msgid "removeXYlabels should either have length 2 or length(plotList)."
@@ -163,7 +195,9 @@ msgstr ""
 msgid "layout must be a matrix but instead was of mode %s and class %s"
 msgstr ""
 
-msgid "length of layout (%d) does not match length of plotList (%d). Use NULL entries in plotList to specify empty plots."
+msgid ""
+"length of layout (%d) does not match length of plotList (%d). Use NULL "
+"entries in plotList to specify empty plots."
 msgstr ""
 
 msgid "Layout must consist of unique integers starting from 1."
@@ -184,7 +218,36 @@ msgstr ""
 msgid "graph should be a ggplot2"
 msgstr ""
 
-msgid "Unknown title type: %s. I'm pretending it works as character and hope for the best..."
+msgid "input was not a valid R expression, reinterpreting as character"
+msgstr ""
+
+msgid ""
+"Unknown title type: %s. I'm pretending it works as character and hope for "
+"the best..."
+msgstr ""
+
+msgid "Computing plotEditingOptions gave an error: %s"
+msgstr ""
+
+msgid "This figure was created with qgraph."
+msgstr ""
+
+msgid "This figure consists of multiple smaller figures."
+msgstr ""
+
+msgid "cannot create plotEditingOptions for object of class: %s."
+msgstr ""
+
+msgid "Converting plotEditingOptions to JSON gave an error: %s."
+msgstr ""
+
+msgid ""
+"Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s "
+"To receive assistance with this problem, please report the message above at: "
+"https://jasp-stats.org/bug-reports"
+msgstr ""
+
+msgid "This plot can not be edited because: %s"
 msgstr ""
 
 msgid "Theoretical quantiles"
@@ -199,5 +262,7 @@ msgstr ""
 msgid "unknown legend position string"
 msgstr ""
 
-msgid "Arguments xAxis and yAxis of themeJasp will be deprecated. Please use the argument \"sides\" instead."
+msgid ""
+"Arguments xAxis and yAxis of themeJasp will be deprecated. Please use the "
+"argument \"sides\" instead."
 msgstr ""
