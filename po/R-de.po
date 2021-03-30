@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-03-06 14:27\n"
-"PO-Revision-Date: 2021-03-11 08:02+0000\n"
+"PO-Revision-Date: 2021-03-31 13:26+0000\n"
 "Last-Translator: Johannes Keyser <johanneskeyser@posteo.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspgraphs/"
 "de/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.5.2-dev\n"
+"X-Generator: Weblate 4.6-dev\n"
 
 msgid "all subplots should be of class ggplot!"
 msgstr "Alle Teilabbildungen müssen von der Klasse ggplot sein!"
@@ -132,30 +132,28 @@ msgid ","
 msgstr ","
 
 msgid "createEnum: nameValuePairs should be a list!"
-msgstr ""
+msgstr "createEnum: nameValuePairs sollte eine Liste sein!"
 
-#, fuzzy
 msgid "createEnum: unique names and values have different length!"
-msgstr "bfSubscripts und BFvalues haben verschiedene Längen!"
+msgstr "createEnum: Eindeutige Namen und Werte haben unterschiedliche Länge!"
 
 msgid "nonexisting enum type %s!"
-msgstr ""
+msgstr "nicht vorhandener Enum-Typ %s!"
 
-#, fuzzy
 msgid "EXPR should be character!"
-msgstr "Gruppe muss ein Zeichen oder Faktor sein!"
+msgstr "EXPR sollte character sein!"
 
 msgid "ENUM should an enum!"
-msgstr ""
+msgstr "ENUM sollte Enum sein!"
 
 msgid "switchEnum: no default case nor an exhaustive set of cases!"
-msgstr ""
+msgstr "switchEnum: kein Standardfall und keine erschöpfende Menge von Fällen!"
 
 msgid "switchEnum: Invalid case(s) detected:"
-msgstr ""
+msgstr "switchEnum: Ungültige Fälle erkannt:"
 
 msgid "Valid cases are:"
-msgstr ""
+msgstr "Gültige Fälle sind:"
 
 msgid "This function will be deprecated."
 msgstr "Diese Funktion wird überholt werden - nicht mehr gebrauchen."
@@ -236,6 +234,7 @@ msgstr "Abbildung muss ein ggplot2 sein"
 
 msgid "input was not a valid R expression, reinterpreting as character"
 msgstr ""
+"Eingabe war kein gültiger R-Ausdruck, Neuinterpretation als Zeichenkette"
 
 msgid ""
 "Unknown title type: %s. I'm pretending it works as character and hope for "
@@ -245,28 +244,31 @@ msgstr ""
 "hoffe, dass es funktioniert..."
 
 msgid "Computing plotEditingOptions gave an error: %s"
-msgstr ""
+msgstr "Berechnung von plotEditingOptions gab einen Fehler: %s"
 
 msgid "This figure was created with qgraph."
-msgstr ""
+msgstr "Diese Abbildung wurde mit qgraph erstellt."
 
 msgid "This figure consists of multiple smaller figures."
-msgstr ""
+msgstr "Diese Abbildung besteht aus mehreren kleineren Abbildungen."
 
 msgid "cannot create plotEditingOptions for object of class: %s."
 msgstr "kann plotEditingOptions für Objekt der Klasse %s nicht erstellen."
 
 msgid "Converting plotEditingOptions to JSON gave an error: %s."
-msgstr ""
+msgstr "Die Umwandlung von plotEditingOptions in JSON ergab einen Fehler: %s."
 
 msgid ""
 "Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s "
 "To receive assistance with this problem, please report the message above at: "
 "https://jasp-stats.org/bug-reports"
 msgstr ""
+"Die Plotbearbeitung wurde unerwartet abgebrochen. Fataler Fehler in "
+"plotEditingOptions: %s Um Unterstützung bei diesem Problem zu erhalten, "
+"melden Sie bitte die obige Meldung unter: https://jasp-stats.org/bug-reports"
 
 msgid "This plot can not be edited because: %s"
-msgstr ""
+msgstr "Diese Abbildung kann nicht bearbeitet werden, weil: %s"
 
 msgid "Theoretical quantiles"
 msgstr "Theoretische Quantile"
