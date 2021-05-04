@@ -22,7 +22,7 @@
 #'   (horizontal lines) be removed? Default is TRUE.
 #' @param axisTickLength length of axis ticks.
 #' @param axisTickWidth width of axis ticks.
-#' @param family global font familiy.
+#' @param family global font family.
 #' @details This function is a modification of \code{\link[jtools:theme_apa]{jtools::theme_apa}}
 #'   that applies a theme to \code{ggplot2} figures with a
 #'   style that is roughly in line with APA guidelines. Users may need to

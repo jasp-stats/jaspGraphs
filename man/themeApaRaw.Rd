@@ -46,7 +46,7 @@ may be necessary to choose a smaller size.}
 \item{remove.x.gridlines}{Should the coordinate grid on the x-axis (vertical
 lines) be removed? Default is TRUE.}
 
-\item{family}{global font familiy.}
+\item{family}{global font family.}
 
 \item{axisTickLength}{length of axis ticks.}
 

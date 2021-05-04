@@ -55,7 +55,7 @@ JASPScatterPlot(
 
 \item{legendTitle}{A string for the title of the legend. \code{NULL} implies the legend is not shown.}
 
-\item{emulateGgMarginal}{Should the result be as similar as possible to \code{\link[ggExtra]{ggMarginal}}? Overwrites other parmeters.}
+\item{emulateGgMarginal}{Should the result be as similar as possible to \code{\link[ggExtra]{ggMarginal}}? Overwrites other parameters.}
 
 \item{...}{passed to \code{\link{themeJaspRaw}}.}
 }
