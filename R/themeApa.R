@@ -22,7 +22,7 @@
 #'   (horizontal lines) be removed? Default is TRUE.
 #' @param axisTickLength length of axis ticks.
 #' @param axisTickWidth width of axis ticks.
-#' @param family global font familiy.
+#' @param family global font family.
 #' @details This function is a modification of \code{\link[jtools:theme_apa]{jtools::theme_apa}}
 #'   that applies a theme to \code{ggplot2} figures with a
 #'   style that is roughly in line with APA guidelines. Users may need to
@@ -129,11 +129,11 @@ themeApaRaw <- function(legend.pos       = getGraphOption("legend.position"),
 }
 
 .add_x_gridlines <- function(minor = TRUE) {
-  add_gridlines(x = TRUE, y = FALSE, minor = minor)
+  .add_gridlines(x = TRUE, y = FALSE, minor = minor)
 }
 
 .add_y_gridlines <- function(minor = TRUE) {
-  add_gridlines(x = FALSE, y = TRUE, minor = minor)
+  .add_gridlines(x = FALSE, y = TRUE, minor = minor)
 }
 
 .drop_gridlines <- function(x = TRUE, y = TRUE, minor.only = FALSE) {
@@ -156,15 +156,15 @@ themeApaRaw <- function(legend.pos       = getGraphOption("legend.position"),
 .add_gridlines <- function(x = TRUE, y = TRUE, minor = TRUE) {
   plot <- theme()
   if (y == TRUE) {
-    plot <- plot + theme(panel.grid.major.y = ggplot2:element_line(colour = "grey92"))
+    plot <- plot + theme(panel.grid.major.y = ggplot2::element_line(colour = "grey92"))
     if (minor == TRUE) {
-      plot <- plot + theme(panel.grid.minor.y = ggplot2:element_line(colour = "grey92", size = 0.25))
+      plot <- plot + theme(panel.grid.minor.y = ggplot2::element_line(colour = "grey92", size = 0.25))
     }
   }
   if (x == TRUE) {
-    plot <- plot + theme(panel.grid.major.x = ggplot2:element_line(colour = "grey92"))
+    plot <- plot + theme(panel.grid.major.x = ggplot2::element_line(colour = "grey92"))
     if (minor == TRUE) {
-      plot <- plot + theme(panel.grid.minor.x = ggplot2:element_line(colour = "grey92", size = 0.25))
+      plot <- plot + theme(panel.grid.minor.x = ggplot2::element_line(colour = "grey92", size = 0.25))
     }
   }
   return(plot)
