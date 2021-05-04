@@ -1,5 +1,5 @@
 # Data for sequential
-# 
+#
 set.seed(1)
 n <- 100
 dfLines <- data.frame(
@@ -9,14 +9,14 @@ dfLines <- data.frame(
 
 
 # Sequential plot
-# 
+#
 PlotRobustnessSequential(
   dfLines      = dfLines,
   xName        = "n",
 )
 
 # Sequential plot add info
-# 
+#
 BF10 <- exp(tail(dfLines, 1)$y)
 PlotRobustnessSequential(
   dfLines      = dfLines,
@@ -36,7 +36,7 @@ dfLines <- data.frame(
 )
 
 # Robustness plot
-# 
+#
 PlotRobustnessSequential(
   dfLines      = dfLines,
   xName        = "Prior width"
@@ -85,7 +85,7 @@ dfPoints <- data.frame(
 
 PlotRobustnessSequential(
   dfLines      = dfLines,
-  xName        = expression(paste("Prior width ", kappa)), 
+  xName        = expression(paste("Prior width ", kappa)),
   dfPoints     = dfPoints
 )
 
@@ -97,16 +97,20 @@ showSideBySide <- function(..., nrow = 1L, ncol = ...length()) {
     if (!inherits(x, "jaspGraphsPlot")) return(x)
     else return(x$plotFunction(x$subplots, args = x$plotArgs, grob = TRUE))
   }
-  gridExtra::grid.arrange(gridExtra::arrangeGrob(grobs = lapply(list(...), jaspgraphplot2grob),  nrow = nrow, ncol = ncol))
+  gridExtra::grid.arrange(gridExtra::arrangeGrob(
+    grobs = lapply(list(...), jaspgraphplot2grob),  nrow = nrow, ncol = ncol))
 }
 
 # arrow labels can be modified
 g1 <- PlotRobustnessSequential(dfLines = dfLines, arrowLabel = c("top", "bottom"))
-g2 <- PlotRobustnessSequential(dfLines = dfLines, arrowLabel = jaspGraphs::parseThis(c("alpha", "beta")))
+g2 <- PlotRobustnessSequential(dfLines = dfLines,
+                               arrowLabel = jaspGraphs::parseThis(c("alpha", "beta")))
 showSideBySide(g1, g2)
 
 # text in the top right (evidence text) can be modified
 g1 <- PlotRobustnessSequential(dfLines = dfLines, BF = 1)
-g2 <- PlotRobustnessSequential(dfLines = dfLines, BF = 1, evidenceTxt = c("I'm above!", "I'm below!"))
-g3 <- PlotRobustnessSequential(dfLines = dfLines, BF = 1, evidenceTxt = jaspGraphs::parseThis(c("alpha", "omega")))
+g2 <- PlotRobustnessSequential(dfLines = dfLines, BF = 1,
+                               evidenceTxt = c("I'm above!", "I'm below!"))
+g3 <- PlotRobustnessSequential(dfLines = dfLines, BF = 1,
+                               evidenceTxt = jaspGraphs::parseThis(c("alpha", "omega")))
 showSideBySide(g1, g2, g3)
