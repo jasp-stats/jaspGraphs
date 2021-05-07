@@ -3,30 +3,31 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-03-06 14:27\n"
-"PO-Revision-Date: 2020-12-02 21:29+0000\n"
-"Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
+"PO-Revision-Date: 2021-04-26 20:31+0000\n"
+"Last-Translator: Alex França <alex.tonante@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
-"jaspGraphs/pt/>\n"
+"jaspgraphs/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.7-dev\n"
 "X-Language: en_US\n"
 "X-Source-Language: American English\n"
 "X-Qt-Contexts: true\n"
 
 msgid "all subplots should be of class ggplot!"
-msgstr ""
+msgstr "todos os subgráficos devem ser de classe ggplot!"
 
 msgid "plotFunction should be a function!"
 msgstr ""
 
 msgid "all arguments in ... should be named."
-msgstr ""
+msgstr "todos os argumentos em ... devem ser nomeados."
 
 msgid "value should be numeric!"
-msgstr ""
+msgstr "o valor deve ser numérico!"
 
 msgid "group should be a character or factor!"
 msgstr ""
@@ -38,25 +39,28 @@ msgid "scaleText should be positive!"
 msgstr ""
 
 msgid "linewidth should be positive!"
-msgstr ""
+msgstr "a espessura da linha deve ser positiva!"
 
 msgid "Not implemented"
-msgstr ""
+msgstr "Não implementado"
 
+#, fuzzy
 msgid "incorrect class for align. Expected character of numeric."
-msgstr ""
+msgstr "classe incorreta para alinhar. É esperado um valor numérico."
 
+#, fuzzy
 msgid "dfLines should be a data.frame with $x, $y, and $g!"
-msgstr ""
+msgstr "dfLines deve ser um data.frame com $x, $y e $g!"
 
 msgid "dfPoints should be a data.frame with $x, $y, and $g!"
-msgstr ""
+msgstr "dfPoints deve ser um data.frame com $x, $y, e $g!"
 
 msgid "CRI should be numeric and have length 2! (left bound, right bound)"
 msgstr ""
 
+#, fuzzy
 msgid "median should be numeric and have length 1!"
-msgstr ""
+msgstr "a mediana deve ser um valor numérico e"
 
 msgid "BF should be numeric and have length 1!"
 msgstr ""
@@ -65,16 +69,16 @@ msgid "bfSubscripts and BFvalues have different length!"
 msgstr ""
 
 msgid "data | H0"
-msgstr ""
+msgstr "dados | H0"
 
 msgid "data | H1"
-msgstr ""
+msgstr "dados | H1"
 
 msgid "data | H-"
-msgstr ""
+msgstr "dados | H-"
 
 msgid "data | H+"
-msgstr ""
+msgstr "dados | H+"
 
 msgid "BF%s"
 msgstr ""
@@ -82,44 +86,51 @@ msgstr ""
 msgid "log(BF%s)"
 msgstr ""
 
+#, fuzzy
 msgid "Density"
-msgstr ""
+msgstr "Densidade"
 
 msgid "Median:"
-msgstr ""
+msgstr "Mediana:"
 
+#, fuzzy
 msgid "Cannot provide both a BF pizzaplot and a points legend!"
 msgstr ""
+"Não é possível gerar um gráfico de pizza e uma legenda de gráfico de pontos!"
 
+#, fuzzy
 msgid "Anecdotal"
-msgstr ""
+msgstr "Anedótico"
 
 #, fuzzy
 msgid "Moderate"
 msgstr "Nome do modelo"
 
 msgid "Strong"
-msgstr ""
+msgstr "Forte"
 
 msgid "Very Strong"
-msgstr ""
+msgstr "Muito Forte"
 
 msgid "Extreme"
-msgstr ""
+msgstr "Extremo"
 
 msgid "Evidence"
-msgstr ""
+msgstr "Evidência"
 
+#, fuzzy
 msgid ""
 "lineColors and lineTypes must have the same length as the number of groups "
 "in dfLines."
 msgstr ""
+"lineColors e lineTypes devem ter o mesmo comprimento do número de grupos em "
+"dfLines."
 
 msgid "Evidence for H%s:"
-msgstr ""
+msgstr "Evidência para H%s:"
 
 msgid "Evidence for H%s"
-msgstr ""
+msgstr "Evidência para H%s"
 
 msgid "palette must be character!"
 msgstr ""
@@ -128,7 +139,7 @@ msgid "palette was %s but must be one of %s"
 msgstr ""
 
 msgid ","
-msgstr ""
+msgstr ","
 
 msgid "createEnum: nameValuePairs should be a list!"
 msgstr ""
@@ -148,14 +159,15 @@ msgstr ""
 msgid "switchEnum: no default case nor an exhaustive set of cases!"
 msgstr ""
 
+#, fuzzy
 msgid "switchEnum: Invalid case(s) detected:"
-msgstr ""
+msgstr "switchEnum: Caso(s) inválido(s) detectado(s):"
 
 msgid "Valid cases are:"
-msgstr ""
+msgstr "Casos válidos:"
 
 msgid "This function will be deprecated."
-msgstr ""
+msgstr "Essa função será descontinuada."
 
 msgid "Argument dat and graph cannot both be NULL."
 msgstr ""
@@ -179,11 +191,12 @@ msgstr ""
 msgid "removeXYlabels should either have length 1 or length(plotList)."
 msgstr ""
 
+#, fuzzy
 msgid "jaspGraphs could not obtain axes labels from graph"
-msgstr ""
+msgstr "jaspGraphs não conseguiu obter rótulos de eixos do gráfico"
 
 msgid "removeXYlabels must be numeric, larger than 0 and smaller than 1"
-msgstr ""
+msgstr "removeXYlabels deve ser um valor numérico, maior que 0 e menor que 1"
 
 msgid ""
 "dim(removeXYlabels)[1] does not match prod(dim(plotList)) / layout. Got (%d, "
@@ -196,8 +209,9 @@ msgstr ""
 msgid "Either supply plotList as a matrix or provide a layout argument"
 msgstr ""
 
+#, fuzzy
 msgid "layout must be a matrix but instead was of mode %s and class %s"
-msgstr ""
+msgstr "o layout deve ser uma matriz"
 
 msgid ""
 "length of layout (%d) does not match length of plotList (%d). Use NULL "
@@ -205,10 +219,10 @@ msgid ""
 msgstr ""
 
 msgid "Layout must consist of unique integers starting from 1."
-msgstr ""
+msgstr "Layout deve consistir em integrais únicas a partir de 1."
 
 msgid "x must be length 1 or 2"
-msgstr ""
+msgstr "x deve ter 1 ou 2 caracteres"
 
 msgid "Secondary axes must be specified using 'sec_axis()'"
 msgstr ""
@@ -271,4 +285,3 @@ msgid ""
 "Arguments xAxis and yAxis of themeJasp will be deprecated. Please use the "
 "argument \"sides\" instead."
 msgstr ""
-
