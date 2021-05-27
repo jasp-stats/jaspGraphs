@@ -1,8 +1,8 @@
-#' @title Compute axis breaks 
+#' @title Compute axis breaks
 #' @param x the object to compute axis breaks for
 #'
 #' @param ... if x is numeric, this is passed to pretty
-#' @details this is just a wrapper for pretty with slightly different defaults. 
+#' @details this is just a wrapper for pretty.
 #'
 #' @export
 getPrettyAxisBreaks <- function(x, ...) {
@@ -12,18 +12,7 @@ getPrettyAxisBreaks <- function(x, ...) {
 
 #' @export
 getPrettyAxisBreaks.numeric <- function(x, ...) {
-
-  dots <- list(...)
-
-  if (is.null(dots[["high.u.bias"]]))
-    xr <- range(x)
-  if (xr[2] - xr[1] > 1e3) { # big numbers, adjust pretty to favor less breaks
-    high.u.bias <- 2
-  } else { # default value
-    high.u.bias <-  1.5
-  }
-  dots[["x"]] <- x
-  return(do.call(base::pretty, dots))
+  return(base::pretty(x, ...))
 }
 
 #' @export
