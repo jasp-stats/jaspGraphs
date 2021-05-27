@@ -15,5 +15,5 @@ getPrettyAxisBreaks(x, ...)
 Compute axis breaks
 }
 \details{
-this is just a wrapper for pretty with slightly different defaults.
+this is just a wrapper for pretty.
 }
