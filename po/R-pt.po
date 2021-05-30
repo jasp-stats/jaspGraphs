@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-03-06 14:27\n"
-"PO-Revision-Date: 2021-05-15 20:50+0000\n"
+"PO-Revision-Date: 2021-05-31 19:32+0000\n"
 "Last-Translator: Alex França <alex.tonante@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
 "jaspgraphs/pt/>\n"
@@ -21,7 +21,7 @@ msgid "all subplots should be of class ggplot!"
 msgstr "todos os subgráficos devem ser de classe ggplot!"
 
 msgid "plotFunction should be a function!"
-msgstr ""
+msgstr "plotFunção deve ser uma função!"
 
 msgid "all arguments in ... should be named."
 msgstr "todos os argumentos em ... devem ser nomeados."
@@ -30,13 +30,13 @@ msgid "value should be numeric!"
 msgstr "o valor deve ser numérico!"
 
 msgid "group should be a character or factor!"
-msgstr ""
+msgstr "o grupo deve ser um carácter ou fator!"
 
 msgid "value and group should have the same length!"
-msgstr ""
+msgstr "valor e grupo devem ter o mesmo comprimento!"
 
 msgid "scaleText should be positive!"
-msgstr ""
+msgstr "scaleText deve ser positivo!"
 
 msgid "linewidth should be positive!"
 msgstr "a espessura da linha deve ser positiva!"
@@ -44,11 +44,9 @@ msgstr "a espessura da linha deve ser positiva!"
 msgid "Not implemented"
 msgstr "Não implementado"
 
-#, fuzzy
 msgid "incorrect class for align. Expected character of numeric."
 msgstr "classe incorreta para alinhar. É esperado um valor numérico."
 
-#, fuzzy
 msgid "dfLines should be a data.frame with $x, $y, and $g!"
 msgstr "dfLines deve ser um data.frame com $x, $y e $g!"
 
@@ -57,16 +55,16 @@ msgstr "dfPoints deve ser um data.frame com $x, $y, e $g!"
 
 msgid "CRI should be numeric and have length 2! (left bound, right bound)"
 msgstr ""
+"CRI deve ser numérico e ter comprimento 2! (à esquerda, ligado à direita)"
 
-#, fuzzy
 msgid "median should be numeric and have length 1!"
-msgstr "a mediana deve ser um valor numérico e"
+msgstr "mediana deve ser numérica e ter comprimento 1!"
 
 msgid "BF should be numeric and have length 1!"
-msgstr ""
+msgstr "BF deve ser numérico e ter comprimento 1!"
 
 msgid "bfSubscripts and BFvalues have different length!"
-msgstr ""
+msgstr "bfSubscripts e BFvalues têm tamanhos diferentes!"
 
 msgid "data | H0"
 msgstr "dados | H0"
@@ -81,10 +79,10 @@ msgid "data | H+"
 msgstr "dados | H+"
 
 msgid "BF%s"
-msgstr ""
+msgstr "BF%s"
 
 msgid "log(BF%s)"
-msgstr ""
+msgstr "log(BF%s)"
 
 msgid "Density"
 msgstr "Densidade"
@@ -92,18 +90,15 @@ msgstr "Densidade"
 msgid "Median:"
 msgstr "Mediana:"
 
-#, fuzzy
 msgid "Cannot provide both a BF pizzaplot and a points legend!"
 msgstr ""
 "Não é possível gerar um gráfico de pizza e uma legenda de gráfico de pontos!"
 
-#, fuzzy
 msgid "Anecdotal"
 msgstr "Anedótico"
 
-#, fuzzy
 msgid "Moderate"
-msgstr "Nome do modelo"
+msgstr "Moderado"
 
 msgid "Strong"
 msgstr "Forte"
@@ -117,7 +112,6 @@ msgstr "Extremo"
 msgid "Evidence"
 msgstr "Evidência"
 
-#, fuzzy
 msgid ""
 "lineColors and lineTypes must have the same length as the number of groups "
 "in dfLines."
@@ -132,33 +126,32 @@ msgid "Evidence for H%s"
 msgstr "Evidência para H%s"
 
 msgid "palette must be character!"
-msgstr ""
+msgstr "paleta deve ser de caracteres!"
 
 msgid "palette was %s but must be one of %s"
-msgstr ""
+msgstr "palete era %s mas deve ser uma de %s"
 
 msgid ","
 msgstr ","
 
 msgid "createEnum: nameValuePairs should be a list!"
-msgstr ""
+msgstr "createEnum: nameValuePairs deve ser uma lista!"
 
 msgid "createEnum: unique names and values have different length!"
-msgstr ""
+msgstr "createEnum: nomes e valores únicos têm diferentes comprimentos!"
 
 msgid "nonexisting enum type %s!"
-msgstr ""
+msgstr "inexistente enumera tipo %s!"
 
 msgid "EXPR should be character!"
-msgstr ""
+msgstr "EXPR deve ser caracter!"
 
 msgid "ENUM should an enum!"
-msgstr ""
+msgstr "ENUM deve ser uma enumeração!"
 
 msgid "switchEnum: no default case nor an exhaustive set of cases!"
-msgstr ""
+msgstr "switchEnum: nenhum caso padrão e nenhum conjunto exaustivo de casos!"
 
-#, fuzzy
 msgid "switchEnum: Invalid case(s) detected:"
 msgstr "switchEnum: Caso(s) inválido(s) detectado(s):"
 
@@ -169,30 +162,31 @@ msgid "This function will be deprecated."
 msgstr "Essa função será descontinuada."
 
 msgid "Argument dat and graph cannot both be NULL."
-msgstr ""
+msgstr "Os dados do argumento e o gráfico não podem ser ambos NULO."
 
 msgid "You must specify either `position` or `nudge_x`/`nudge_y`."
-msgstr ""
+msgstr "Você deve especificar a `posição` ou `nudge_x`/`nudge_y`."
 
 msgid "Argument %s should either have length 1 or length %d."
-msgstr ""
+msgstr "O argumento %s deve ter comprimento 1 ou comprimento %d."
 
 msgid ""
 "removeXYlabels must be a character and contain either 'x', 'y', 'xy', or "
 "'none'"
-msgstr ""
+msgstr "removeXYlabels deve ser um carácter e conter 'x', 'y', 'xy' ou 'none'"
 
 msgid ""
 "Dim(removeXYlabels) does not match dim(plotList) / layout. Got (%d, %d) and "
 "expected: (%d, %d)."
 msgstr ""
+"Dim(removeXYlabels) não corresponde ao dim(plotList) / layout. Obtido (%d, "
+"%d) e esperado: (%d, %d)."
 
 msgid "removeXYlabels should either have length 1 or length(plotList)."
-msgstr ""
+msgstr "removeXYlabels deve ter comprimento 1 ou comprimento(plotList)."
 
-#, fuzzy
 msgid "jaspGraphs could not obtain axes labels from graph"
-msgstr "jaspGraphs não conseguiu obter rótulos de eixos do gráfico"
+msgstr "jaspGráficos não conseguiu obter rótulos de eixos do gráfico"
 
 msgid "removeXYlabels must be numeric, larger than 0 and smaller than 1"
 msgstr "removeXYlabels deve ser um valor numérico, maior que 0 e menor que 1"
@@ -201,21 +195,26 @@ msgid ""
 "dim(removeXYlabels)[1] does not match prod(dim(plotList)) / layout. Got (%d, "
 "%d) and expected: prod(%d, %d)."
 msgstr ""
+"dim(removeXYlabels)[1] não corresponde ao prod(dim(plotList)) / layout. "
+"Obtido(%d, %d) e esperado: prod(%d, %d)."
 
 msgid "removeXYlabels should either have length 2 or length(plotList)."
-msgstr ""
+msgstr "removeXYlabels deve ter comprimento 2 ou comprimento(plotList)."
 
 msgid "Either supply plotList as a matrix or provide a layout argument"
 msgstr ""
+"Ou forneça uma Listas de suprimentos como uma matriz ou forneça um argumento "
+"de layout"
 
-#, fuzzy
 msgid "layout must be a matrix but instead was of mode %s and class %s"
-msgstr "o layout deve ser uma matriz"
+msgstr "o layout deve ser uma matriz, mas em vez do modo % s e classe% s"
 
 msgid ""
 "length of layout (%d) does not match length of plotList (%d). Use NULL "
 "entries in plotList to specify empty plots."
 msgstr ""
+"O comprimento do layout (%d) não corresponde ao comprimento da plotList (%d)"
+". Use as entradas NULO na plotList para especificar as parcelas vazias."
 
 msgid "Layout must consist of unique integers starting from 1."
 msgstr "Layout deve consistir em integrais únicas a partir de 1."
@@ -224,63 +223,69 @@ msgid "x must be length 1 or 2"
 msgstr "x deve ter 1 ou 2 caracteres"
 
 msgid "Secondary axes must be specified using 'sec_axis()'"
-msgstr ""
+msgstr "Os eixos secundários devem ser especificados usando 'sec_axis()'"
 
 msgid "options should be an R list or a json string!"
-msgstr ""
+msgstr "As opções devem ser uma lista R ou uma string json!"
 
 msgid "The axis type in the new options list does not match the graph!"
-msgstr ""
+msgstr "O tipo de eixo na nova lista de opções não corresponde ao gráfico!"
 
 msgid "graph should be a ggplot2"
-msgstr ""
+msgstr "o gráfico deve ser um ggplot2"
 
 msgid "input was not a valid R expression, reinterpreting as character"
-msgstr ""
+msgstr "entrada não era uma expressão R válida, reinterpretando como carácter"
 
 msgid ""
 "Unknown title type: %s. I'm pretending it works as character and hope for "
 "the best..."
 msgstr ""
+"Tipo de título desconhecido:% s. Estou imaginando que funcione como carácter "
+"e espero o melhor ..."
 
 msgid "Computing plotEditingOptions gave an error: %s"
-msgstr ""
+msgstr "O cálculo de plotEditingOptions deu um erro:% s"
 
 msgid "This figure was created with qgraph."
-msgstr ""
+msgstr "Esta figura foi criada com o qgraph."
 
 msgid "This figure consists of multiple smaller figures."
-msgstr ""
+msgstr "Esta figura consiste em várias figuras menores."
 
 msgid "cannot create plotEditingOptions for object of class: %s."
-msgstr ""
+msgstr "não pode criar plotEditingOptions para objeto de classe: %s."
 
 msgid "Converting plotEditingOptions to JSON gave an error: %s."
-msgstr ""
+msgstr "A conversão de plotEditingOptions em JSON gerou um erro:% s."
 
 msgid ""
 "Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s "
 "To receive assistance with this problem, please report the message above at: "
 "https://jasp-stats.org/bug-reports"
 msgstr ""
+"A edição da plotagem foi encerrada inesperadamente. Erro fatal em "
+"plotEditingOptions:% s Para receber assistência com este problema, relate a "
+"mensagem acima em: https://jasp-stats.org/bug-reports"
 
 msgid "This plot can not be edited because: %s"
-msgstr ""
+msgstr "Este diagrama não pode ser editado porque: %s"
 
 msgid "Theoretical quantiles"
-msgstr ""
+msgstr "Quantis teóricos"
 
-#, fuzzy
 msgid "Observed quantiles"
-msgstr "momentos observados"
+msgstr "Quantis observados"
 
 msgid "unsupported plot object of class: %s"
-msgstr ""
+msgstr "parcela não suportada objeto de classe: %s"
 
 msgid "unknown legend position string"
-msgstr ""
+msgstr "string de posição de legenda desconhecida"
 
 msgid ""
 "Arguments xAxis and yAxis of themeJasp will be deprecated. Please use the "
 "argument \"sides\" instead."
 msgstr ""
+"Os argumentos xAxis e yAxis de themeJasp serão descontinuados. Em vez disso, "
+"use o argumento \"lados\"."
