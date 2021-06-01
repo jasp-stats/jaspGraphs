@@ -14,10 +14,11 @@ Imports:
     ggplot2 (>= 3.0.0),
     gridExtra,
     gtable,
+    lifecycle,
     jsonlite,
     R6,
     RColorBrewer,
     rlang,
     scales,
-    stringr,
     viridisLite
+Roxygen: list(markdown = TRUE)

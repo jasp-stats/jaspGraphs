@@ -63,7 +63,7 @@ names.jaspGraphsPlot <- function(x) {
   names(x$subplots)
 }
 
-reDrawJaspGraphsPlot <- function(subplots, args, grob = FALSE, newpage = FALSE,
+reDrawJaspGraphsPlot <- function(subplots, args, grob = FALSE, newpage = TRUE,
                                  decodeplotFun = get0("decodeplot"), ...) {
   # redraws plots from PlotPriorAndPosterior, PlotRobustnessSequential, and ggMatrixplot
   g <- gridExtra::arrangeGrob(
@@ -75,14 +75,14 @@ reDrawJaspGraphsPlot <- function(subplots, args, grob = FALSE, newpage = FALSE,
   )
   if (!is.null(decodeplotFun))
     g <- decodeplotFun(g)
-  
+
   if (grob)
     return(g)
   else
     return(gridExtra::grid.arrange(g, ..., newpage = newpage))
 }
 
-reDrawAlignedPlot <- function(subplots, args, grob = FALSE, newpage = FALSE,
+reDrawAlignedPlot <- function(subplots, args, grob = FALSE, newpage = TRUE,
                               decodeplotFun = get0("decodeplot"), ...) {
   # redraws plots from JASPScatterPlot
   g <- makeGrobAlignedPlots(

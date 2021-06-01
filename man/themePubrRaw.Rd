@@ -45,6 +45,6 @@ Set a Pubr theme and additional options like other themes,
 \code{graph + themePubrRaw()}.
 
 This function is a modification of
- \code{\link[ggpubr:theme_pubr]{ggpubr::theme_pubr}} that create a publication ready
- theme.
+\code{\link[ggpubr:theme_pubr]{ggpubr::theme_pubr}} that create a publication ready
+theme.
 }

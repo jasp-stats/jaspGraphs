@@ -207,7 +207,7 @@ makeBFlabels <- function(bfSubscripts, BFvalues, subs = NULL, bfTxt = NULL) {
     lab <- paste0(bfTxt, " == ", format(BFvalues, digits = getGraphOption("digits")[["BF"]]))
   } else {
     if (is.null(subs))
-      subs <- unlist(stringr::str_extract_all(bfSubscripts, "(?<=\\[).+?(?=\\])")) # get everything between []
+      subs <- unlist(str_extract_all(bfSubscripts, "(?<=\\[).+?(?=\\])")) # get everything between []
     if (length(subs) != length(BFvalues))
       stop2("bfSubscripts and BFvalues have different length!")
     lab <- paste0("BF[", subs[2:1], "]", "[", subs[1:2], "] == ",

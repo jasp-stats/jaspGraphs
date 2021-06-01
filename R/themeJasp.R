@@ -1,31 +1,28 @@
 #' @importFrom ggplot2 element_line element_text element_rect margin coord_flip element_blank
 #' @importFrom grid unit
 
-#' @title JASP theme for ggplot2 objects
-#' @description Set a JASP theme and additional options with \code{themeJASP(graph)}, or add the theme to a graph like
-#' with other themes, \code{graph + themeJaspRaw()}.
-#' @rdname themeJasp
+#' @title Deprecated: use \link{themeJaspRaw} and \link{geom_rangeframe} instead.
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' Use \code{\link{themeJaspRaw}} and \link{geom_rangeframe} instead.
 #'
 #' @param xAxis Should there be a horizontal line for the x-axis?
 #' @param yAxis Should there be a horizontal line for the x-axis?
-#' @param legend.cex magnification of the font size for the legend.
-#' @param Xvjust adjustment of x-axis tick labels
-#' @param Yvjust adjustment of y-axis tick labels
 #' @param graph a ggplot2 object
-#' @param sides see \code{\link{geom_rangeframe}}
+#' @param sides see \link{geom_rangeframe}
 #' @param axis.title.cex scalar magnification for the title of the axes.
 #' @param bty remake R's bty  = 'n'?
 #' @param fontsize global font size.
 #' @param family global font familiy.
 #' @param horizontal flip graph?
-#' @param legend.title should legend have a title?
 #' @param legend.position where should the legend be?
 #' @param legend.justification see theme
 #' @param axisTickLength length of axis ticks.
 #' @param axisTickWidth width of axis ticks.
 #'
 #' @export
-themeJasp = function(graph,
+themeJasp <- function(graph,
                      xAxis = TRUE,
                      yAxis = TRUE,
                      sides = "bl",
@@ -39,41 +36,58 @@ themeJasp = function(graph,
                      axisTickLength = getGraphOption("axisTickLength"),
                      axisTickWidth = getGraphOption("axisTickWidth")) {
 
+  lifecycle::deprecate_warn(
+    when = "0.5.2.6",
+    what = "themeJasp()",
+    with = "themeJaspRaw()"
+  )
+
   if (!xAxis || !yAxis) {
     warning("Arguments xAxis and yAxis of themeJasp will be deprecated. Please use the argument \"sides\" instead.")
 
     if (horizontal) {
       if (!xAxis)
-        sides <- stringr::str_remove(sides, "l")
+        sides <- str_remove_all(sides, "l")
       if (!yAxis)
-        sides <- stringr::str_remove(sides, "b")
+        sides <- str_remove_all(sides, "b")
     } else {
       if (!xAxis)
-        sides <- stringr::str_remove(sides, "b")
+        sides <- str_remove_all(sides, "b")
       if (!yAxis)
-        sides <- stringr::str_remove(sides, "l")
+        sides <- str_remove_all(sides, "l")
     }
     if (sides == "")
       bty <- NULL
   }
-  
+
   if (is.list(bty) && bty[["type"]] == "n")
     graph <- graph + geom_rangeframe(sides = sides)
-  
+
   if (horizontal)
     graph <- graph + coord_flip()
-  
+
   graph <- graph + themeJaspRaw(legend.position = legend.position,
                                 axis.title.cex = axis.title.cex, family = family,
                                 fontsize = fontsize, legend.justification = legend.justification,
                                 axisTickLength = axisTickLength, axisTickWidth = axisTickWidth)
-  
+
   return(graph)
 
 }
 
-# for manual usage
-#' @rdname themeJasp
+#' @title JASP theme for ggplot2 objects
+#'
+#' @param legend.cex magnification of the font size for the legend.
+#' @param Xvjust adjustment of x-axis tick labels
+#' @param Yvjust adjustment of y-axis tick labels
+#' @param axis.title.cex scalar magnification for the title of the axes.
+#' @param fontsize global font size.
+#' @param family global font familiy.
+#' @param legend.title should legend have a title?
+#' @param legend.position where should the legend be?
+#' @param legend.justification see theme
+#' @param axisTickLength length of axis ticks.
+#' @param axisTickWidth width of axis ticks.
 #' @export
 themeJaspRaw = function(legend.position = "none",
                         legend.cex = 1,
@@ -120,7 +134,7 @@ themeJaspRaw = function(legend.position = "none",
         plot.background = ggplot2::element_rect(fill = "transparent", color = "transparent"),
         plot.margin = ggplot2::margin(),
         plot.title = ggplot2::element_text(family = family, size = fontsize, hjust = 0.5), # center title
-		
+
 		# facet_wrap / facet_grid
 		strip.background = element_rect(fill = "transparent", color = "transparent")
 

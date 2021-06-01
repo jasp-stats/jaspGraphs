@@ -2,8 +2,7 @@
 % Please edit documentation in R/themeJasp.R
 \name{themeJasp}
 \alias{themeJasp}
-\alias{themeJaspRaw}
-\title{JASP theme for ggplot2 objects}
+\title{Deprecated: use \link{themeJaspRaw} and \link{geom_rangeframe} instead.}
 \usage{
 themeJasp(
   graph,
@@ -20,20 +19,6 @@ themeJasp(
   axisTickLength = getGraphOption("axisTickLength"),
   axisTickWidth = getGraphOption("axisTickWidth")
 )
-
-themeJaspRaw(
-  legend.position = "none",
-  legend.cex = 1,
-  axis.title.cex = 1,
-  family = getGraphOption("family"),
-  axisTickLength = getGraphOption("axisTickLength"),
-  axisTickWidth = getGraphOption("axisTickWidth"),
-  fontsize = getGraphOption("fontsize"),
-  legend.justification = "top",
-  legend.title = element_text(family = family, size = fontsize, hjust = 0.5),
-  Xvjust = NULL,
-  Yvjust = NULL
-)
 }
 \arguments{
 \item{graph}{a ggplot2 object}
@@ -42,7 +27,7 @@ themeJaspRaw(
 
 \item{yAxis}{Should there be a horizontal line for the x-axis?}
 
-\item{sides}{see \code{\link{geom_rangeframe}}}
+\item{sides}{see \link{geom_rangeframe}}
 
 \item{axis.title.cex}{scalar magnification for the title of the axes.}
 
@@ -61,16 +46,9 @@ themeJaspRaw(
 \item{axisTickLength}{length of axis ticks.}
 
 \item{axisTickWidth}{width of axis ticks.}
-
-\item{legend.cex}{magnification of the font size for the legend.}
-
-\item{legend.title}{should legend have a title?}
-
-\item{Xvjust}{adjustment of x-axis tick labels}
-
-\item{Yvjust}{adjustment of y-axis tick labels}
 }
 \description{
-Set a JASP theme and additional options with \code{themeJASP(graph)}, or add the theme to a graph like
-with other themes, \code{graph + themeJaspRaw()}.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+Use \code{\link{themeJaspRaw}} and \link{geom_rangeframe} instead.
 }
