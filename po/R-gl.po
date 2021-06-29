@@ -1,14 +1,23 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: jaspGraphs 0.5.2.5\n"
+"Project-Id-Version: \n"
 "POT-Creation-Date: 2021-06-29 16:44\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: gl_ES\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
+"X-Virgin-Header: remove this line if you change anything in the header.\n"
+"X-Language: gl_ES\n"
+"X-Source-Language: C\n"
+"X-Generator: Poedit 2.3\n"
 
 msgid "all subplots should be of class ggplot!"
 msgstr ""
@@ -34,8 +43,9 @@ msgstr ""
 msgid "linewidth should be positive!"
 msgstr ""
 
+#, fuzzy
 msgid "Not implemented"
-msgstr ""
+msgstr "Completo"
 
 msgid "incorrect class for align. Expected character of numeric."
 msgstr ""
@@ -73,14 +83,16 @@ msgstr ""
 msgid "BF%s"
 msgstr ""
 
+#, fuzzy
 msgid "log(BF%s)"
-msgstr ""
+msgstr "log(FB₁₀)"
 
 msgid "Density"
-msgstr ""
+msgstr "Densidade"
 
+#, fuzzy
 msgid "Median:"
-msgstr ""
+msgstr "Mediana"
 
 msgid "Cannot provide both a BF pizzaplot and a points legend!"
 msgstr ""
@@ -88,8 +100,9 @@ msgstr ""
 msgid "Anecdotal"
 msgstr ""
 
+#, fuzzy
 msgid "Moderate"
-msgstr ""
+msgstr "Nome do modelo"
 
 msgid "Strong"
 msgstr ""
@@ -100,10 +113,13 @@ msgstr ""
 msgid "Extreme"
 msgstr ""
 
+#, fuzzy
 msgid "Evidence"
-msgstr ""
+msgstr "Confianza"
 
-msgid "lineColors and lineTypes must have the same length as the number of groups in dfLines."
+msgid ""
+"lineColors and lineTypes must have the same length as the number of groups "
+"in dfLines."
 msgstr ""
 
 msgid "Evidence for H%s:"
@@ -142,8 +158,9 @@ msgstr ""
 msgid "switchEnum: Invalid case(s) detected:"
 msgstr ""
 
+#, fuzzy
 msgid "Valid cases are:"
-msgstr ""
+msgstr "Excluír casos por parellas"
 
 msgid "This function will be deprecated."
 msgstr ""
@@ -157,10 +174,14 @@ msgstr ""
 msgid "Argument %s should either have length 1 or length %d."
 msgstr ""
 
-msgid "removeXYlabels must be a character and contain either 'x', 'y', 'xy', or 'none'"
+msgid ""
+"removeXYlabels must be a character and contain either 'x', 'y', 'xy', or "
+"'none'"
 msgstr ""
 
-msgid "Dim(removeXYlabels) does not match dim(plotList) / layout. Got (%d, %d) and expected: (%d, %d)."
+msgid ""
+"Dim(removeXYlabels) does not match dim(plotList) / layout. Got (%d, %d) and "
+"expected: (%d, %d)."
 msgstr ""
 
 msgid "removeXYlabels should either have length 1 or length(plotList)."
@@ -172,7 +193,9 @@ msgstr ""
 msgid "removeXYlabels must be numeric, larger than 0 and smaller than 1"
 msgstr ""
 
-msgid "dim(removeXYlabels)[1] does not match prod(dim(plotList)) / layout. Got (%d, %d) and expected: prod(%d, %d)."
+msgid ""
+"dim(removeXYlabels)[1] does not match prod(dim(plotList)) / layout. Got (%d, "
+"%d) and expected: prod(%d, %d)."
 msgstr ""
 
 msgid "removeXYlabels should either have length 2 or length(plotList)."
@@ -184,7 +207,9 @@ msgstr ""
 msgid "layout must be a matrix but instead was of mode %s and class %s"
 msgstr ""
 
-msgid "length of layout (%d) does not match length of plotList (%d). Use NULL entries in plotList to specify empty plots."
+msgid ""
+"length of layout (%d) does not match length of plotList (%d). Use NULL "
+"entries in plotList to specify empty plots."
 msgstr ""
 
 msgid "Layout must consist of unique integers starting from 1."
@@ -208,7 +233,9 @@ msgstr ""
 msgid "input was not a valid R expression, reinterpreting as character"
 msgstr ""
 
-msgid "Unknown title type: %s. I'm pretending it works as character and hope for the best..."
+msgid ""
+"Unknown title type: %s. I'm pretending it works as character and hope for "
+"the best..."
 msgstr ""
 
 msgid "Computing plotEditingOptions gave an error: %s"
@@ -226,23 +253,41 @@ msgstr ""
 msgid "Converting plotEditingOptions to JSON gave an error: %s."
 msgstr ""
 
-msgid "Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s To receive assistance with this problem, please report the message above at: https://jasp-stats.org/bug-reports"
+#, fuzzy
+msgid ""
+"Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s "
+"To receive assistance with this problem, please report the message above at: "
+"https://jasp-stats.org/bug-reports"
 msgstr ""
+"Por desgraza, a gráfica non se pode gardar.\n"
+"\n"
+"Mensaxe de fallo:\n"
+"%1\n"
+"\n"
+"Se persiste o problema, por favor envía a mensaxe anterior a: https://jasp-"
+"stats.org/bug-reports"
 
 msgid "This plot can not be edited because: %s"
 msgstr ""
 
+#, fuzzy
 msgid "Theoretical quantiles"
-msgstr ""
+msgstr "Eixe vertical"
 
+#, fuzzy
 msgid "Observed quantiles"
-msgstr ""
+msgstr "Valores observados"
 
 msgid "unsupported plot object of class: %s"
 msgstr ""
 
+#, fuzzy
 msgid "unknown legend position string"
+msgstr "Posición da lenda"
+
+msgid ""
+"Arguments xAxis and yAxis of themeJasp will be deprecated. Please use the "
+"argument \"sides\" instead."
 msgstr ""
 
-msgid "Arguments xAxis and yAxis of themeJasp will be deprecated. Please use the argument \"sides\" instead."
-msgstr ""
+
