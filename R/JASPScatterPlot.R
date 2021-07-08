@@ -15,7 +15,7 @@
 #' @param plotAbove type of plot above the scatter plot.
 #' @param plotRight type of plot right of the scatter plot.
 #' @param colorAreaUnderDensity Logical, should the area under the density be colored?
-#' @param alphaAreaUnderDensity Real in [0, 1], transparency for area under density.
+#' @param alphaAreaUnderDensity Real in \[0, 1\], transparency for area under density.
 #' @param showLegend Should the legend be shown?
 #' @param legendTitle A string for the title of the legend. \code{NULL} implies the legend is not shown.
 #' @param emulateGgMarginal Should the result be as similar as possible to \code{\link[ggExtra]{ggMarginal}}? Overwrites other parameters.

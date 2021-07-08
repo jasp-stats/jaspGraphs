@@ -37,6 +37,8 @@ This function is equivalent to \code{qqnorm(residuals); qqline(residuals)}, but 
 }
 \examples{
 x <- rnorm(100)
+jaspGraphs::plotQQnorm(x)
+# add a confidence interval for each point
 lower <- x - .1
 upper <- x + .1
 jaspGraphs::plotQQnorm(x, lower, upper)

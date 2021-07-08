@@ -1,0 +1,69 @@
+# template:
+#   package: tidytemplate
+
+reference:
+- title: Complete Plots
+  contents:
+  - drawBFpizza
+  - JASPScatterPlot
+  - PlotPriorAndPosterior
+  - PlotRobustnessSequential
+  - plotPieChart
+  - plotQQnorm
+
+- title: Geoms
+  contents:
+  - geom_aligned_text
+  - geom_point
+  - geom_line
+  - geom_rangeframe
+
+- title: Themes
+  desc: >
+    Complete themes. Best is to make these available through a dropdown
+  contents:
+  - themeApaRaw
+  - themeJaspRaw
+  - themePubrRaw
+  - getEmptyTheme
+
+- title: Global Graph Options
+  desc: >
+    list of options to modify plot settings (e.g., the theme) globally
+  contents:
+  - graphOptions
+
+- title: Color Palettes
+  contents:
+  - JASPcolors
+
+- title: Miscellaneous
+  contents:
+  - getPrettyAxisBreaks
+  - parseThis
+  - axesLabeller
+  - getAxisBreaks
+  - hypothesis2BFtxt
+  - plotEditing
+  - plotEditingOptions
+  - scale_x_continuous
+  - getBFSubscripts
+
+- title: jaspGraphsPlot
+  desc: >
+    An R6 wrapper around multiple ggplot2 objects to postpone drawing of a figure.
+    This is mainly necessary because composed ggplot2 objects typically becomes grobs
+    which cannot be edited at the moment.
+  contents:
+  - jaspGraphsPlotMethods
+  - ggMatrixPlot
+
+- title: Deprecated
+  desc: >
+    Do not use, and please remove these functions wherever you see they are used.
+  contents:
+  - drawAxis
+  - drawLines
+  - drawPoints
+  - drawSmooth
+  - themeJasp

@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{drawAxis}
 \alias{drawAxis}
-\title{(Deprecated) draw an empty ggplot with just axes.}
+\title{Deprecated: use \code{ggplot2::ggplot() + ggplot2::scale_x|y_continuous(...)} instead.}
 \usage{
 drawAxis(
   graph = NULL,
@@ -57,5 +57,5 @@ drawAxis(
 \item{yTrans}{transformation function for the y-axis.}
 }
 \description{
-(Deprecated) draw an empty ggplot with just axes.
+Deprecated: use \code{ggplot2::ggplot() + ggplot2::scale_x|y_continuous(...)} instead.
 }

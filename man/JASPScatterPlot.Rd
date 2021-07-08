@@ -67,6 +67,8 @@ The only change added when \code{emulateGgMarginal = TRUE} is that \code{ggplot2
 is added to the main plot
 }
 \examples{
+\dontrun{
+
 x <- rnorm(100)
 y <- rgamma(100, 1, 1)
 
@@ -78,7 +80,7 @@ JASPScatterPlot(x, y, xName = "Normal", yName = "Gamma", addSmooth = FALSE)
 JASPScatterPlot(x, y, xName = "Normal", yName = "Gamma", addSmoothCI = FALSE)
 
 JASPScatterPlot(x, y, xName = "Normal", yName = "Gamma", plotAbove = "histogram")
-JASPScatterPlot(x, y, xName = "Normal", yName = "Gamma", plotAbove = "histogram", 
+JASPScatterPlot(x, y, xName = "Normal", yName = "Gamma", plotAbove = "histogram",
                 plotRight = "histogram")
 
 JASPScatterPlot(x, y, xName = "Normal", yName = "Gamma", plotAbove = "histogram",
@@ -91,7 +93,7 @@ data("mtcars")
 JASPScatterPlot(x = mtcars$mpg, y = mtcars$disp, group = mtcars$cyl)
 JASPScatterPlot(x = mtcars$mpg, y = mtcars$disp, group = mtcars$cyl, plotAbove = "none")
 JASPScatterPlot(x = mtcars$mpg, y = mtcars$disp, group = mtcars$cyl, plotRight = "none")
-JASPScatterPlot(x = mtcars$mpg, y = mtcars$disp, group = mtcars$cyl, plotRight = "none", 
+JASPScatterPlot(x = mtcars$mpg, y = mtcars$disp, group = mtcars$cyl, plotRight = "none",
                 plotAbove = "none")
 
 JASPScatterPlot(x = mtcars$mpg, y = mtcars$disp, group = mtcars$cyl, plotAbove = "histogram",
@@ -115,4 +117,6 @@ plot <- JASPScatterPlot(x, y, xName = "Normal", yName = "Gamma", addSmooth = FAL
                         emulateGgMarginal = TRUE)
 plot
 # ggExtra::ggMarginal(plot$subplots[[1]])
+
+}
 }

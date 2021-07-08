@@ -4,15 +4,17 @@
 #'
 #' @param lower Numeric vector, lower confidence interval of each residual. If NULL, no error bars are drawn.
 #' @param upper Numeric vector, lower confidence interval of each residual. If NULL, no error bars are drawn.
-#' @param abline  Logical, should an abline be drawn through the origin? 
+#' @param abline  Logical, should an abline be drawn through the origin?
 #' @param ablineColor String, color of the abline.
-#' @param xName String, name for the x-axis. 
+#' @param xName String, name for the x-axis.
 #' @param yName String, name for the y-axis.
-#' 
+#'
 #' @details This function is equivalent to \code{qqnorm(residuals); qqline(residuals)}, but uses \code{ggplot2} and allows for confidence bands.
-#' 
-#' @examples 
+#'
+#' @examples
 #' x <- rnorm(100)
+#' jaspGraphs::plotQQnorm(x)
+#' # add a confidence interval for each point
 #' lower <- x - .1
 #' upper <- x + .1
 #' jaspGraphs::plotQQnorm(x, lower, upper)

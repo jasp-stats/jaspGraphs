@@ -5,5 +5,5 @@ toJSON    <- function(x) jsonlite::toJSON(x, auto_unbox = TRUE, digits = NA, nul
 
   split <- base::strsplit(as.character(error), ":")[[1]]
   last <- split[[length(split)]]
-  stringr::str_trim(last)
+  trimws(last)
 }
