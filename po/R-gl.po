@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2021-06-29 16:44\n"
-"PO-Revision-Date: 2021-07-01 19:33+0000\n"
+"PO-Revision-Date: 2021-07-08 18:32+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspgraphs/"
 "gl/>\n"
@@ -22,72 +22,71 @@ msgstr ""
 "X-Source-Language: C\n"
 
 msgid "all subplots should be of class ggplot!"
-msgstr ""
+msgstr "todas as subgráficas deben ser de clase ggplot!"
 
 msgid "plotFunction should be a function!"
-msgstr ""
+msgstr "plotFunction debe ser unha función!"
 
 msgid "all arguments in ... should be named."
-msgstr ""
+msgstr "tódolos argumentos en ... deben nomearse."
 
 msgid "value should be numeric!"
-msgstr ""
+msgstr "o valor debe ser numérico!"
 
 msgid "group should be a character or factor!"
-msgstr ""
+msgstr "o grupo debe ser un carácter ou un factor!"
 
 msgid "value and group should have the same length!"
-msgstr ""
+msgstr "valor e grupo deben ter o mesmo longo!"
 
 msgid "scaleText should be positive!"
-msgstr ""
+msgstr "scaleText debe ser positivo!"
 
 msgid "linewidth should be positive!"
-msgstr ""
+msgstr "o ancho de liña debe ser positivo!"
 
-#, fuzzy
 msgid "Not implemented"
-msgstr "Completo"
+msgstr "Non implementado"
 
 msgid "incorrect class for align. Expected character of numeric."
-msgstr ""
+msgstr "clase incorrecta para aliñar. Agárdase un carácter numérico."
 
 msgid "dfLines should be a data.frame with $x, $y, and $g!"
-msgstr ""
+msgstr "dfLines debe ser un data.frame con $x, $y, e $g!"
 
 msgid "dfPoints should be a data.frame with $x, $y, and $g!"
-msgstr ""
+msgstr "dfPoints debe ser un data.frame con $x, $y, e $g!"
 
 msgid "CRI should be numeric and have length 2! (left bound, right bound)"
 msgstr ""
+"ICR debe numérico e ter un longo de 2! (límite esquerdo, límite dereito)"
 
 msgid "median should be numeric and have length 1!"
-msgstr ""
+msgstr "a mediana debe ser numérica e ter un longo de 1!"
 
 msgid "BF should be numeric and have length 1!"
-msgstr ""
+msgstr "o FB debe ser numérico e ter un longo de 1!"
 
 msgid "bfSubscripts and BFvalues have different length!"
-msgstr ""
+msgstr "bfSubscripts e BFvalues teñen longos diferentes!"
 
 msgid "data | H0"
-msgstr ""
+msgstr "datos | H0"
 
 msgid "data | H1"
-msgstr ""
+msgstr "datos | H1"
 
 msgid "data | H-"
-msgstr ""
+msgstr "datos | H-"
 
 msgid "data | H+"
-msgstr ""
+msgstr "datos | H+"
 
 msgid "BF%s"
-msgstr ""
+msgstr "FB%s"
 
-#, fuzzy
 msgid "log(BF%s)"
-msgstr "log(FB₁₀)"
+msgstr "log(FB%s)"
 
 msgid "Density"
 msgstr "Densidade"
@@ -97,6 +96,8 @@ msgstr "Mediana:"
 
 msgid "Cannot provide both a BF pizzaplot and a points legend!"
 msgstr ""
+"Non se pode proporcionar tanto a gráfica de sectores dos FB como a lenda de "
+"puntos!"
 
 msgid "Anecdotal"
 msgstr "Anecdótico"
@@ -120,7 +121,7 @@ msgid ""
 "lineColors and lineTypes must have the same length as the number of groups "
 "in dfLines."
 msgstr ""
-"lineColors e lineTypes deben ter a mesma longura que o número de grupos de "
+"lineColors e lineTypes deben ter o mesmo longo que o número de grupos de "
 "dfLines."
 
 msgid "Evidence for H%s:"
@@ -130,19 +131,19 @@ msgid "Evidence for H%s"
 msgstr "Evidencia para H%s"
 
 msgid "palette must be character!"
-msgstr ""
+msgstr "a paleta debe ser de carácter!"
 
 msgid "palette was %s but must be one of %s"
-msgstr ""
+msgstr "a paleta era %s pero debe ser unha de %s"
 
 msgid ","
-msgstr ""
+msgstr ","
 
 msgid "createEnum: nameValuePairs should be a list!"
-msgstr ""
+msgstr "createEnum: nameValuePairs debe ser unha lista!"
 
 msgid "createEnum: unique names and values have different length!"
-msgstr ""
+msgstr "createEnum: os nomes e valores únicos teñen diferente longo!"
 
 msgid "nonexisting enum type %s!"
 msgstr ""
@@ -275,9 +276,8 @@ msgstr ""
 msgid "Theoretical quantiles"
 msgstr "Eixe vertical"
 
-#, fuzzy
 msgid "Observed quantiles"
-msgstr "Valores observados"
+msgstr "Cuantiles observados"
 
 msgid "unsupported plot object of class: %s"
 msgstr ""
@@ -290,3 +290,5 @@ msgid ""
 "Arguments xAxis and yAxis of themeJasp will be deprecated. Please use the "
 "argument \"sides\" instead."
 msgstr ""
+"Os argumentos xAxis e yAxis de themeJasp vanse desaconsellar. Por favor, "
+"utiliza en troques o argumento \"sides\"."
