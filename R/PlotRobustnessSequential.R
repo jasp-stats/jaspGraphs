@@ -69,7 +69,7 @@ PlotRobustnessSequential <- function(
   }
 
   if (!is.null(dfPoints) && !is.null(BF)) {
-    stop("Cannot provide both a BF pizzaplot and a points legend!")
+    stop2("Cannot provide both a BF pizzaplot and a points legend!")
   }
 
   yRange <- range(dfLines$y)
@@ -191,7 +191,7 @@ PlotRobustnessSequential <- function(
     scaleCol <- scaleLty <- scaleShape <- scaleFill <- scaleSize <- NULL
   } else {
     if (length(unique(dfLines$g)) != length(lineColors) || length(lineColors) != length(lineTypes))
-      stop("lineColors and lineTypes must have the same length as the number of groups in dfLines.")
+      stop2("lineColors and lineTypes must have the same length as the number of groups in dfLines.")
 
     if (plotLineOrPoint == "line") {
       mapping    <- aes(x = .data$x, y = .data$y, group = .data$g, linetype = .data$g, color = .data$g)

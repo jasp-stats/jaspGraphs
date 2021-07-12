@@ -121,5 +121,5 @@ is.coordPolar <- function(x) inherits(x, "CoordPolar")
 unsupportedFigureError <- function(message) {
   e <- structure(class = c("unsupportedFigureError", "error", "condition"),
                  list(message=message, call=sys.call(-1)))
-  stop(e)
+  stop2(e)
 }

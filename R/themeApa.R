@@ -105,7 +105,7 @@ themeApaRaw <- function(legend.pos       = getGraphOption("legend.position"),
       "bottomright"  = theme(legend.position = c(0.95, 0.05), legend.justification = c(0.95, 0.05)),
       "bottommiddle" = theme(legend.position = c(0.5, 0.05),  legend.justification = c(0.5, 0.05)),
       "none" = theme(legend.position = "none"),
-      stop("unknown legend position string")
+      stop2("unknown legend position string")
     )
 
   theme <- theme + theme(

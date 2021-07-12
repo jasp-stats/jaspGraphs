@@ -10,7 +10,7 @@ print.jaspGraphs <- function(x, ...) {
   } else if (length(class(x)) > 1L) {
     NextMethod()
   } else {
-    stop(sprintf(
+    stop2(sprintf(
       "unsupported plot object of class: %s",
       paste0(class(x), sep = ", ")
     ))
