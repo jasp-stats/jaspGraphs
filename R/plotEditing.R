@@ -35,12 +35,12 @@ toJSON    <- function(x) jsonlite::toJSON(x, auto_unbox = TRUE, digits = NA, nul
 validateOptions <- function(newOptions, oldOptions) {
 
   if (!is.list(newOptions)) {
-    stop("options should be an R list or a json string!")
+    stop2("options should be an R list or a json string!")
   }
 
   if (newOptions[["xAxis"]][["type"]] != oldOptions[["xAxis"]][["type"]] ||
       newOptions[["yAxis"]][["type"]] != oldOptions[["yAxis"]][["type"]]) {
-    stop("The axis type in the new options list does not match the graph!")
+    stop2("The axis type in the new options list does not match the graph!")
   }
 
 }
@@ -77,7 +77,7 @@ optionsDiff <- function(new, old) {
 plotEditing <- function(graph, newOptions) {
 
   if (!is.ggplot(graph))
-    stop("graph should be a ggplot2")
+    stop2("graph should be a ggplot2")
 
   if (isTRUE(newOptions[["resetPlot"]])) {
     if (hasOriginalEditingOptions(graph)) {

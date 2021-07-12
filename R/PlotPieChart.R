@@ -26,11 +26,11 @@ plotPieChart <- function(value, group,
                          ...) {
 
   if (!is.numeric(value))
-    stop("value should be numeric!")
+    stop2("value should be numeric!")
   if (!(is.character(group) || is.factor(group)))
-    stop("group should be a character or factor!")
+    stop2("group should be a character or factor!")
   if (length(value) != length(group))
-    stop("value and group should have the same length!")
+    stop2("value and group should have the same length!")
 
   # change the default arguments for themeJasp
   dots <- list(...)

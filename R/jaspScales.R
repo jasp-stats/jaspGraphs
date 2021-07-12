@@ -49,7 +49,7 @@ scale_x_continuous <- function(name = waiver(), breaks = getPrettyAxisBreaks, mi
       if (is.formula(sec.axis))
         sec.axis <- sec_axis(sec.axis)
       if (!is.sec_axis(sec.axis))
-        stop("Secondary axes must be specified using 'sec_axis()'")
+        stop2("Secondary axes must be specified using 'sec_axis()'")
       sc$secondary.axis <- sec.axis
     }
   }
@@ -67,7 +67,7 @@ set_sec_axis <- function(sec.axis, scale) {
     if (is.formula(sec.axis))
       sec.axis <- sec_axis(sec.axis)
     if (!is.sec_axis(sec.axis))
-      stop("Secondary axes must be specified using 'sec_axis()'", domain = NA)
+      stop2("Secondary axes must be specified using 'sec_axis()'")
     scale$secondary.axis <- sec.axis
   }
   return(scale)
@@ -104,7 +104,7 @@ scale_y_continuous <- function(name = waiver(), breaks = getPrettyAxisBreaks, mi
       if (is.formula(sec.axis))
         sec.axis <- sec_axis(sec.axis)
       if (!is.sec_axis(sec.axis))
-        stop("Secondary axes must be specified using 'sec_axis()'")
+        stop2("Secondary axes must be specified using 'sec_axis()'")
       sc$secondary.axis <- sec.axis
     }
   }

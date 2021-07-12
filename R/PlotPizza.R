@@ -21,9 +21,9 @@ drawBFpizza <- function(dat, linewidth = 1, scaleText = 0.3, show.legend = FALSE
   # y = rotation from origin
   
   if (scaleText < 0)
-    stop("scaleText should be positive!")
+    stop2("scaleText should be positive!")
   if (linewidth < 0)
-    stop("linewidth should be positive!")
+    stop2("linewidth should be positive!")
 
   if (!is.data.frame(dat))
     dat <- data.frame(y = dat)
