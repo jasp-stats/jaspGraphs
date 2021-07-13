@@ -52,16 +52,15 @@ getPlotEditingOptions.ggplot_built <- function(graph) {
   xSettings <- getAxisInfo(currentAxis[["x"]], opts, graph)
   ySettings <- getAxisInfo(currentAxis[["y"]], opts, graph)
 
-  out <- list(
+  out <- plotEditingOptionsSuccess(list(
     xAxis = list(
       type     = axisTypes[["x"]],
       settings = xSettings
     ), yAxis = list(
       type     = axisTypes[["y"]],
       settings = ySettings
-    ),
-    error = ErrorType$Success
-  )
+    )
+  ))
 
   return(out)
 }
@@ -106,6 +105,16 @@ plotEditingOptionsError <- function(error, unexpected = FALSE) {
       errorType = ErrorType$ValidationError
     )
   }
+}
+
+plotEditingOptionsSuccess <- function(output) {
+
+  return(c(
+    output,
+    errorType = ErrorType$Success,
+    reasonNotEditable = ""
+  ))
+
 }
 
 validateGraphType <- function(graph) {
