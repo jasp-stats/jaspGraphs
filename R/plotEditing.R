@@ -32,6 +32,8 @@ toJSON    <- function(x) jsonlite::toJSON(x, auto_unbox = TRUE, digits = NA, nul
 `%|NW|%` <- function(a, b) if (!(is.null(a) || is.waive(a))) a else b
 `%|W|%`  <- function(a, b) if (                !is.waive(a)) a else b
 
+isCoordFlipped <- function(x) inherits(x, "CoordFlip")
+
 validateOptions <- function(newOptions, oldOptions) {
 
   if (!is.list(newOptions)) {
@@ -98,6 +100,12 @@ plotEditing <- function(graph, newOptions) {
 
   # could be a loop over all scales from e.g., facetted plots
   currentAxis <- ggbuild[["layout"]][["get_scales"]](1L)
+
+  if (isCoordFlipped(ggbuild[["layout"]][["coord"]])) {
+    currentAxis[["x"]][["position"]] <- remapPositionOfFlippedPlot(currentAxis[["x"]][["position"]])
+    currentAxis[["y"]][["position"]] <- remapPositionOfFlippedPlot(currentAxis[["y"]][["position"]])
+    newOptions[c("xAxis", "yAxis")] <- newOptions[c("yAxis", "xAxis")]
+  }
 
   graph <- graph + internalUpdateAxis(currentAxis[["x"]], newOptions[["xAxis"]][["settings"]])
   graph <- graph + internalUpdateAxis(currentAxis[["y"]], newOptions[["yAxis"]][["settings"]])
