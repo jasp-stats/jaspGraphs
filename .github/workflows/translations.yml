@@ -12,7 +12,7 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.REPO_KEY }}
       WEBLATE_KEY: ${{ secrets.WEBLATE_KEY }}
-      R_REPO: jaspgraphs-r
+      R_REPO: jaspgraphs
 
     steps:
       - uses: jasp-stats/jasp-actions/wlcLock@master
