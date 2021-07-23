@@ -38,6 +38,10 @@ getAxisType.ggplot <- function(x) {
 }
 
 getAxisTitle <- function(x, xory) {
+
+  if (isCoordFlipped(x[["layout"]][["coord"]]))
+    xory <- if (xory == "x") "y" else "x"
+
   title <- if (xory == "x") {
     x[["layout"]][["panel_scales_x"]][[1L]][["name"]] %|W|% x[["plot"]][["labels"]][["x"]]
   } else {
@@ -99,7 +103,8 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
     labels = opts[[1]][[xory]][["get_labels"]](),
     breaks = opts[[1]][[xory]][["get_breaks"]](),
     limits = opts[[1]][[xory]][["get_limits"]](),
-    expand = x[["expand"]] %|W|% expand_default(x)
+    # x[["expand"]] does not take coord_flip() into account
+    expand = opts[[1]][[xory]][["scale"]][["expand"]] %|W|% expand_default(x)
   )
 
   opts2keep[c("title", "titleType")] <- getAxisTitle(ggbuild, xory)
@@ -132,9 +137,14 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
   opts2keep[["range"]] <- c(from, to, by)
   if (is.null(opts2keep[["breaksType"]])) { # only set this if breaks weren't NULL
     # this tryCatch is ugly, but seq can crash in many ways..
-    opts2keep[["breaksType"]] <- tryCatch(
-      if (isTRUE(all.equal(seq(from, to, by), breaks))) "range" else "manual",
-      error = function(e) return("manual")
+    opts2keep[["breaksType"]] <- tryCatch({
+      breaksValues <- seq(from, to, by)
+      condition <- all(
+        isTRUE(all.equal(seq(from, to, by), breaks)),
+        opts2keep[["labels"]] == as.character(breaksValues)
+      )
+      if (condition) "range" else "manual"
+    }, error = function(e) return("manual")
     )
   }
 
@@ -186,7 +196,8 @@ internalUpdateAxis.ScaleContinuousPosition <- function(currentAxis, newSettings)
     currentAxis[["breaks"]] <- zapsmall(seq(tmp[1L], tmp[2L], tmp[3L]))
     currentAxis[["labels"]] <- as.character(currentAxis[["breaks"]])
   } else {
-    currentAxis[["breaks"]] <- sort(newSettings[["breaks"]])
+    # currentAxis[["breaks"]] <- sort(newSettings[["breaks"]])
+    currentAxis[["breaks"]] <- newSettings[["breaks"]]
     currentAxis[["labels"]] <- newSettings[["labels"]]
   }
 
@@ -242,4 +253,18 @@ titleTypeWarning <- function(title) {
   else
     paste(class(title), collapse = ", ")
   warning(sprintf("Unknown title type: %s. I'm pretending it works as character and hope for the best...", msg))
+}
+
+remapPositionOfFlippedPlot <- function(position) {
+  # for a plot with ggplot2::coord_flip(), the scales are modified
+  # in particular, given
+  # scales <- ggbuild[["layout"]][["get_scales"]](1L)
+  # instead of scales$x$position == "bottom"
+  # we have scales$x$position == "left"
+  switch(position,
+    "top"  = "right",
+    "right" = "top",
+    "left" = "bottom",
+    "bottom" = "left"
+  )
 }
