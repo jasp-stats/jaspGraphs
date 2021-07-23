@@ -6,12 +6,12 @@ jaspGraphsPlot <- R6::R6Class(
     initialize = function(subplots, plotFunction = reDrawJaspGraphsPlot, ...) {
 
       if (!all(vapply(subplots, is.ggplot, TRUE)))
-        stop("all subplots should be of class ggplot!")
+        stop2("all subplots should be of class ggplot!")
       if (!is.function(plotFunction))
-        stop("plotFunction should be a function!")
+        stop2("plotFunction should be a function!")
       plotArgs <- list(...)
       if (!length(names(plotArgs)) == length(plotArgs))
-        stop("all arguments in ... should be named.")
+        stop2("all arguments in ... should be named.")
       if (is.null(plotArgs[["names"]]) && identical(plotFunction, reDrawJaspGraphsPlot))
         plotArgs[["names"]] <- paste0("plot", seq_along(subplots))
 

@@ -112,7 +112,7 @@ geom_aligned_text <- function(mapping = NULL, data = NULL, stat = "identity", po
                               na.rm = FALSE, show.legend = NA, inherit.aes = TRUE) {
   if (!missing(nudge_x) || !missing(nudge_y)) {
     if (!missing(position)) {
-      stop("You must specify either `position` or `nudge_x`/`nudge_y`.", 
+      stop2("You must specify either `position` or `nudge_x`/`nudge_y`.",
            call. = FALSE)
     }
     position <- ggplot2::position_nudge(nudge_x, nudge_y)

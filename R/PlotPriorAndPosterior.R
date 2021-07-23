@@ -42,7 +42,7 @@ getEmptyPlot <- function(axes = FALSE) {
 
 
   if (axes) {
-    stop("Not implemented")
+    stop2("Not implemented")
   } else {
     ggplot2::ggplot() + ggplot2::geom_blank() + getEmptyTheme()
   }
@@ -62,7 +62,7 @@ draw2Lines <- function(l, x = 0.5, parse = needsParsing(l), align = c("center", 
       "right"  = 1.0
     )
   } else {
-    stop("incorrect class for align. Expected character of numeric.")
+    stop2("incorrect class for align. Expected character of numeric.")
   }
 
   nLabels <- length(l)
@@ -95,16 +95,16 @@ errCheckPlots <- function(dfLines, dfPoints = NULL, CRI = NULL, median = NULL, B
 
   if (!all(is.data.frame(dfLines), !is.null(dfLines$x), !is.null(dfLines$y),
            ncol(dfLines) == 2L || !is.null(dfLines$g)))
-    stop("dfLines should be a data.frame with $x, $y, and $g!")
+    stop2("dfLines should be a data.frame with $x, $y, and $g!")
   if (!is.null(dfPoints) && !all(is.data.frame(dfPoints), !is.null(dfPoints$x), !is.null(dfPoints$y),
                                  ncol(dfPoints) == 2L || !is.null(dfPoints$g)))
-    stop("dfPoints should be a data.frame with $x, $y, and $g!")
+    stop2("dfPoints should be a data.frame with $x, $y, and $g!")
   if (errCheckPlotPriorAndPosterior(CRI, 2L))
-    stop("CRI should be numeric and have length 2! (left bound, right bound)")
+    stop2("CRI should be numeric and have length 2! (left bound, right bound)")
   if (errCheckPlotPriorAndPosterior(median))
-    stop("median should be numeric and have length 1!")
+    stop2("median should be numeric and have length 1!")
   if (errCheckPlotPriorAndPosterior(BF))
-    stop("BF should be numeric and have length 1!")
+    stop2("BF should be numeric and have length 1!")
 
   return(invisible(TRUE))
 }
@@ -209,7 +209,7 @@ makeBFlabels <- function(bfSubscripts, BFvalues, subs = NULL, bfTxt = NULL) {
     if (is.null(subs))
       subs <- unlist(stringr::str_extract_all(bfSubscripts, "(?<=\\[).+?(?=\\])")) # get everything between []
     if (length(subs) != length(BFvalues))
-      stop("bfSubscripts and BFvalues have different length!")
+      stop2("bfSubscripts and BFvalues have different length!")
     lab <- paste0("BF[", subs[2:1], "]", "[", subs[1:2], "] == ",
                   format(BFvalues, digits = getGraphOption("digits")[["BF"]])
     )

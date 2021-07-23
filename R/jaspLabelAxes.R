@@ -74,7 +74,7 @@ zero_range <- function(x, tol = 1000 * .Machine$double.eps) {
   if (length(x) == 1)
     return(TRUE)
   if (length(x) != 2)
-    stop("x must be length 1 or 2")
+    stop2("x must be length 1 or 2")
   if (any(is.na(x)))
     return(NA)
   if (x[1] == x[2])

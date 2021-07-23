@@ -257,7 +257,7 @@ drawSmooth <- function(graph = NULL, dat = NULL, mapping = NULL, size = 2, metho
                        color = "gray", show.legend = FALSE, se = FALSE, alpha = 1, ...) {
 
     if (is.null(dat) && is.null(graph))
-        stop("Argument dat and graph cannot both be NULL.")
+        stop2("Argument dat and graph cannot both be NULL.")
 
     if (is.null(dat))
         dat <- ggplot2::ggplot_build(graph)$data[[1]][c("x", "y")]

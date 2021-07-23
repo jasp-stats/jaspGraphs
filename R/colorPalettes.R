@@ -27,9 +27,9 @@ jaspGraphs_data <- list2env(list(
 JASPcolors <- function(palette = getGraphOption("palette"), asFunction = FALSE) {
 
   if (!is.character(palette)) {
-    stop("palette must be character!")
+    stop2("palette must be character!")
   } else if (!palette %in% names(jaspGraphs_data)) {
-    stop(sprintf("palette was %s but must be one of %s", as.character(palette), paste(names(jaspGraphs_data), collapse = ", ")))
+    stop2(sprintf("palette was %s but must be one of %s", as.character(palette), paste(names(jaspGraphs_data), collapse = ", ")))
   }
   colors <- jaspGraphs_data[[palette]][["colors"]]
   if (asFunction) {
