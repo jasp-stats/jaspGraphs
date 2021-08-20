@@ -163,7 +163,7 @@ getAxisInfo.ScaleDiscretePosition <- function(x, opts, ggbuild) {
   xory <- x[["aesthetics"]][1L]
   opts2keep <- list(
     labels = x[["get_labels"]](),
-    shown  = x[["get_limits"]](),
+    # shown  = x[["get_limits"]](),
     title  = getAxisTitle(ggbuild, xory)
   )
 
