@@ -97,7 +97,7 @@ getAxisInfo <- function(x, opts, ggbuild) {
 
 getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
 
-  xory <- x[["aesthetics"]][1L]
+  xory <- getXorY(x, ggbuild)
 
   opts2keep <- list(
     labels = opts[[1]][[xory]][["get_labels"]](),
@@ -109,6 +109,8 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
 
   opts2keep[c("title", "titleType")] <- getAxisTitle(ggbuild, xory)
 
+  if (is.character(opts2keep[["breaks"]]) && !is.null(attr(opts2keep[["breaks"]], "pos")))
+    opts2keep[["breaks"]] <- attr(opts2keep[["breaks"]], "pos")
 
   if (is.null(opts2keep[["breaks"]])) {
 
@@ -160,7 +162,8 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
 
 getAxisInfo.ScaleDiscretePosition <- function(x, opts, ggbuild) {
 
-  xory <- x[["aesthetics"]][1L]
+  xory <- getXorY(x, ggbuild)
+
   opts2keep <- list(
     labels = x[["get_labels"]](),
     # shown  = x[["get_limits"]](),
@@ -172,6 +175,16 @@ getAxisInfo.ScaleDiscretePosition <- function(x, opts, ggbuild) {
   if (is.null(opts2keep[["breaksType"]]))
 
   return(opts2keep)
+
+}
+
+getXorY <- function(x, ggbuild) {
+
+  xory <- x[["aesthetics"]][1L]
+  if (isCoordFlipped(ggbuild[["layout"]][["coord"]]))
+    if (xory == "x") return("y") else return("x")
+
+  return(xory)
 
 }
 
