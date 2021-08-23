@@ -138,25 +138,32 @@ modifyAxesLabels <- function(removeXYlabels, plotList) {
 
 getAxesLabels <- function(g) {
 
+  # NULL or list() for empty plots
+  if (!is.ggplot(g))
+    return(list(xtop = NULL, xbottom = NULL, yleft = NULL, yright = NULL))
+
   axesLabels <- try({
+
     filename <- tempfile()
     png(filename = filename)
+    on.exit({
+      dev.off()
+      if (file.exists(filename))
+        file.remove(filename)
+    })
     grobs <- ggplot2::ggplotGrob(g)
-    dev.off()
-    if(file.exists(filename))
-      file.remove(filename)
+
 
     i1 <- which(grobs[["layout"]][["name"]] == "xlab-t")
     i2 <- which(grobs[["layout"]][["name"]] == "xlab-b")
     i3 <- which(grobs[["layout"]][["name"]] == "ylab-l")
     i4 <- which(grobs[["layout"]][["name"]] == "ylab-r")
-    grobs
 
     list(
-      xtop = grobs[["grobs"]][[i1]][["children"]][[1]][["label"]],
+      xtop    = grobs[["grobs"]][[i1]][["children"]][[1]][["label"]],
       xbottom = grobs[["grobs"]][[i2]][["children"]][[1]][["label"]],
-      yleft = grobs[["grobs"]][[i3]][["children"]][[1]][["label"]],
-      yright = grobs[["grobs"]][[i4]][["children"]][[1]][["label"]]
+      yleft   = grobs[["grobs"]][[i3]][["children"]][[1]][["label"]],
+      yright  = grobs[["grobs"]][[i4]][["children"]][[1]][["label"]]
     )
   })
 
