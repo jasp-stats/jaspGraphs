@@ -52,6 +52,12 @@ getPlotEditingOptions.ggplot_built <- function(graph) {
   xSettings <- getAxisInfo(currentAxis[["x"]], opts, graph)
   ySettings <- getAxisInfo(currentAxis[["y"]], opts, graph)
 
+  if (isCoordFlipped(graph[["layout"]][["coord"]])) {
+    tmp <- xSettings
+    xSettings <- ySettings
+    ySettings <- tmp
+  }
+
   out <- list(
     xAxis = list(
       type     = axisTypes[["x"]],
