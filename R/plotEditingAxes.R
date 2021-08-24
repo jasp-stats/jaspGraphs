@@ -155,6 +155,9 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
     else if (isTRUE(all.equal(range(breaks), x[["limits"]])))  LimitsType$Breaks
     else                                                       LimitsType$Manual
 
+  # labels that are expressions are not supported yet, but are used in e.g., Bayes factor robustness plots
+  if (is.expression(opts2keep[["labels"]]))
+    opts2keep[["labels"]] <- as.character(opts2keep[["labels"]])
 
   return(opts2keep)
 
