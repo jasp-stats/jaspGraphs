@@ -128,6 +128,11 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
       opts2keep[["breaks"]] <- opts2keep[["breaks"]][idx]
       opts2keep[["labels"]] <- opts2keep[["labels"]][idx]
     }
+
+    # breaks need not be sorted, but the rest of the code assumes they are
+    ord <- order(opts2keep[["breaks"]])
+    opts2keep[["breaks"]] <- opts2keep[["breaks"]][ord]
+    opts2keep[["labels"]] <- opts2keep[["labels"]][ord]
     breaks <- opts2keep[["breaks"]]
 
   }
