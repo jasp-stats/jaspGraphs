@@ -101,6 +101,8 @@ plotEditing <- function(graph, newOptions) {
   # could be a loop over all scales from e.g., facetted plots
   currentAxis <- ggbuild[["layout"]][["get_scales"]](1L)
 
+  # origNewOptions is be saved in the plot environment, whereas the other code may modify newOptions
+  origNewOptions <- newOptions
   if (isCoordFlipped(ggbuild[["layout"]][["coord"]])) {
     currentAxis[["x"]][["position"]] <- remapPositionOfFlippedPlot(currentAxis[["x"]][["position"]])
     currentAxis[["y"]][["position"]] <- remapPositionOfFlippedPlot(currentAxis[["y"]][["position"]])
@@ -110,15 +112,9 @@ plotEditing <- function(graph, newOptions) {
   graph <- graph + internalUpdateAxis(currentAxis[["x"]], newOptions[["xAxis"]][["settings"]])
   graph <- graph + internalUpdateAxis(currentAxis[["y"]], newOptions[["yAxis"]][["settings"]])
 
-  # if (length(diffOptions[["xAxis"]][["settings"]]) > 0L)
-  #   graph <- graph + internalUpdateAxis(currentAxis[["x"]], diffOptions[["xAxis"]][["settings"]])
-  #
-  # if (length(diffOptions[["yAxis"]][["settings"]]) > 0L)
-  #   graph <- graph + internalUpdateAxis(currentAxis[["y"]], diffOptions[["yAxis"]][["settings"]])
-
   # 'remember' if an edited plot had options set to automatic or manual
   newOptions[["resetPlot"]] <- FALSE
-  env <- list2env(list(oldOptions = newOptions), parent = emptyenv())
+  env <- list2env(list(oldOptions = origNewOptions), parent = emptyenv())
   if (!hasOriginalEditingOptions(graph))
     graph[["plot_env"]][[".____originalPlotEditingOptions____"]] <- env
   graph[["plot_env"]][[".____plotEditingOptions____"]] <- env
