@@ -83,7 +83,7 @@ plotEditing <- function(graph, newOptions) {
 
   if (isTRUE(newOptions[["resetPlot"]])) {
     if (hasOriginalEditingOptions(graph)) {
-      return(Recall(graph, as.list(graph[["plot_env"]][[".____originalPlotEditingOptions____"]][["oldOptions"]])))
+      return(Recall(graph, as.list(graph[["plot_env"]][[".____originalPlotEditingOptions____"]])))
     } else {
       return(graph)
     }
@@ -116,7 +116,7 @@ plotEditing <- function(graph, newOptions) {
   newOptions[["resetPlot"]] <- FALSE
   env <- list2env(list(oldOptions = origNewOptions), parent = emptyenv())
   if (!hasOriginalEditingOptions(graph))
-    graph[["plot_env"]][[".____originalPlotEditingOptions____"]] <- env
+    graph[["plot_env"]][[".____originalPlotEditingOptions____"]] <- oldOptions
   graph[["plot_env"]][[".____plotEditingOptions____"]] <- env
 
   return(graph)
