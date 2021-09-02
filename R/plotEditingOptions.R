@@ -73,15 +73,15 @@ getPlotEditingOptions.ggplot_built <- function(graph) {
 }
 
 getPlotEditingOptions.qgraph <- function(graph) {
-  plotEditingOptionsError(gettext("This figure was created with qgraph."))
+  plotEditingOptionsError(gettext("this figure was created with qgraph instead of ggplot."))
 }
 
 getPlotEditingOptions.jaspGraphsPlot <- function(graph) {
-  plotEditingOptionsError(gettext("This figure consists of multiple smaller figures."))
+  plotEditingOptionsError(gettext("this figure consists of multiple smaller figures."))
 }
 
 getPlotEditingOptions.function <- function(graph) {
-  plotEditingOptionsError(gettext("This figure was created with base R."))
+  plotEditingOptionsError(gettext("this figure was created with base R instead of ggplot."))
 }
 
 getPlotEditingOptions.default <- function(graph) {
@@ -112,7 +112,7 @@ plotEditingOptionsError <- function(error, unexpected = FALSE) {
     )
   } else {
     list(
-      reasonNotEditable = gettextf("This plot can not be edited because: %s", error),
+      reasonNotEditable = gettextf("This plot cannot be edited because %s", error),
       errorType = ErrorType$ValidationError
     )
   }
@@ -122,7 +122,7 @@ validateGraphType <- function(graph) {
 
   # more to come!
   if (is.coordPolar(graph[["layout"]][["coord"]]))
-    unsupportedFigureError("This plot uses polar coordinates (e.g., pie chart)")
+    unsupportedFigureError("this plot uses polar coordinates (e.g., pie chart)")
 
 }
 
