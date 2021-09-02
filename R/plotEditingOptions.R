@@ -80,6 +80,10 @@ getPlotEditingOptions.jaspGraphsPlot <- function(graph) {
   plotEditingOptionsError(gettext("This figure consists of multiple smaller figures."))
 }
 
+getPlotEditingOptions.function <- function(graph) {
+  plotEditingOptionsError(gettext("This figure was created with base R."))
+}
+
 getPlotEditingOptions.default <- function(graph) {
   plotEditingOptionsError(
     gettextf("cannot create plotEditingOptions for object of class: %s.", paste(class(graph), collapse = ",")),
