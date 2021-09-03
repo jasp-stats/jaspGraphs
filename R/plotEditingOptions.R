@@ -73,11 +73,15 @@ getPlotEditingOptions.ggplot_built <- function(graph) {
 }
 
 getPlotEditingOptions.qgraph <- function(graph) {
-  plotEditingOptionsError(gettext("This figure was created with qgraph."))
+  plotEditingOptionsError(gettext("This plot cannot be edited because it was created with qgraph instead of ggplot."))
 }
 
 getPlotEditingOptions.jaspGraphsPlot <- function(graph) {
-  plotEditingOptionsError(gettext("This figure consists of multiple smaller figures."))
+  plotEditingOptionsError(gettext("This plot cannot be edited because it consists of multiple smaller figures."))
+}
+
+getPlotEditingOptions.function <- function(graph) {
+  plotEditingOptionsError(gettext("This plot cannot be edited because it was created with base R instead of ggplot."))
 }
 
 getPlotEditingOptions.default <- function(graph) {
@@ -101,14 +105,14 @@ rListToJson <- function(lst) {
 }
 
 plotEditingOptionsError <- function(error, unexpected = FALSE) {
-  reason <- if (unexpected) {
+  if (unexpected) {
     list(
       reasonNotEditable = gettextf("Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s To receive assistance with this problem, please report the message above at: https://jasp-stats.org/bug-reports", error),
       errorType = ErrorType$FatalError
     )
   } else {
     list(
-      reasonNotEditable = gettextf("This plot can not be edited because: %s", error),
+      reasonNotEditable = error,
       errorType = ErrorType$ValidationError
     )
   }
@@ -118,7 +122,7 @@ validateGraphType <- function(graph) {
 
   # more to come!
   if (is.coordPolar(graph[["layout"]][["coord"]]))
-    unsupportedFigureError("This plot uses polar coordinates (e.g., pie chart)")
+    unsupportedFigureError("This plot cannot be edited because it uses polar coordinates (e.g., pie chart).")
 
 }
 
