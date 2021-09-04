@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2021-07-13 13:08\n"
+"POT-Creation-Date: 2021-09-04 03:19\n"
 "PO-Revision-Date: 2021-03-31 13:26+0000\n"
 "Last-Translator: Johannes Keyser <johanneskeyser@posteo.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspgraphs/"
@@ -85,11 +85,22 @@ msgstr ""
 msgid "Computing plotEditingOptions gave an error: %s"
 msgstr "Berechnung von plotEditingOptions gab einen Fehler: %s"
 
-msgid "This figure was created with qgraph."
-msgstr "Diese Abbildung wurde mit qgraph erstellt."
+#, fuzzy
+msgid ""
+"This plot cannot be edited because it was created with qgraph instead of "
+"ggplot."
+msgstr "Diese Abbildung kann nicht bearbeitet werden, weil: %s"
 
-msgid "This figure consists of multiple smaller figures."
+#, fuzzy
+msgid ""
+"This plot cannot be edited because it consists of multiple smaller figures."
 msgstr "Diese Abbildung besteht aus mehreren kleineren Abbildungen."
+
+#, fuzzy
+msgid ""
+"This plot cannot be edited because it was created with base R instead of "
+"ggplot."
+msgstr "Diese Abbildung kann nicht bearbeitet werden, weil: %s"
 
 msgid "cannot create plotEditingOptions for object of class: %s."
 msgstr "kann plotEditingOptions für Objekt der Klasse %s nicht erstellen."
@@ -106,9 +117,6 @@ msgstr ""
 "plotEditingOptions: %s Um Unterstützung bei diesem Problem zu erhalten, "
 "melden Sie bitte die obige Meldung unter: https://jasp-stats.org/bug-reports"
 
-msgid "This plot can not be edited because: %s"
-msgstr "Diese Abbildung kann nicht bearbeitet werden, weil: %s"
-
 msgid "Theoretical quantiles"
 msgstr "Theoretische Quantile"
 
@@ -121,6 +129,9 @@ msgid ""
 msgstr ""
 "Argumente xAxis und yAxis von themeJasp werden überholt werden. Bitte "
 "benutze stattdessen das Argument \"sides\"."
+
+#~ msgid "This figure was created with qgraph."
+#~ msgstr "Diese Abbildung wurde mit qgraph erstellt."
 
 #~ msgid "all subplots should be of class ggplot!"
 #~ msgstr "Alle Teilabbildungen müssen von der Klasse ggplot sein!"

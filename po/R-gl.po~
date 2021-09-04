@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2021-06-29 16:44\n"
-"PO-Revision-Date: 2021-07-08 18:32+0000\n"
+"POT-Creation-Date: 2021-07-13 13:08\n"
+"PO-Revision-Date: 2021-07-19 17:57+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspgraphs/"
 "gl/>\n"
@@ -16,59 +16,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.8-dev\n"
+"X-Generator: Weblate 4.7.2-dev\n"
 "X-Virgin-Header: remove this line if you change anything in the header.\n"
 "X-Language: gl_ES\n"
 "X-Source-Language: C\n"
-
-msgid "all subplots should be of class ggplot!"
-msgstr "todas as subgráficas deben ser de clase ggplot!"
-
-msgid "plotFunction should be a function!"
-msgstr "plotFunction debe ser unha función!"
-
-msgid "all arguments in ... should be named."
-msgstr "tódolos argumentos en ... deben nomearse."
-
-msgid "value should be numeric!"
-msgstr "o valor debe ser numérico!"
-
-msgid "group should be a character or factor!"
-msgstr "o grupo debe ser un carácter ou un factor!"
-
-msgid "value and group should have the same length!"
-msgstr "valor e grupo deben ter o mesmo longo!"
-
-msgid "scaleText should be positive!"
-msgstr "scaleText debe ser positivo!"
-
-msgid "linewidth should be positive!"
-msgstr "o ancho de liña debe ser positivo!"
-
-msgid "Not implemented"
-msgstr "Non implementado"
-
-msgid "incorrect class for align. Expected character of numeric."
-msgstr "clase incorrecta para aliñar. Agárdase un carácter numérico."
-
-msgid "dfLines should be a data.frame with $x, $y, and $g!"
-msgstr "dfLines debe ser un data.frame con $x, $y, e $g!"
-
-msgid "dfPoints should be a data.frame with $x, $y, and $g!"
-msgstr "dfPoints debe ser un data.frame con $x, $y, e $g!"
-
-msgid "CRI should be numeric and have length 2! (left bound, right bound)"
-msgstr ""
-"ICR debe numérico e ter un longo de 2! (límite esquerdo, límite dereito)"
-
-msgid "median should be numeric and have length 1!"
-msgstr "a mediana debe ser numérica e ter un longo de 1!"
-
-msgid "BF should be numeric and have length 1!"
-msgstr "o FB debe ser numérico e ter un longo de 1!"
-
-msgid "bfSubscripts and BFvalues have different length!"
-msgstr "bfSubscripts e BFvalues teñen longos diferentes!"
 
 msgid "data | H0"
 msgstr "datos | H0"
@@ -94,11 +45,6 @@ msgstr "Densidade"
 msgid "Median:"
 msgstr "Mediana:"
 
-msgid "Cannot provide both a BF pizzaplot and a points legend!"
-msgstr ""
-"Non se pode proporcionar tanto a gráfica de sectores dos FB como a lenda de "
-"puntos!"
-
 msgid "Anecdotal"
 msgstr "Anecdótico"
 
@@ -117,174 +63,66 @@ msgstr "Extremo"
 msgid "Evidence"
 msgstr "Evidencia"
 
-msgid ""
-"lineColors and lineTypes must have the same length as the number of groups "
-"in dfLines."
-msgstr ""
-"lineColors e lineTypes deben ter o mesmo longo que o número de grupos de "
-"dfLines."
-
 msgid "Evidence for H%s:"
 msgstr "Evidencia para H%s:"
 
 msgid "Evidence for H%s"
 msgstr "Evidencia para H%s"
 
-msgid "palette must be character!"
-msgstr "a paleta debe ser de carácter!"
-
-msgid "palette was %s but must be one of %s"
-msgstr "a paleta era %s pero debe ser unha de %s"
-
-msgid ","
-msgstr ","
-
-msgid "createEnum: nameValuePairs should be a list!"
-msgstr "createEnum: nameValuePairs debe ser unha lista!"
-
-msgid "createEnum: unique names and values have different length!"
-msgstr "createEnum: os nomes e valores únicos teñen diferente longo!"
-
-msgid "nonexisting enum type %s!"
-msgstr ""
-
-msgid "EXPR should be character!"
-msgstr "EXPR debera ser un carácter!"
-
-msgid "ENUM should an enum!"
-msgstr "ENUM debera ser unha enumeración!"
-
 msgid "switchEnum: no default case nor an exhaustive set of cases!"
 msgstr ""
-
-msgid "switchEnum: Invalid case(s) detected:"
-msgstr ""
-
-#, fuzzy
-msgid "Valid cases are:"
-msgstr "Excluír casos por parellas"
+"switchEnum: ningún caso por defecto, nin un conxunto exhaustivo de casos!"
 
 msgid "This function will be deprecated."
-msgstr ""
-
-msgid "Argument dat and graph cannot both be NULL."
-msgstr ""
-
-msgid "You must specify either `position` or `nudge_x`/`nudge_y`."
-msgstr ""
-
-msgid "Argument %s should either have length 1 or length %d."
-msgstr ""
-
-msgid ""
-"removeXYlabels must be a character and contain either 'x', 'y', 'xy', or "
-"'none'"
-msgstr ""
-
-msgid ""
-"Dim(removeXYlabels) does not match dim(plotList) / layout. Got (%d, %d) and "
-"expected: (%d, %d)."
-msgstr ""
-
-msgid "removeXYlabels should either have length 1 or length(plotList)."
-msgstr ""
+msgstr "Esta función vaise desaconsellar."
 
 msgid "jaspGraphs could not obtain axes labels from graph"
-msgstr ""
-
-msgid "removeXYlabels must be numeric, larger than 0 and smaller than 1"
-msgstr ""
-
-msgid ""
-"dim(removeXYlabels)[1] does not match prod(dim(plotList)) / layout. Got (%d, "
-"%d) and expected: prod(%d, %d)."
-msgstr ""
-
-msgid "removeXYlabels should either have length 2 or length(plotList)."
-msgstr ""
-
-msgid "Either supply plotList as a matrix or provide a layout argument"
-msgstr ""
-
-msgid "layout must be a matrix but instead was of mode %s and class %s"
-msgstr ""
-
-msgid ""
-"length of layout (%d) does not match length of plotList (%d). Use NULL "
-"entries in plotList to specify empty plots."
-msgstr ""
-
-msgid "Layout must consist of unique integers starting from 1."
-msgstr ""
-
-msgid "x must be length 1 or 2"
-msgstr ""
-
-msgid "Secondary axes must be specified using 'sec_axis()'"
-msgstr ""
-
-msgid "options should be an R list or a json string!"
-msgstr ""
-
-msgid "The axis type in the new options list does not match the graph!"
-msgstr ""
-
-msgid "graph should be a ggplot2"
-msgstr ""
+msgstr "jaspGraphs non puido obter as etiquetas dos eixes da gráfica"
 
 msgid "input was not a valid R expression, reinterpreting as character"
 msgstr ""
+"a entrada non é unha expresión correcta de R, volvéndose a interpretar como "
+"carácter"
 
 msgid ""
 "Unknown title type: %s. I'm pretending it works as character and hope for "
 "the best..."
 msgstr ""
+"Tipo de título descoñecido: %s. Pretendo que funcione como carácter e "
+"agardemos o mellor..."
 
 msgid "Computing plotEditingOptions gave an error: %s"
-msgstr ""
+msgstr "Ao computar plotEditingOptions obtívose un fallo: %s"
 
 msgid "This figure was created with qgraph."
-msgstr ""
+msgstr "Este gráfico creouse con qgraph."
 
 msgid "This figure consists of multiple smaller figures."
-msgstr ""
+msgstr "Este gráfico componse de múltiples gráficos máis pequenos."
 
 msgid "cannot create plotEditingOptions for object of class: %s."
-msgstr ""
+msgstr "non se pode crear plotEditingOptions para un obxecto de clase: %s."
 
 msgid "Converting plotEditingOptions to JSON gave an error: %s."
-msgstr ""
+msgstr "Ao converter plotEditingOptions a JSON obtívose un fallo: %s."
 
-#, fuzzy
 msgid ""
 "Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s "
 "To receive assistance with this problem, please report the message above at: "
 "https://jasp-stats.org/bug-reports"
 msgstr ""
-"Por desgraza, a gráfica non se pode gardar.\n"
-"\n"
-"Mensaxe de fallo:\n"
-"%1\n"
-"\n"
-"Se persiste o problema, por favor envía a mensaxe anterior a: https://jasp-"
-"stats.org/bug-reports"
+"A edición da gráfica rematou de xeito imprevisto. Fallo fatal en "
+"plotEditingOptions: %s Para recibir axuda con este problema, por favor, "
+"informa da mensaxe anterior a: https://jasp-stats.org/bug-reports"
 
 msgid "This plot can not be edited because: %s"
-msgstr ""
+msgstr "Esta gráfica non pode editarse porque: %s"
 
-#, fuzzy
 msgid "Theoretical quantiles"
-msgstr "Eixe vertical"
+msgstr "Cuantiles teóricos"
 
 msgid "Observed quantiles"
 msgstr "Cuantiles observados"
-
-msgid "unsupported plot object of class: %s"
-msgstr ""
-
-#, fuzzy
-msgid "unknown legend position string"
-msgstr "Posición da lenda"
 
 msgid ""
 "Arguments xAxis and yAxis of themeJasp will be deprecated. Please use the "
@@ -292,3 +130,93 @@ msgid ""
 msgstr ""
 "Os argumentos xAxis e yAxis de themeJasp vanse desaconsellar. Por favor, "
 "utiliza en troques o argumento \"sides\"."
+
+#~ msgid "all subplots should be of class ggplot!"
+#~ msgstr "todas as subgráficas deben ser de clase ggplot!"
+
+#~ msgid "plotFunction should be a function!"
+#~ msgstr "plotFunction debe ser unha función!"
+
+#~ msgid "all arguments in ... should be named."
+#~ msgstr "tódolos argumentos en ... deben nomearse."
+
+#~ msgid "value should be numeric!"
+#~ msgstr "o valor debe ser numérico!"
+
+#~ msgid "group should be a character or factor!"
+#~ msgstr "o grupo debe ser un carácter ou un factor!"
+
+#~ msgid "value and group should have the same length!"
+#~ msgstr "valor e grupo deben ter o mesmo longo!"
+
+#~ msgid "scaleText should be positive!"
+#~ msgstr "scaleText debe ser positivo!"
+
+#~ msgid "linewidth should be positive!"
+#~ msgstr "o ancho de liña debe ser positivo!"
+
+#~ msgid "Not implemented"
+#~ msgstr "Non implementado"
+
+#~ msgid "incorrect class for align. Expected character of numeric."
+#~ msgstr "clase incorrecta para aliñar. Agárdase un carácter numérico."
+
+#~ msgid "dfLines should be a data.frame with $x, $y, and $g!"
+#~ msgstr "dfLines debe ser un data.frame con $x, $y, e $g!"
+
+#~ msgid "dfPoints should be a data.frame with $x, $y, and $g!"
+#~ msgstr "dfPoints debe ser un data.frame con $x, $y, e $g!"
+
+#~ msgid "CRI should be numeric and have length 2! (left bound, right bound)"
+#~ msgstr ""
+#~ "ICR debe numérico e ter un longo de 2! (límite esquerdo, límite dereito)"
+
+#~ msgid "median should be numeric and have length 1!"
+#~ msgstr "a mediana debe ser numérica e ter un longo de 1!"
+
+#~ msgid "BF should be numeric and have length 1!"
+#~ msgstr "o FB debe ser numérico e ter un longo de 1!"
+
+#~ msgid "bfSubscripts and BFvalues have different length!"
+#~ msgstr "bfSubscripts e BFvalues teñen longos diferentes!"
+
+#~ msgid "Cannot provide both a BF pizzaplot and a points legend!"
+#~ msgstr ""
+#~ "Non se pode proporcionar tanto a gráfica de sectores dos FB como a lenda "
+#~ "de puntos!"
+
+#~ msgid ""
+#~ "lineColors and lineTypes must have the same length as the number of "
+#~ "groups in dfLines."
+#~ msgstr ""
+#~ "lineColors e lineTypes deben ter o mesmo longo que o número de grupos de "
+#~ "dfLines."
+
+#~ msgid "palette must be character!"
+#~ msgstr "a paleta debe ser de carácter!"
+
+#~ msgid "palette was %s but must be one of %s"
+#~ msgstr "a paleta era %s pero debe ser unha de %s"
+
+#~ msgid ","
+#~ msgstr ","
+
+#~ msgid "createEnum: nameValuePairs should be a list!"
+#~ msgstr "createEnum: nameValuePairs debe ser unha lista!"
+
+#~ msgid "createEnum: unique names and values have different length!"
+#~ msgstr "createEnum: os nomes e valores únicos teñen diferente longo!"
+
+#~ msgid "EXPR should be character!"
+#~ msgstr "EXPR debera ser un carácter!"
+
+#~ msgid "ENUM should an enum!"
+#~ msgstr "ENUM debera ser unha enumeración!"
+
+#, fuzzy
+#~ msgid "Valid cases are:"
+#~ msgstr "Excluír casos por parellas"
+
+#, fuzzy
+#~ msgid "unknown legend position string"
+#~ msgstr "Posición da lenda"
