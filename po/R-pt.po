@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-09-04 03:19\n"
-"PO-Revision-Date: 2021-08-26 22:32+0000\n"
+"PO-Revision-Date: 2021-09-07 11:34+0000\n"
 "Last-Translator: Laura Durans <lauraadurans@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
 "jaspgraphs/pt/>\n"
@@ -87,22 +87,24 @@ msgstr ""
 msgid "Computing plotEditingOptions gave an error: %s"
 msgstr "O cálculo de plotEditingOptions deu um erro: %s"
 
-#, fuzzy
 msgid ""
 "This plot cannot be edited because it was created with qgraph instead of "
 "ggplot."
-msgstr "Este diagrama não pode ser editado porque: %s"
+msgstr ""
+"Este diagrama não pode ser editado porque foi criado com o qgraph em vez do "
+"ggplot."
 
 #, fuzzy
 msgid ""
 "This plot cannot be edited because it consists of multiple smaller figures."
 msgstr "Esta figura consiste em várias figuras menores."
 
-#, fuzzy
 msgid ""
 "This plot cannot be edited because it was created with base R instead of "
 "ggplot."
-msgstr "Este diagrama não pode ser editado porque: %s"
+msgstr ""
+"Este diagrama não pode ser editado porque foi criado com base R em vez de "
+"ggplot."
 
 msgid "cannot create plotEditingOptions for object of class: %s."
 msgstr "não é possível criar plotEditingOptions para objeto de classe: %s."
