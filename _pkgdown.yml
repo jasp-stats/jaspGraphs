@@ -1,6 +1,14 @@
 # template:
 #   package: tidytemplate
 
+navbar:
+  title: "jaspGraphs"
+  left:
+    - text: "Other Packages"
+      menu:
+        - text: "jaspResults"
+          href: https://vandenman.github.io/jaspResults
+
 reference:
 - title: Complete Plots
   contents:
