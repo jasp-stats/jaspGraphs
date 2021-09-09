@@ -7,7 +7,6 @@
 #' @inheritParams ggplot2::geom_abline
 #' @param method Either "breaks" (default) to respect the extrema of the axes or "ggplot2" to obtain the ggplot2 behavior.
 #'
-#' @return
 #' @example inst/examples/ex-geom_abline2.R
 #' @export
 geom_abline2 <- function(mapping = NULL, data = NULL, method = c("breaks", "ggplot2"), ..., slope, intercept,

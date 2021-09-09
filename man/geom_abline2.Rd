@@ -59,15 +59,13 @@ a warning. If \code{TRUE}, missing values are silently removed.}
 It can also be a named logical vector to finely select the aesthetics to
 display.}
 }
-\value{
-
-}
 \description{
 The default abline of ggplot2 will exceeds the breaks and goes from one set of limits to the next.
 This is a modified verions that respect one will not exceed the extrema of the x and y-breaks.
 }
 \examples{
 library(ggplot2)
+library(jaspGraphs)
 
 dfRect <- data.frame(xmin = -10, ymin = -10, xmax = 10, ymax = 10)
 basePlot <- ggplot(data = dfRect, aes(xmin = xmin, ymin = ymin, ymax = ymax, xmax = xmax)) +
@@ -88,10 +86,15 @@ dfAbline <- data.frame(
   method = rep(c("ggplot2", "breaks"), 9)
 )
 
-basePlot + geom_abline2(data = dfAbline, mapping = aes(intercept = intercept, slope = slope, method = method, color = method), show.legend = TRUE) +
+basePlot +
+  geom_abline2(data = dfAbline, mapping = aes(
+    intercept = intercept, slope = slope, method = method, color = method
+  ), show.legend = TRUE) +
   ggtitle("specify 'method' through aes")
 
-basePlot + geom_abline2(data = dfAbline, mapping = aes(intercept = intercept, slope = slope, color = method)) +
+basePlot + geom_abline2(data = dfAbline, mapping = aes(
+    intercept = intercept, slope = slope, color = method
+  )) +
   ggtitle("if method is not specified, 'breaks' is used as a default")
 }
 \keyword{datasets}

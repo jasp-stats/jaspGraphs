@@ -20,8 +20,13 @@ dfAbline <- data.frame(
   method = rep(c("ggplot2", "breaks"), 9)
 )
 
-basePlot + geom_abline2(data = dfAbline, mapping = aes(intercept = intercept, slope = slope, method = method, color = method), show.legend = TRUE) +
+basePlot +
+  geom_abline2(data = dfAbline, mapping = aes(
+    intercept = intercept, slope = slope, method = method, color = method
+  ), show.legend = TRUE) +
   ggtitle("specify 'method' through aes")
 
-basePlot + geom_abline2(data = dfAbline, mapping = aes(intercept = intercept, slope = slope, color = method)) +
+basePlot + geom_abline2(data = dfAbline, mapping = aes(
+    intercept = intercept, slope = slope, color = method
+  )) +
   ggtitle("if method is not specified, 'breaks' is used as a default")
