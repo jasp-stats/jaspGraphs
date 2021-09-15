@@ -424,6 +424,39 @@ PlotRobustnessSequential <- function(
   return(plot)
 }
 
+
+.fixOnlyUnicodeWithBackticks <- function(textIn)
+{
+  print(textIn)
+  textss <- strsplit(textIn, "\\s+")
+  fixeds <- character()
+
+  for(texts in textss)
+  {
+    fixed <- ""
+    for(text in texts)
+    {
+      putBackTicks <- Encoding(text) == "UTF-8"
+
+      if(!putBackTicks)
+        for(character in charToRaw(text))
+          if(character>127)
+            putBackTicks <- TRUE
+
+      if(putBackTicks) #If unicode or outside of range of ascii then put backticks
+        text <- paste0('`',text,'`')
+
+      if(fixed == "") fixed <- text
+      else            fixed <- paste0(fixed, "~", text)
+    }
+    fixeds <- rbind(fixeds, fixed)
+  }
+
+  print(fixeds)
+
+  return(fixeds)
+}
+
 fixTranslationForExpression <- function(text) {
   # Transforms a translated vector of strings into one that a vector that
   # can safely be parsed as expression.
@@ -438,8 +471,10 @@ fixTranslationForExpression <- function(text) {
   #
   # none of this would be necesary if we switch to unicode...
 
-  #text      <- gsub("\\bfor\\b", "'for'", trimws(text))
-  text      <- gsub("(\\S+)", "`\\1`", trimws(text))
+
+
+  text      <- gsub("\\bfor\\b", "'for'", trimws(text))
+  text      <- .fixOnlyUnicodeWithBackticks(text)
   text      <- gsub("\\s+", "~", text)
   idx       <- endsWith(text, ":")
   text[idx] <- paste0("paste(", substring(text[idx], 1, nchar(text[idx]) - 1L), ", ':')")
