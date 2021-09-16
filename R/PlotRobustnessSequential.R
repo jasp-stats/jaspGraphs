@@ -299,7 +299,7 @@ PlotRobustnessSequential <- function(
       else
         hypothesisSymbol <- '[1]'
 
-      evidenceFor <- gettextf("Evidence for H%s:", hypothesisSymbol, domain="R-jaspGraphs")
+      evidenceFor <- gettextf("Evidence for H%s:", hypothesisSymbol)
       evidenceFor <- fixTranslationForExpression(evidenceFor)
       evidenceTxt <- parseThis(c(evidenceLevel, evidenceFor))
 
@@ -327,7 +327,7 @@ PlotRobustnessSequential <- function(
 
     if (is.null(arrowLabel)) {
       # only translate this once
-      evidenceBase <- fixTranslationForExpression(gettext("Evidence for H%s",domain="R-jaspGraphs"))
+      evidenceBase <- fixTranslationForExpression(gettext("Evidence for H%s"))
       evidenceH0 <- sprintf(evidenceBase, "[0]")
 
       hypothesisSymbol <- switch(hypothesis,
@@ -424,6 +424,36 @@ PlotRobustnessSequential <- function(
   return(plot)
 }
 
+
+.fixOnlyUnicodeWithBackticks <- function(textIn)
+{
+  textss <- strsplit(textIn, "\\s+")
+  fixeds <- character()
+
+  for(texts in textss)
+  {
+    fixed <- ""
+    for(text in texts)
+    {
+      putBackTicks <- Encoding(text) == "UTF-8"
+
+      if(!putBackTicks)
+        for(character in charToRaw(text))
+          if(character>127)
+            putBackTicks <- TRUE
+
+      if(putBackTicks) #If unicode or outside of range of ascii then put backticks
+        text <- paste0('`',text,'`')
+
+      if(fixed == "") fixed <- text
+      else            fixed <- paste0(fixed, "~", text)
+    }
+    fixeds <- rbind(fixeds, fixed)
+  }
+
+  return(fixeds)
+}
+
 fixTranslationForExpression <- function(text) {
   # Transforms a translated vector of strings into one that a vector that
   # can safely be parsed as expression.
@@ -438,12 +468,16 @@ fixTranslationForExpression <- function(text) {
   #
   # none of this would be necesary if we switch to unicode...
 
-  text <- gsub("\\bfor\\b", "'for'", trimws(text))
-  text <- gsub("\\s+", "~", text)
-  idx <- endsWith(text, ":")
+
+
+  text      <- gsub("\\bfor\\b", "'for'", trimws(text))
+  text      <- .fixOnlyUnicodeWithBackticks(text)
+  text      <- gsub("\\s+", "~", text)
+  idx       <- endsWith(text, ":")
   text[idx] <- paste0("paste(", substring(text[idx], 1, nchar(text[idx]) - 1L), ", ':')")
-  idx <- startsWith(text, ":")
+  idx       <- startsWith(text, ":")
   text[idx] <- paste0("paste(", "':'", substring(text[idx], 1, nchar(text[idx]) - 1L), ")")
+
   text
 }
 
