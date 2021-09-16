@@ -425,28 +425,26 @@ PlotRobustnessSequential <- function(
 }
 
 
-.fixOnlyUnicodeWithBackticks <- function(textIn)
-{
+.fixOnlyUnicodeWithBackticks <- function(textIn) {
   textss <- strsplit(textIn, "\\s+")
   fixeds <- character()
 
-  for(texts in textss)
-  {
+  for (texts in textss) {
     fixed <- ""
-    for(text in texts)
-    {
+    for (text in texts) {
       putBackTicks <- Encoding(text) == "UTF-8"
 
-      if(!putBackTicks)
-        for(character in charToRaw(text))
-          if(character>127)
+      # the if can probably just be `putBackTicks <- any(charToRaw(text) > 127)`, let's fix that for next release
+      if (!putBackTicks)
+        for (character in charToRaw(text))
+          if (character > 127)
             putBackTicks <- TRUE
 
-      if(putBackTicks) #If unicode or outside of range of ascii then put backticks
+      if (putBackTicks) #If unicode or outside of range of ascii then put backticks
         text <- paste0('`',text,'`')
 
-      if(fixed == "") fixed <- text
-      else            fixed <- paste0(fixed, "~", text)
+      if (fixed == "") fixed <- text
+      else             fixed <- paste0(fixed, "~", text)
     }
     fixeds <- rbind(fixeds, fixed)
   }
