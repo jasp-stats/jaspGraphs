@@ -30,3 +30,15 @@ basePlot + geom_abline2(data = dfAbline, mapping = aes(
     intercept = intercept, slope = slope, color = method
   )) +
   ggtitle("if method is not specified, 'breaks' is used as a default")
+
+dfAbline <- data.frame(
+  slope = c(Inf, Inf),
+  intercept = 0,
+  method = rep(c("ggplot2", "breaks"), 2)
+)
+
+basePlot +
+  geom_abline2(data = dfAbline, mapping = aes(
+    intercept = intercept, slope = slope, method = method, color = method
+  ), show.legend = TRUE) +
+  ggtitle("more reasonable behavior for infinite slopes")

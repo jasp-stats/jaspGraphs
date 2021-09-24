@@ -68,9 +68,21 @@ GeomAbline2 <- ggplot2::ggproto(
       data$y   [idxBreaks] <- ranges$x[1] * data$slope[idxBreaks] + data$intercept[idxBreaks]
       data$yend[idxBreaks] <- ranges$x[2] * data$slope[idxBreaks] + data$intercept[idxBreaks]
 
+      idxInfinite <- idxBreaks[is.infinite(data$y[idxBreaks])]
+      if (length(idxInfinite) > 0) {
+        data$y[idxInfinite] <- ranges$x[1]
+        data$x[idxInfinite] <- 0
+      }
+
+      idxInfinite <- idxBreaks[is.infinite(data$yend[idxBreaks])]
+      if (length(idxInfinite) > 0) {
+        data$yend[idxInfinite] <- ranges$x[2]
+        data$xend[idxInfinite] <- 0
+      }
+
       # for all y and yend, check if they exceed the lower bound or upper bound of ranges$y.
       # if they do we change y = ax + b to x = (y - b) / a
-      idxNeedsFlip <- idxBreaks[data$y[idxBreaks] < ranges$y[1] | data$y[idxBreaks] > ranges$y[2]]
+      idxNeedsFlip <- idxBreaks[data$y[idxBreaks] < ranges$y[1]]
       if (length(idxNeedsFlip) > 0) {
         data$y[idxNeedsFlip] <-  ranges$y[1]
         data$x[idxNeedsFlip] <- (ranges$y[1] - data$intercept[idxNeedsFlip]) / data$slope[idxNeedsFlip]
