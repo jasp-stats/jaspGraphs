@@ -4,6 +4,8 @@
 navbar:
   title: "jaspGraphs"
   left:
+    - text: "Functions"
+      href: reference/index.html
     - text: "Other Packages"
       menu:
         - text: "jaspResults"
