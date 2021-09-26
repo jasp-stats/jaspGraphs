@@ -10,6 +10,9 @@ navbar:
       menu:
         - text: "jaspResults"
           href: https://vandenman.github.io/jaspResults
+        - text: "jaspBase"
+        - text: "QML"
+          href: https://github.com/jasp-stats/jasp-desktop/blob/development/Docs/development/jasp-qml-guide.md
 
 reference:
 - title: Complete Plots
@@ -77,3 +80,7 @@ reference:
   - drawPoints
   - drawSmooth
   - themeJasp
+
+
+template:
+  package: jaspGraphs
