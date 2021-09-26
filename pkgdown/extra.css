@@ -115,6 +115,11 @@ body {
   color: var(--nav-color);
 }
 
+/* for some reason, this is different in the locally build site vs. the one build by github actions */
+.dropdown-menu > .active > a {
+  background-color: var(--nav-bg-color);
+}
+
 .dropdown-header {
   background-color: var(--nav-bg-color);
   color: var(--nav-color);
