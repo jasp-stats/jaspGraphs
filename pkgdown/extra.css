@@ -54,16 +54,13 @@ green;
 html{
   height: auto; /* pkgdown's default is height:100% which ignores the content of e.g., the functions reference and thus the background doesn't align properly */
   min-height: 100%;/* make sure it is at least as tall as the viewport */
-  position: relative;
 }
 
 /* mimic jasp-stats.org */
 body {
-  height:100%;
   background-image: url('jasp-wave-down-blue-120.svg'), url('jasp-wave-up-green-120.svg');
   background-position: center top, center bottom;
   background-repeat: repeat-x;
-  padding: 120px;
 }
 
 /* 
@@ -144,6 +141,5 @@ ul.nav a:hover {
 }
 
 .navbar-default .navbar-nav>.open>a {
-background-color: var(--nav-bg-highlight-color) !important;
+  background-color: var(--nav-bg-highlight-color) !important;
 }
-  
