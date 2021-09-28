@@ -58,8 +58,8 @@ GeomAbline2 <- ggplot2::ggproto(
 
     if (length(idxBreaks) > 0) {
       ranges <- list(
-        x = range(panel_params$x$get_breaks(), na.rm = TRUE),
-        y = range(panel_params$y$get_breaks(), na.rm = TRUE)
+        x = getRange(panel_params$x$get_breaks()),
+        y = getRange(panel_params$y$get_breaks())
       )
 
       data$x   [idxBreaks] <- ranges$x[1]
@@ -127,3 +127,19 @@ GeomAbline2 <- ggplot2::ggproto(
   }
 )
 
+getRange <- function(x) {
+  # consider making this an S3 method if there are more cases
+
+  if (is.character(x)) {
+
+    # discrete axis return a character vector with attibute "pos" that contains the numeric positions
+    if (!is.null(attr(x, "pos")))
+      return(range(attr(x, "pos"), na.rm = TRUE))
+
+    warning("jaspGraphs::getRange got a character and didn't quite understand it!", domain = NA)
+
+  }
+
+  return(range(x, na.rm = TRUE))
+
+}
