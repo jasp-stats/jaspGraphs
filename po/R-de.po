@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2021-09-04 03:19\n"
+"POT-Creation-Date: 2021-10-02 03:19\n"
 "PO-Revision-Date: 2021-09-05 09:34+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspgraphs/"
@@ -67,6 +67,11 @@ msgstr "switchEnum: kein Standardfall und keine erschöpfende Menge von Fällen!
 
 msgid "This function will be deprecated."
 msgstr "Diese Funktion wird überholt werden - nicht mehr gebrauchen."
+
+msgid ""
+"aestethic 'method' for geom_abline2 expects either 'breaks' or 'ggplot2' but "
+"got something else!"
+msgstr ""
 
 msgid "jaspGraphs could not obtain axes labels from graph"
 msgstr "JASPgraphs konnte keine Achsenbeschriftung von der Abbildung bekommen"

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: jaspGraphs 0.5.2.9\n"
-"POT-Creation-Date: 2021-09-04 03:19\n"
+"Project-Id-Version: jaspGraphs 0.5.2.10\n"
+"POT-Creation-Date: 2021-10-02 03:19\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,6 +62,9 @@ msgid "switchEnum: no default case nor an exhaustive set of cases!"
 msgstr ""
 
 msgid "This function will be deprecated."
+msgstr ""
+
+msgid "aestethic 'method' for geom_abline2 expects either 'breaks' or 'ggplot2' but got something else!"
 msgstr ""
 
 msgid "jaspGraphs could not obtain axes labels from graph"
