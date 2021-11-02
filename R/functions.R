@@ -1,3 +1,9 @@
+# This is a temporary fix
+# TODO: remove it when R will solve this problem!
+gettextf <- function(fmt, ..., domain = NULL)  {
+  return(sprintf(gettext(fmt, domain = domain), ...))
+}
+
 grid_arrange_shared_legend <- function(..., plotList = NULL, nrow = 1, ncol = length(list(...)), position = c("bottom", "right")) {
 
     if (is.null(plotList)) {
