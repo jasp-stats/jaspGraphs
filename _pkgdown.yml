@@ -80,7 +80,3 @@ reference:
   - drawPoints
   - drawSmooth
   - themeJasp
-
-
-template:
-  package: jaspGraphs
