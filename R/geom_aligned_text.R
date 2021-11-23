@@ -93,7 +93,9 @@ GeomAlignedText <- ggplot2::ggproto(
 
 #' Add aligned text to plots
 #'
-#' @description TODO
+#'@description TODO
+#'
+#'@inheritParams ggplot2::geom_text
 #'
 #'@section Aesthetics:
 #' \itemize{
@@ -102,8 +104,6 @@ GeomAlignedText <- ggplot2::ggproto(
 #' \item linetype
 #' \item alpha
 #' }
-#'
-#' @inheritParams ggplot2::geom_text
 #'
 #' @export
 geom_aligned_text <- function(mapping = NULL, data = NULL, stat = "identity", position = "identity",

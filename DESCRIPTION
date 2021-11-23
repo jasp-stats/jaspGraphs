@@ -1,7 +1,7 @@
 Package: jaspGraphs
 Type: Package
 Title: Custom Graphs for JASP
-Version: 0.5.2.10
+Version: 0.5.2.11
 Author: Don van den Bergh
 Maintainer: JASP-team <info@jasp-stats.nl>
 Description: Graph making functions and wrappers for JASP.
@@ -14,10 +14,11 @@ Imports:
     ggplot2 (>= 3.0.0),
     gridExtra,
     gtable,
+    lifecycle,
     jsonlite,
     R6,
     RColorBrewer,
     rlang,
     scales,
-    stringr,
     viridisLite
+Roxygen: list(markdown = TRUE)

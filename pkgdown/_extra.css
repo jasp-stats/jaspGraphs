@@ -1,0 +1,144 @@
+/* copied from  another pkgdown example*/
+pre {
+  word-wrap: normal;
+  word-break: normal;
+  border: 1px solid #eee;
+}
+
+pre, code {
+  background-color: #f8f8f8;
+  color: #333;
+}
+
+pre .img {
+  margin: 5px 0;
+}
+
+pre .img img {
+  background-color: #fff;
+  display: block;
+  height: auto;
+}
+
+code a, pre a {
+  color: black;
+}
+*/
+/*:root {
+--blue: #1e90ff;
+--white: #ffffff;
+}*/
+
+/*@navbar-default-link-color:red;*/
+/*#navbar-default-link-color {
+green;
+}*/
+
+.highlight .lineno { color: #ccc; display:inline-block; padding: 0 5px; border-right:1px solid #ccc; }
+.highlight pre code { display: block; white-space: pre; overflow-x: auto; word-wrap: normal; }
+
+.fl      {color: blue;}
+.fu      {color: blue;} /* function */
+.ch,.st  {color: orange;} /* string */
+.kw      {color: black;} /* keyword */
+.co      {color: green;} /* comment */
+
+.message { color: gray;   font-weight: bolder;}
+.error   { color: red;  font-weight: bolder;}
+.warning { color: purple; font-weight: bolder;}
+/* end of copied stuff */
+
+
+
+html{
+  height: auto; /* pkgdown's default is height:100% which ignores the content of e.g., the functions reference and thus the background doesn't align properly */
+  min-height: 100%;/* make sure it is at least as tall as the viewport */
+}
+
+/* mimic jasp-stats.org */
+body {
+  background-image: url('jasp-wave-down-blue-120.svg'), url('jasp-wave-up-green-120.svg');
+  background-position: center top, center bottom;
+  background-repeat: repeat-x;
+}
+
+/*
+  hide background of navbar
+  set font color to white,
+  set background of dropdowns to jasp-blue
+  set background of items of the dropdowns to fully transparent
+  set background of highlighted (hoveren) items to slightly less transparent.
+*/
+:root {
+  --nav-color: white;
+  --nav-dropdown-bg-color: #50b0e3bb;
+  --nav-dropdown-border-color: #14a1e360;
+  --nav-bg-color: #ffffff00;
+  --nav-bg-highlight-color: #ffffff50;
+}
+
+
+.navbar {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.navbar-link{
+  color: var(--nav-color) !important;
+}
+
+.navbar-nav > li > a {
+  color: var(--nav-color) !important;
+}
+
+.dropdown-menu {
+  background-color: var(--nav-dropdown-bg-color);
+  color: var(--nav-color);
+  border: 0;
+}
+
+.dropdown-menu > li {
+  font-size: 14px; /*same as default for .dropdown-menu > li > a */
+  border-bottom: solid 1px var(--nav-dropdown-border-color);
+}
+
+.dropdown-menu li:last-child {
+  border: none;
+}
+
+.dropdown-menu > li > a {
+  background-color: var(--nav-bg-color);
+  color: var(--nav-color);
+}
+
+/* for some reason, this is different in the locally build site vs. the one build by github actions */
+.dropdown-menu > .active > a {
+  background-color: var(--nav-bg-color);
+}
+
+.dropdown-header {
+  background-color: var(--nav-bg-color);
+  color: var(--nav-color);
+}
+
+.navbar-default .navbar-nav>.active>a {
+  background-color: transparent;
+}
+
+.label-default {
+  background-color: transparent;
+}
+
+ul.nav a:hover {
+  background-color: var(--nav-bg-highlight-color) !important;
+  color: var(--nav-color);
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  background-color: var(--nav-bg-highlight-color);
+  color: var(--nav-color);
+}
+
+.navbar-default .navbar-nav>.open>a {
+  background-color: var(--nav-bg-highlight-color) !important;
+}
