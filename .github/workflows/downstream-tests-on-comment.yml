@@ -16,12 +16,12 @@ jobs:
     steps:
     - name: Get PR SHA
       id: sha
-      uses: actions/github-script@v4
+      uses: actions/github-script@v5
       with:
         result-encoding: string
         script: |
           const { owner, repo, number } = context.issue;
-          const pr = await github.pulls.get({
+          const pr = await github.rest.pulls.get({
             owner,
             repo,
             pull_number: number,
@@ -29,7 +29,7 @@ jobs:
           return pr.data.head.sha
 
   unit-tests:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     needs: get-pr-sha
     continue-on-error: true
     
