@@ -1,4 +1,8 @@
-on: [push, pull_request]
+on: 
+  push:
+    paths: ['**.R', '**.svg', '**.Rd', 'DESCRIPTION', 'NAMESPACE']
+  pull_request:
+    paths: ['**.R', '**.svg', '**.Rd', 'DESCRIPTION', 'NAMESPACE']
 
 name: R-CMD-check
 
@@ -14,7 +18,7 @@ jobs:
         config:
           - {os: windows-latest, r: '4.1.0'}
           - {os: macOS-latest,   r: '4.1.0'}
-          - {os: ubuntu-20.04,   r: '4.1.0', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+          - {os: ubuntu-latest,  r: '4.1.0', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true

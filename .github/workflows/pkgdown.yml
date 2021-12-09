@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - master
+    paths: ['**.R', '**.Rd']
 
 name: pkgdown
 
