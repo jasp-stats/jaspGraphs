@@ -1,24 +1,36 @@
 name: downstream-tests-on-comment
 
+# This workflow is triggered by the comment '/test-downstream' inside a PR
+# The workflow then:
+# 1. modifies the original comment into:
+#   """
+#   /test-downstream
+# 
+#   Automatic edit:
+#   Running downstream tests for commit <commit>, follow the run [here](<link>).
+#   """
+# 2. runs the unit test of all common modules with the last commit before that comment
+# 3. replies in a comment with which modules/ OSes failed (successes are omitted).
+
 on:
   issue_comment:
     types:
     - created
 
 jobs:
-  get-pr-sha:
+  pr-info:
     if: ${{ github.event.issue.pull_request && github.event.comment.body == '/test-downstream'}}
     runs-on: ubuntu-latest
     
     outputs:
-      sha: ${{ steps.sha.outputs.result }}
-    
+      commit:     ${{ steps.get-commit.outputs.commit }}
+
     steps:
-    - name: Get PR SHA
-      id: sha
+    
+    - name: Get PR info
+      id: get-pr-info
       uses: actions/github-script@v5
       with:
-        result-encoding: string
         script: |
           const { owner, repo, number } = context.issue;
           const pr = await github.rest.pulls.get({
@@ -26,11 +38,49 @@ jobs:
             repo,
             pull_number: number,
           });
-          return pr.data.head.sha
+          // console.log(pr) // for debugging
+          return pr
+      
+    - name: Print metadata and set PR SHA
+      id: get-commit
+      env:
+        pr_info: ${{ steps.get-pr-info.outputs.result }}
+      run: |
+        # this step is mainly there for debugging
+        base=$(echo ${pr_info} | jq '.data["base"]["label"]')
+        head=$(echo ${pr_info} | jq '.data["head"]["label"]')
+        commit=$(echo ${pr_info} | jq -r '.data["head"]["sha"]')
+        
+        printf '%-15s: %s\n' \
+            repository ${{ github.event.repository.name }}      \
+            base       ${base}                                  \
+            head       ${head}                                  \
+            commit     ${commit}                                \
+            github.sha ${{ github.sha }}                        \
+            comment    ${{ github.event.comment.html_url }}     \
+               
+        echo "::set-output name=commit::${commit}"
+              
+      shell: bash
+
+    - name: Update initial comment
+      uses: actions/github-script@v5
+      with:
+        script: |
+          body = "${{ github.event.comment.body }}".concat("\n\nAutomatic edit:\nRunning downstream tests for commit ${{ steps.get-commit.outputs.commit }}, follow the run [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).");
+          console.log(body);
+          github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: ${{ github.event.comment.id }},
+              body: body
+            });
+
 
   unit-tests:
     runs-on: ${{ matrix.os }}
-    needs: get-pr-sha
+    # this might not be necessary, but it's more user friendly if the comment is edited first (otherwise pr-info and unit-tests run concurrently).
+    needs: pr-info
     continue-on-error: true
     
     name: ${{ matrix.os }} (${{ matrix.r }} (${{ matrix.module }})
@@ -43,8 +93,8 @@ jobs:
         # only common modules
         module: [jasp-stats/jaspDescriptives, jasp-stats/jaspTTests, jasp-stats/jaspAnova, jasp-stats/jaspRegression, jasp-stats/jaspFrequencies, jasp-stats/jaspFactor]
         # for debugging
-#         os: [ubuntu-latest]
-#         module: [jasp-stats/jaspDescriptives, jasp-stats/jaspTTests]
+        # os: [ubuntu-latest]
+        # module: [jasp-stats/jaspDescriptives, jasp-stats/jaspTTests]
 
 #    # outputs is generated with the following R code. It does not matter if some outputs are unused.
 #     oses      <- c("ubuntu-latest", "macOS-latest", "windows-latest")
@@ -80,29 +130,25 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: ${{ needs.get-pr-sha.outputs.sha }}
+          ref: ${{ needs.pr-info.outputs.commit }}
 
       - uses: r-lib/actions/setup-r@master
         with:
          r-version: ${{ matrix.r }}
 
-      - name: clone module
-        run: |
-          echo cloning "https://github.com/${{ matrix.module }}.git"
-          git clone "https://github.com/${{ matrix.module }}.git"
+      - name: clone module ${{ matrix.module }}
+        run: git clone "https://github.com/${{ matrix.module }}.git"
         shell: bash
-        
+
       - uses: jasp-stats/jasp-actions/setup-test-env@master
 
       - name: Install igraph from source
-        if: ${{ matrix.os }} == 'ubuntu-latest' && ${{ matrix.module }} == 'jasp-stats/jaspFactor'
+        if: ${{ matrix.os  == 'ubuntu-latest' && matrix.module == 'jasp-stats/jaspFactor' }}
         run: install.packages("igraph", type = "source", repos = "https://cloud.r-project.org")
         shell: Rscript {0}
-
-      - name: Install jaspGraphs
-        run: |
-           print(sprintf("Installing jaspGraphs from commit %s and ref %s", Sys.getenv("GITHUB_SHA", unset = "MISSING SHA!"), Sys.getenv("GITHUB_REF", unset = "MISSING REF!")))
-           remotes::install_local(".")
+       
+      - name: Install ${{ github.event.repository.name }}
+        run: remotes::install_local(".")
         shell: Rscript {0}
 
       - name: Run unit tests
@@ -110,7 +156,7 @@ jobs:
           setwd(basename("${{ matrix.module }}"))
           source("tests/testthat.R")
         shell: Rscript {0}
-        
+
 #       - name: fake unit tests for debugging
 #         run: |
 #           if [ ${{ matrix.module }} == 'jasp-stats/jaspDescriptives' ]; then
@@ -128,9 +174,10 @@ jobs:
           echo "::set-output name=${nm}::error"
         shell: bash
 
+
   report-results:
     runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [pr-info, unit-tests]
     
     steps:
 
@@ -152,8 +199,8 @@ jobs:
             for (const prop in outputs) { console.log(`${prop}: ${outputs[prop]}`);}
             
             if (Object.keys(outputs).length === 0) {
-              console.log("All unit tests succeeded")
-              body = "All downstream unit tests succeeded! ✅"
+              console.log("All downstream tests succeeded")
+              body = "All downstream tests for commit ${{ needs.pr-info.outputs.commit }} succeeded! ✅"
             } else {
               console.log("Some unit tests failed")
             
@@ -166,14 +213,16 @@ jobs:
                 obj[module].add(os);
               }
               
-              body = "The following downstream unit tests failed:\n| Module | windows-latest | maxOS-latest | ubuntu-latest |\n| ---: | :---: | :---: | :---: |"
+              body = "The following downstream tests for commit ${{ needs.pr-info.outputs.commit }} failed:\n| Module | windows-latest | macOS-latest | ubuntu-latest |\n| ---: | :---: | :---: | :---: |"
               oses = ["windows-latest", "macOS-latest", "ubuntu-latest"];
               for (const module in obj) {
                 str = "\n| ".concat(module, " | ", oses.map(os => obj[module].has(os) ? "❌" : "✅").join(" | "));
-                body=body.concat(str);
+                body = body.concat(str);
                 console.log(body)
               }
             }
+            
+            body = body.concat("\n\nThe full log is available [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).")
             
             github.rest.issues.createComment({
               issue_number: context.issue.number,
