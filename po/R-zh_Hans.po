@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspGraphs 0.5.2.11\n"
 "POT-Creation-Date: 2021-11-27 03:19\n"
-"PO-Revision-Date: 2021-12-11 12:54+0000\n"
+"PO-Revision-Date: 2022-01-03 03:34+0000\n"
 "Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "jasp/jaspgraphs/zh_Hans/>\n"
@@ -11,25 +11,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.10-dev\n"
+"X-Generator: Weblate 4.10.1\n"
 
 msgid "data | H0"
-msgstr ""
+msgstr "data | H0"
 
 msgid "data | H1"
-msgstr ""
+msgstr "data | H1"
 
 msgid "data | H-"
-msgstr ""
+msgstr "data | H-"
 
 msgid "data | H+"
-msgstr ""
+msgstr "data | H+"
 
 msgid "BF%s"
-msgstr ""
+msgstr "BF%s"
 
 msgid "log(BF%s)"
-msgstr ""
+msgstr "log(BF%s)"
 
 msgid "Density"
 msgstr "密度"
@@ -53,13 +53,13 @@ msgid "Extreme"
 msgstr ""
 
 msgid "Evidence"
-msgstr ""
+msgstr "证据"
 
 msgid "Evidence for H%s:"
-msgstr ""
+msgstr "证据，对于 H%s:"
 
 msgid "Evidence for H%s"
-msgstr ""
+msgstr "证据，对于 H%s"
 
 msgid "switchEnum: no default case nor an exhaustive set of cases!"
 msgstr "switchEnum：没有默认个案或详尽的个案集！"
@@ -77,7 +77,7 @@ msgid "input was not a valid R expression, reinterpreting as character"
 msgstr "输入不是有效的 R 表达式，正在重新转换为字符"
 
 msgid "Unknown title type: %s. I'm pretending it works as character and hope for the best..."
-msgstr ""
+msgstr "未知的标题类型：%s。我们假设它作为字符串来处理并希望它能工作......"
 
 msgid "Computing plotEditingOptions gave an error: %s"
 msgstr "计算 plotEditingOptions 时出错：%s"
