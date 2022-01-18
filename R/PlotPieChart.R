@@ -42,8 +42,8 @@ plotPieChart <- function(value, group,
     value <- value / sum(value) * 100
 
   nUnique <- length(unique(group))
-  if (length(legendColors) == 1L && legendColors %in% names(jaspGraphs_data)) {
-    legendColors <- jaspGraphs_data[[legendColors]][["colors"]]
+  if (length(legendColors) == 1L && legendColors %in% names(JASPgraphs_data)) {
+    legendColors <- JASPgraphs_data[[legendColors]][["colors"]]
     legendColors <- scales::gradient_n_pal(legendColors)(seq(0, 1, length.out = nUnique))
   }
 

@@ -101,8 +101,13 @@ JASPScatterPlot <- function(x, y, group = NULL, xName = NULL, yName = NULL,
 
   plotList <- list(mainPlot = mainPlot, topPlot = topPlot, rightPlot = rightPlot)
   plotList <- plotList[lengths(plotList) > 0L]
+<<<<<<< HEAD
 
   plot <- jaspGraphsPlot$new(
+=======
+  
+  plot <- JASPgraphsPlot$new(
+>>>>>>> parent of ac07633 (JASPgraphs -> jaspGraphs)
     subplots     = plotList,
     plotFunction = reDrawAlignedPlot,
     size         = 5,

@@ -78,8 +78,8 @@ dfPoints <- data.frame(
   x = x,
   y = c(maxBF10, BF10user, BF10w, BF10ultra),
   g = label1,
-  label1 = jaspGraphs::parseThis(label1),
-  label2 = jaspGraphs::parseThis(label2),
+  label1 = JASPgraphs::parseThis(label1),
+  label2 = JASPgraphs::parseThis(label2),
   stringsAsFactors = FALSE
 )
 
@@ -94,7 +94,7 @@ PlotRobustnessSequential(
 showSideBySide <- function(..., nrow = 1L, ncol = ...length()) {
   require(gridExtra)
   jaspgraphplot2grob <- function(x) {
-    if (!inherits(x, "jaspGraphsPlot")) return(x)
+    if (!inherits(x, "JASPgraphsPlot")) return(x)
     else return(x$plotFunction(x$subplots, args = x$plotArgs, grob = TRUE))
   }
   gridExtra::grid.arrange(gridExtra::arrangeGrob(
@@ -103,14 +103,23 @@ showSideBySide <- function(..., nrow = 1L, ncol = ...length()) {
 
 # arrow labels can be modified
 g1 <- PlotRobustnessSequential(dfLines = dfLines, arrowLabel = c("top", "bottom"))
+<<<<<<< HEAD
 g2 <- PlotRobustnessSequential(dfLines = dfLines,
                                arrowLabel = jaspGraphs::parseThis(c("alpha", "beta")))
+=======
+g2 <- PlotRobustnessSequential(dfLines = dfLines, arrowLabel = JASPgraphs::parseThis(c("alpha", "beta")))
+>>>>>>> parent of ac07633 (JASPgraphs -> jaspGraphs)
 showSideBySide(g1, g2)
 
 # text in the top right (evidence text) can be modified
 g1 <- PlotRobustnessSequential(dfLines = dfLines, BF = 1)
+<<<<<<< HEAD
 g2 <- PlotRobustnessSequential(dfLines = dfLines, BF = 1,
                                evidenceTxt = c("I'm above!", "I'm below!"))
 g3 <- PlotRobustnessSequential(dfLines = dfLines, BF = 1,
                                evidenceTxt = jaspGraphs::parseThis(c("alpha", "omega")))
+=======
+g2 <- PlotRobustnessSequential(dfLines = dfLines, BF = 1, evidenceTxt = c("I'm above!", "I'm below!"))
+g3 <- PlotRobustnessSequential(dfLines = dfLines, BF = 1, evidenceTxt = JASPgraphs::parseThis(c("alpha", "omega")))
+>>>>>>> parent of ac07633 (JASPgraphs -> jaspGraphs)
 showSideBySide(g1, g2, g3)

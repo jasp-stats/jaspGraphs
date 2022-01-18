@@ -137,7 +137,7 @@ PlotRobustnessSequential <- function(
     }
   }
 
-  allEvidenceLabels <- c(gettext("Anecdotal",domain="R-jaspGraphs"), gettext("Moderate",domain="R-jaspGraphs"), gettext("Strong",domain="R-jaspGraphs"), gettext("Very Strong",domain="R-jaspGraphs"), gettext("Extreme",domain="R-jaspGraphs"))
+  allEvidenceLabels <- c(gettext("Anecdotal",domain="R-JASPgraphs"), gettext("Moderate",domain="R-JASPgraphs"), gettext("Strong",domain="R-JASPgraphs"), gettext("Very Strong",domain="R-JASPgraphs"), gettext("Extreme",domain="R-JASPgraphs"))
 
   if (hasRightAxis) {
 
@@ -160,7 +160,7 @@ PlotRobustnessSequential <- function(
 
     sexAcis <- ggplot2::sec_axis(
       trans  = ~.,
-      name   = gettext("Evidence",domain="R-jaspGraphs"),
+      name   = gettext("Evidence",domain="R-JASPgraphs"),
       breaks = yBreaksR,
       labels = yLabelsR
     )
@@ -299,7 +299,11 @@ PlotRobustnessSequential <- function(
       else
         hypothesisSymbol <- '[1]'
 
+<<<<<<< HEAD
       evidenceFor <- gettextf("Evidence for H%s:", hypothesisSymbol)
+=======
+      evidenceFor <- gettextf("Evidence for H%s:", hypothesisSymbol, domain="R-JASPgraphs")
+>>>>>>> parent of ac07633 (JASPgraphs -> jaspGraphs)
       evidenceFor <- fixTranslationForExpression(evidenceFor)
       evidenceTxt <- parseThis(c(evidenceLevel, evidenceFor))
 
@@ -327,7 +331,11 @@ PlotRobustnessSequential <- function(
 
     if (is.null(arrowLabel)) {
       # only translate this once
+<<<<<<< HEAD
       evidenceBase <- fixTranslationForExpression(gettext("Evidence for H%s"))
+=======
+      evidenceBase <- fixTranslationForExpression(gettext("Evidence for H%s",domain="R-JASPgraphs"))
+>>>>>>> parent of ac07633 (JASPgraphs -> jaspGraphs)
       evidenceH0 <- sprintf(evidenceBase, "[0]")
 
       hypothesisSymbol <- switch(hypothesis,
@@ -387,8 +395,13 @@ PlotRobustnessSequential <- function(
   g <- themeJasp(g, bty = bty) + rightAxisLine + thm
 
   if (pointLegend && !is.null(dfPoints)) {
+<<<<<<< HEAD
 
     plot <- jaspGraphsPlot$new(
+=======
+    
+    plot <- JASPgraphsPlot$new(
+>>>>>>> parent of ac07633 (JASPgraphs -> jaspGraphs)
       subplots     = list(legendPlot, g),
       layout       = matrix(1:2, 2),
       heights      = c(.2, .8),
@@ -410,7 +423,7 @@ PlotRobustnessSequential <- function(
     heights <- c(.2, .8)
     widths  <- c(.4, .2, .4)
 
-    plot <- jaspGraphsPlot$new(
+    plot <- JASPgraphsPlot$new(
       subplots     = topPlotList[!idx],
       layout       = layout,
       heights      = heights,
@@ -419,7 +432,7 @@ PlotRobustnessSequential <- function(
 
   } else {
     plot <- g
-    class(plot) <- c("jaspGraphs", class(plot))
+    class(plot) <- c("JASPgraphs", class(plot))
   }
   return(plot)
 }

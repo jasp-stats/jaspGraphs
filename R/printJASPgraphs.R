@@ -1,6 +1,6 @@
-#' @method print jaspGraphs
+#' @method print JASPgraphs
 #' @export
-print.jaspGraphs <- function(x, ...) {
+print.JASPgraphs <- function(x, ...) {
 
   if (ggplot2::is.ggplot(x)) {
     # do not call ggplot2:::print.ggplot() to please R CMD check
@@ -18,19 +18,19 @@ print.jaspGraphs <- function(x, ...) {
   return(invisible(TRUE))
 }
 
-#' @method plot jaspGraphs
+#' @method plot JASPgraphs
 #' @export
-plot.jaspGraphs <- function(x, ...) print.jaspGraphs(x, ...)
+plot.JASPgraphs <- function(x, ...) print.JASPgraphs(x, ...)
 
-#' @method print jaspGraphsPlot
+#' @method print JASPgraphsPlot
 #' @export
-print.jaspGraphsPlot <- function(x, ...) {
+print.JASPgraphsPlot <- function(x, ...) {
 
   x$plot(...)
   return(invisible(TRUE))
 }
 
-#' @method plot jaspGraphsPlot
+#' @method plot JASPgraphsPlot
 #' @export
-plot.jaspGraphsPlot <- function(x, ...) print.jaspGraphsPlot(x, ...)
+plot.JASPgraphsPlot <- function(x, ...) print.JASPgraphsPlot(x, ...)
 

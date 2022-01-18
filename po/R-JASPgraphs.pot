@@ -1,0 +1,107 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: JASPgraphs 0.5.2.11\n"
+"POT-Creation-Date: 2021-11-27 03:19\n"
+"PO-Revision-Date: 2022-01-17 07:54\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+msgid "data | H0"
+msgstr ""
+
+msgid "data | H1"
+msgstr ""
+
+msgid "data | H-"
+msgstr ""
+
+msgid "data | H+"
+msgstr ""
+
+msgid "BF%s"
+msgstr ""
+
+msgid "log(BF%s)"
+msgstr ""
+
+msgid "Density"
+msgstr ""
+
+msgid "Median:"
+msgstr ""
+
+msgid "Anecdotal"
+msgstr ""
+
+msgid "Moderate"
+msgstr ""
+
+msgid "Strong"
+msgstr ""
+
+msgid "Very Strong"
+msgstr ""
+
+msgid "Extreme"
+msgstr ""
+
+msgid "Evidence"
+msgstr ""
+
+msgid "Evidence for H%s:"
+msgstr ""
+
+msgid "Evidence for H%s"
+msgstr ""
+
+msgid "switchEnum: no default case nor an exhaustive set of cases!"
+msgstr ""
+
+msgid "This function will be deprecated."
+msgstr ""
+
+msgid "aestethic 'method' for geom_abline2 expects either 'breaks' or 'ggplot2' but got something else!"
+msgstr ""
+
+msgid "jaspGraphs could not obtain axes labels from graph"
+msgstr ""
+
+msgid "input was not a valid R expression, reinterpreting as character"
+msgstr ""
+
+msgid "Unknown title type: %s. I'm pretending it works as character and hope for the best..."
+msgstr ""
+
+msgid "Computing plotEditingOptions gave an error: %s"
+msgstr ""
+
+msgid "This plot cannot be edited because it was created with qgraph instead of ggplot."
+msgstr ""
+
+msgid "This plot cannot be edited because it consists of multiple smaller figures."
+msgstr ""
+
+msgid "This plot cannot be edited because it was created with base R instead of ggplot."
+msgstr ""
+
+msgid "cannot create plotEditingOptions for object of class: %s."
+msgstr ""
+
+msgid "Converting plotEditingOptions to JSON gave an error: %s."
+msgstr ""
+
+msgid "Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s To receive assistance with this problem, please report the message above at: https://jasp-stats.org/bug-reports"
+msgstr ""
+
+msgid "Theoretical quantiles"
+msgstr ""
+
+msgid "Observed quantiles"
+msgstr ""
+
+msgid "Arguments xAxis and yAxis of themeJasp will be deprecated. Please use the argument \"sides\" instead."
+msgstr ""

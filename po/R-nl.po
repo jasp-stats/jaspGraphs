@@ -76,8 +76,8 @@ msgstr ""
 "'aestethic method' voor geom_abline2 verwacht ofwel 'breaks' of 'ggplot2' "
 "maar krijgt iets anders!"
 
-msgid "jaspGraphs could not obtain axes labels from graph"
-msgstr "jaspGraphs kon geen assenlabels van de grafiek verkrijgen"
+msgid "JASPgraphs could not obtain axes labels from graph"
+msgstr "JASPgraphs kon geen assenlabels van de grafiek verkrijgen"
 
 msgid "input was not a valid R expression, reinterpreting as character"
 msgstr "invoer was geen geldige R expressie, herinterpreteren als karakter"

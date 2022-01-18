@@ -41,6 +41,6 @@ jaspGraphs::plotQQnorm(x)
 # add a confidence interval for each point
 lower <- x - .1
 upper <- x + .1
-jaspGraphs::plotQQnorm(x, lower, upper)
+JASPgraphs::plotQQnorm(x, lower, upper)
 
 }

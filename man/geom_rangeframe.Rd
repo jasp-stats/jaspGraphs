@@ -92,7 +92,7 @@ Axis lines which extend to the maximum and minimum of the axis breaks. The imple
 
 \examples{
 library(ggplot2)
-library(jaspGraphs)
+library(JASPgraphs)
 
 # an example plot
 graph <- ggplot(mtcars, aes(wt, mpg)) +
