@@ -33,8 +33,13 @@ drawBFpizza <- function(dat, linewidth = 1, scaleText = 0.3, show.legend = FALSE
 
 	dat$group <- factor(seq(dat[[1]]))
 
+  if(sum(is.infinite(dat$y)) > 1)
+    stop("More than one group with infinite evidence")
+	else if(sum(is.infinite(dat$y)) == 1)
+	  dat$y <- ifelse(is.infinite(dat$y), 1, 0)
+	else
+	  dat$y <- dat$y / sum(dat$y)
 
-	dat$y <- dat$y / sum(dat$y)
 	nms <- colnames(dat)
 	mapping <- ggplot2::aes_string(x = factor(1), y = nms[1], group = nms[2], fill = nms[2], color = nms[2])
 
