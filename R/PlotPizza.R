@@ -19,7 +19,7 @@ drawBFpizza <- function(dat, linewidth = 1, scaleText = 0.3, show.legend = FALSE
   # NOTE: this function uses polar coordinates! this implies:
   # x = distance from center
   # y = rotation from origin
-  
+
   if (scaleText < 0)
     stop2("scaleText should be positive!")
   if (linewidth < 0)
@@ -31,7 +31,7 @@ drawBFpizza <- function(dat, linewidth = 1, scaleText = 0.3, show.legend = FALSE
   errCheckPlotPriorAndPosterior(dat[["y"]], 2L)
 
 
-	dat$group <- factor(seq(dat[[1]]))
+  dat[["group"]] <- factor(seq(dat[["y"]]))
 
   yInfinite <- is.infinite(dat[["y"]])
   if (all(yInfinite)) {
@@ -42,38 +42,38 @@ drawBFpizza <- function(dat, linewidth = 1, scaleText = 0.3, show.legend = FALSE
     dat[["y"]] <- dat[["y"]] / sum(dat[["y"]])
   }
 
-	nms <- colnames(dat)
-	mapping <- ggplot2::aes_string(x = factor(1), y = nms[1], group = nms[2], fill = nms[2], color = nms[2])
+  nms <- colnames(dat)
+  mapping <- ggplot2::aes_string(x = factor(1), y = nms[1], group = nms[2], fill = nms[2], color = nms[2])
 
-	# rotate the wheel so that smaller half is always facing up
-	ma <- max(dat[[1]])
-	mi <- min(dat[[1]])
+  # rotate the wheel so that smaller half is always facing up
+  ma <- max(dat[["y"]])
+  mi <- min(dat[["y"]])
 
-	if (dat$y[1L] <= dat$y[2L]) {
-	  area <- mi / (mi + ma)
-	} else {
-	  area <- ma / (mi + ma)
-	}
-	start <- 0 + area * pi
+  if (dat[["y"]][1L] <= dat[["y"]][2L]) {
+    area <- mi / (mi + ma)
+  } else {
+    area <- ma / (mi + ma)
+  }
+  start <- 0 + area * pi
 
-	g <- ggplot(data = dat, mapping = mapping) +
-	  ggplot2::geom_bar(width = 1, stat = "identity", show.legend = show.legend, size = linewidth) +
-	  ggplot2::scale_x_discrete(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0)) +
-	  ggplot2::coord_polar(theta = "y", start = start) +
-	  ggplot2::scale_fill_manual(values  = c("darkred", "white")) +
-	  ggplot2::scale_color_manual(values = c("black", "black")) +
-	  getEmptyTheme()
+  g <- ggplot(data = dat, mapping = mapping) +
+    ggplot2::geom_bar(width = 1, stat = "identity", show.legend = show.legend, size = linewidth) +
+    ggplot2::scale_x_discrete(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0)) +
+    ggplot2::coord_polar(theta = "y", start = start) +
+    ggplot2::scale_fill_manual(values  = c("darkred", "white")) +
+    ggplot2::scale_color_manual(values = c("black", "black")) +
+    getEmptyTheme()
 
-	if (!is.null(labels)) {
-	  dfTxt <- data.frame(
-	    x = 2.1,                                           # distance from wheel
-	    y = c(dat$y[2L] / 2.0, dat$y[2L] + dat$y[1L] / 2), # rotation around wheel
-	    l = labels
-	  )
-	  g <- g + ggplot2::geom_text(data = dfTxt, aes(x = .data$x, y = .data$y, label = .data$l),
+  if (!is.null(labels)) {
+    dfTxt <- data.frame(
+      x = 2.1,                                                          # distance from wheel
+      y = c(dat[["y"]][2L] / 2.0, dat[["y"]][2L] + dat[["y"]][1L] / 2), # rotation around wheel
+      l = labels
+    )
+    g <- g + ggplot2::geom_text(data = dfTxt, aes(x = .data$x, y = .data$y, label = .data$l),
                                 parse = needsParsing(labels),
-	                              size = scaleText * getGraphOption("fontsize"), inherit.aes = FALSE)
-	}
+                                size = scaleText * getGraphOption("fontsize"), inherit.aes = FALSE)
+  }
 
-	return(g)
+  return(g)
 }
