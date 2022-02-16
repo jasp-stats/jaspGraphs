@@ -2,61 +2,65 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspGraphs 0.5.2.12\n"
 "POT-Creation-Date: 2022-01-29 03:18\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2022-02-16 17:04+0000\n"
+"Last-Translator: BogdanKKJ <bogdan.dm.cocos@gmail.com>\n"
+"Language-Team: Romanian <https://hosted.weblate.org/projects/jasp/jaspgraphs/"
+"ro/>\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+"X-Generator: Weblate 4.11-dev\n"
 
 msgid "data | H0"
-msgstr ""
+msgstr "data | H0"
 
 msgid "data | H1"
-msgstr ""
+msgstr "data | H1"
 
 msgid "data | H-"
-msgstr ""
+msgstr "data | H-"
 
 msgid "data | H+"
-msgstr ""
+msgstr "data | H+"
 
 msgid "BF%s"
-msgstr ""
+msgstr "BF%s"
 
 msgid "log(BF%s)"
-msgstr ""
+msgstr "log(BF%s)"
 
 msgid "Density"
-msgstr ""
+msgstr "Densitate"
 
 msgid "Median:"
-msgstr ""
+msgstr "Mediană:"
 
 msgid "Anecdotal"
-msgstr ""
+msgstr "Anecdotic"
 
 msgid "Moderate"
-msgstr ""
+msgstr "Moderat"
 
 msgid "Strong"
-msgstr ""
+msgstr "Puternic"
 
 msgid "Very Strong"
-msgstr ""
+msgstr "Foarte Puternic"
 
 msgid "Extreme"
-msgstr ""
+msgstr "Extrem"
 
 msgid "Evidence"
-msgstr ""
+msgstr "Dovadă"
 
 msgid "Evidence for H%s:"
-msgstr ""
+msgstr "Dovadă pentru H%s:"
 
 msgid "Evidence for H%s"
-msgstr ""
+msgstr "Dovadă pentru H%s"
 
 msgid "switchEnum: no default case nor an exhaustive set of cases!"
 msgstr ""
