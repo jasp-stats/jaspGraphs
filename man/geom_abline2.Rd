@@ -96,5 +96,32 @@ basePlot + geom_abline2(data = dfAbline, mapping = aes(
     intercept = intercept, slope = slope, color = method
   )) +
   ggtitle("if method is not specified, 'breaks' is used as a default")
+
+dfAbline <- data.frame(
+  slope = c(Inf, Inf),
+  intercept = 0,
+  method = rep(c("ggplot2", "breaks"), 2)
+)
+
+basePlot +
+  geom_abline2(data = dfAbline, mapping = aes(
+    intercept = intercept, slope = slope, method = method, color = method
+  ), show.legend = TRUE) +
+  ggtitle("more reasonable behavior for infinite slopes")
+
+
+# also works with discrete axes
+df <- data.frame(
+  x = letters[1:7],
+  y = seq_along(letters[1:7])
+)
+
+ggplot(data = df, aes(x = x, y = y)) +
+  geom_bar(stat = "identity", fill = NA, color = "grey") +
+  geom_abline2(intercept = 0, slope = 0, size = 2, col = "blue") +
+  geom_abline2(intercept = 0, slope = 1, size = 2, col = "red") +
+  scale_y_continuous(breaks = 0:7) +
+  geom_rangeframe() +
+  themeJaspRaw()
 }
 \keyword{datasets}
