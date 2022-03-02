@@ -1,6 +1,16 @@
+#' @title jaspHistogram
+#'
+#' @param x, numeric, the data to show a histogram for
+#' @param xName, string, the title on the x-axis
+#' @param rugs, logical, should rugs be shown on the x-axis?
+#' @param displayDensity, logical, should a density be superimposed on the plot?
+#' @param binWidthType, string, type of bindwidth, matches the string values that can be passed to \code{\link[graphics]{hist}}.
+#' @param numberOfBins, if binWidthType is set to "manual", this value determines the number of bins.
+#' @param densityLineWidth, the line width of the superimposed density.
+#' @example inst/examples/ex-jaspHistogram.R
 #' @export
 jaspHistogram <- function(
-  x, variableName,
+  x, xName,
   rugs = FALSE,
   displayDensity = FALSE,
   binWidthType = c("doane", "fd", "scott", "sturges", "manual"),
@@ -8,7 +18,7 @@ jaspHistogram <- function(
   densityLineWidth = 1) {
 
   binWidthType <- match.arg(binWidthType)
-  x <- na.omit(as.numeric(x))
+  x <- stats::na.omit(as.numeric(x))
 
   if (binWidthType == "doane") {
 
@@ -30,43 +40,51 @@ jaspHistogram <- function(
 
   h <- graphics::hist(x, plot = FALSE, breaks = binWidthType)
 
-  if (!displayDensity)
-    yhigh <- max(h[["counts"]])
-  else {
-    dens <- density(x)
+  if (displayDensity) {
+    dens <- stats::density(x)
     yhigh <- max(max(h[["density"]]), max(dens[["y"]]))
+  } else {
+    yhigh <- max(h[["counts"]])
   }
 
-  xticks <- getPrettyAxisBreaks(c(x, h[["breaks"]]), min.n = 3)
+  xBreaks <- getPrettyAxisBreaks(c(x, h[["breaks"]]), min.n = 3)
 
   histogram <- densityLine <- NULL
   if (displayDensity) {
-    histogram <-
-      ggplot2::geom_histogram(
-        data    = data.frame(x = x),
-        mapping = aes(x = x, y = ..density..),
-        breaks  = h[["breaks"]],
-        fill    = "grey",
-        col     = "black",
-        size    = .7
-      )
-    densityLine <-
-      ggplot2::geom_line(
-        data    = data.frame(x = dens[["x"]], y = dens[["y"]]),
-        mapping = aes(x = x, y = y),
-        lwd     = densityLineWidth,
-        col     = "black"
-      )
+
+    yBreaks <- c(0, 1.05 * yhigh)
+    yName   <- gettext("Density")
+    yLabels <- NULL
+
+    histogram <- ggplot2::geom_histogram(
+      data    = data.frame(x = x),
+      mapping = aes(x = x, y = .data$..density..),
+      breaks  = h[["breaks"]],
+      fill    = "grey",
+      col     = "black",
+      size    = .7
+    )
+
+    densityLine <- ggplot2::geom_line(
+      data    = data.frame(x = dens[["x"]], y = dens[["y"]]),
+      mapping = aes(x = .data$x, y = .data$y),
+      lwd     = densityLineWidth,
+      col     = "black"
+    )
   } else {
-    histogram <-
-      ggplot2::geom_histogram(
-        data     = data.frame(x = x),
-        mapping  = ggplot2::aes(x = x, y = ..count..),
-        breaks   = h[["breaks"]],
-        fill     = "grey",
-        col      = "black",
-        size     = .7
-      )
+
+    yBreaks <- getPrettyAxisBreaks(c(0, h[["counts"]]))
+    yName   <- gettext("Counts")
+    yLabels <- waiver()
+
+    histogram <- ggplot2::geom_histogram(
+      data     = data.frame(x = x),
+      mapping  = ggplot2::aes(x = .data$x, y = .data$..count..),
+      breaks   = h[["breaks"]],
+      fill     = "grey",
+      col      = "black",
+      size     = .7
+    )
   }
 
   rug <- NULL
@@ -78,8 +96,8 @@ jaspHistogram <- function(
     histogram +
     densityLine +
     rug +
-    scale_x_continuous(name = variableName, breaks = xticks) +
-    scale_y_continuous(name = if (displayDensity) gettext("Density") else gettext("Counts"), breaks = c(0,  1.05 * yhigh)) +
+    ggplot2::scale_x_continuous(name = xName, breaks = xBreaks, limits = range(xBreaks)) +
+    ggplot2::scale_y_continuous(name = yName, breaks = yBreaks, labels = yLabels) +
     geom_rangeframe() +
     themeJaspRaw()
 

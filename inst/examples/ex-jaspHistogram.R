@@ -1,0 +1,6 @@
+set.seed(1234)
+x <- rnorm(1e3) + rnorm(1e3, 1, .1) - rgamma(1e3, 10, 5)
+jaspHistogram(x, "random data")
+jaspHistogram(x, "random data", displayDensity = TRUE)
+jaspHistogram(x, "random data", displayDensity = TRUE, rugs = TRUE)
+jaspHistogram(x, "random data", rugs = TRUE, binWidthType = "sturges")
