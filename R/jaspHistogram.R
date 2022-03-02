@@ -30,9 +30,13 @@ jaspHistogram <- function(
 
   } else if (binWidthType == "fd" && grDevices::nclass.FD(x) > 10000) { # FD-method will produce extreme number of bins and crash ggplot, mention this in footnote
 
+    warning2("The Freedman-Diaconis method would produce an extreme number of bins, setting the number of bins to 10,000.")
     binWidthType <- 10000
 
   } else if (binWidthType == "manual") {
+
+    if (is.na(numberOfBins))
+      stop2("numberOfBins argument must be specified when a binWidthType == 'manual'.")
 
     binWidthType <- numberOfBins
 
