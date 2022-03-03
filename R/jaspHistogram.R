@@ -28,7 +28,7 @@
 jaspHistogram <- function(
   x, xName,
   groupingVariable = NULL,
-  groupingVariableName = NULL,
+  groupingVariableName,
   histogram = TRUE,
   histogramPosition = "dodge",
   binWidthType = c("doane", "fd", "scott", "sturges", "manual"),
@@ -44,7 +44,7 @@ jaspHistogram <- function(
 
   # validate input
   if (!is.vector(x, mode = "numeric"))
-    stop2("`x` must be a numeric vector but has class ")
+    stop2("`x` must be a numeric vector but has class ", paste(class(x), collapse = ", "))
 
   if (missing(xName))
     xName <- deparse1(substitute(x)) # identical to plot.default
@@ -55,7 +55,10 @@ jaspHistogram <- function(
   if (!is.null(groupingVariable) && !is.factor(groupingVariable))
     stop2("`groupingVariable` must be a factor vector but has class ", paste(class(groupingVariable), collapse = ", "), "!")
 
-  if (!is.null(groupingVariableName) && !is.character(groupingVariableName))
+  if (!is.null(groupingVariable) && missing(groupingVariableName))
+    groupingVariableName <- deparse1(substitute(groupingVariable)) # identical to plot.default
+
+  if (!missing(groupingVariableName) && !is.character(groupingVariableName))
     stop2("`groupingVariableName` must be character but has class ", paste(class(groupingVariableName), collapse = ", "), "!")
 
   binWidthType <- match.arg(binWidthType)

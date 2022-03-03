@@ -8,7 +8,7 @@ jaspHistogram(
   x,
   xName,
   groupingVariable = NULL,
-  groupingVariableName = NULL,
+  groupingVariableName,
   histogram = TRUE,
   histogramPosition = "dodge",
   binWidthType = c("doane", "fd", "scott", "sturges", "manual"),
