@@ -91,7 +91,7 @@ jaspHistogram <- function(
   h <- graphics::hist(x, plot = FALSE, breaks = binWidthType)
   xBreaks <- getPrettyAxisBreaks(c(x, h[["breaks"]]), min.n = 3)
 
-  histogramGeom <- scaleFill <- maxCounts <- NULL
+  histogramGeom <- scaleFill <- maxCounts <- maxDensity <- NULL
   if (histogram) {
     if (hasGroupingVariable) {
 
@@ -112,7 +112,12 @@ jaspHistogram <- function(
       )
 
       # for each groupingvariable, bin by breaks and find the largest count
-      maxCounts <- max(tapply(x, groupingVariable, function(x) max(table(cut(x, breaks = h[["breaks"]])))))
+      temp <- do.call(rbind, tapply(x, groupingVariable, function(subset) {
+        h <- graphics::hist(subset, plot = FALSE, breaks = binWidthType)
+        c(counts = max(h[["counts"]]), density = max(h[["density"]]))
+      }))
+      maxCounts  <- max(temp[, "counts"])
+      maxDensity <- max(temp[, "density"])
 
     } else {
       dataHistogram <- data.frame(x = x)
@@ -131,7 +136,8 @@ jaspHistogram <- function(
       )
       scaleFill <-  NULL
 
-      maxCounts <- max(h[["counts"]])
+      maxCounts  <- max(h[["counts"]])
+      maxDensity <- max(h[["density"]])
     }
   }
 
@@ -188,7 +194,7 @@ jaspHistogram <- function(
 
     }
 
-    yhigh <- max(max(h[["density"]]), max(densDf[["y"]]))
+    yhigh <- max(maxDensity, max(densDf[["y"]]))
     yBreaks <- getPrettyAxisBreaks(c(0, 1.05 * yhigh))
 
   } else {
