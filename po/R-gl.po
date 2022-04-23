@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2021-10-02 03:19\n"
+"POT-Creation-Date: 2022-04-23 03:25\n"
 "PO-Revision-Date: 2021-12-04 23:28+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspgraphs/"
@@ -85,6 +85,9 @@ msgstr ""
 
 msgid "jaspGraphs could not obtain axes labels from graph"
 msgstr "jaspGraphs non puido obter as etiquetas dos eixes da gráfica"
+
+msgid "Counts"
+msgstr ""
 
 msgid "input was not a valid R expression, reinterpreting as character"
 msgstr ""
