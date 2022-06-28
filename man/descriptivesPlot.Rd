@@ -13,15 +13,15 @@ descriptivesPlot(
   yName = NULL,
   group = NULL,
   groupName = NULL,
-  horizontalAsymptote = NULL,
-  horizontalAsymptoteLineType = "dashed",
+  horizontalLine = NULL,
+  horizontalLineLineType = "dashed",
   position = ggplot2::position_dodge(0.2),
   lineSize = 0.7,
   pointSize = 4,
   errorbarWidth = 0.2,
-  hideXLevelNames = length(x) == 1L,
-  showBreaksAtExtremaOnly = TRUE,
-  doNotConnectPoints = FALSE,
+  NoXLevelNames = length(x) == 1L,
+  breaksAtExtremaOnly = TRUE,
+  connectedPoints = TRUE,
   legendPosition = if (is.null(group)) "none" else "right"
 )
 }
@@ -42,9 +42,9 @@ descriptivesPlot(
 
 \item{groupName}{character, name to show as the legend title.}
 
-\item{horizontalAsymptote}{numeric, draw a horizontal asymptote at this y-value.}
+\item{horizontalLine}{numeric, draw a horizontal asymptote at this y-value.}
 
-\item{horizontalAsymptoteLineType}{line type of the horizontal asymptote.}
+\item{horizontalLineLineType}{line type of the horizontal asymptote.}
 
 \item{position}{a value for the position argument of e.g., geom_line.}
 
@@ -54,11 +54,11 @@ descriptivesPlot(
 
 \item{errorbarWidth}{a value for the width argument of geom_errorbar.}
 
-\item{hideXLevelNames}{Logical, should the level names on the x-axis be hidden?}
+\item{NoXLevelNames}{Logical, should the level names on the x-axis be hidden?}
 
-\item{showBreaksAtExtremaOnly}{Should only the outermost y-axis breaks be shown?}
+\item{breaksAtExtremaOnly}{Logical, Should only the outermost y-axis breaks be shown?}
 
-\item{doNotConnectPoints}{Should the dots be connected with lines?}
+\item{connectedPoints}{Logical, Should the dots be connected with lines?}
 
 \item{legendPosition}{Indicate the legend position (passed to theme).}
 }

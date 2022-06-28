@@ -1,4 +1,3 @@
-
 #' Descriptive plot of categorical variable (x-axis) vs. a continuous variable (y-axis)
 #'
 #' @param x character vector indicating the groups shown on the x-axis.
@@ -9,15 +8,15 @@
 #' @param yName character, name to use as the y-axis title.
 #' @param group character vector indicating group membership, which is used for shape and fill color
 #' @param groupName character, name to show as the legend title.
-#' @param horizontalAsymptote numeric, draw a horizontal asymptote at this y-value.
-#' @param horizontalAsymptoteLineType line type of the horizontal asymptote.
+#' @param horizontalLine numeric, draw a horizontal asymptote at this y-value.
+#' @param horizontalLineLineType line type of the horizontal asymptote.
 #' @param position a value for the position argument of e.g., geom_line.
 #' @param lineSize a value for the size argument of geom_line.
 #' @param pointSize a value for the size argument of geom_point.
 #' @param errorbarWidth a value for the width argument of geom_errorbar.
-#' @param hideXLevelNames Logical, should the level names on the x-axis be hidden?
-#' @param showBreaksAtExtremaOnly Should only the outermost y-axis breaks be shown?
-#' @param doNotConnectPoints Should the dots be connected with lines?
+#' @param noXLevelNames Logical, should the level names on the x-axis be hidden?
+#' @param breaksAtExtremaOnly Logical, Should only the outermost y-axis breaks be shown?
+#' @param connectedPoints Logical, Should the dots be connected with lines?
 #' @param legendPosition Indicate the legend position (passed to theme).
 #'
 #' @return a ggplot2 object.
@@ -27,13 +26,13 @@
 descriptivesPlot <- function(x, y, ciLower = NULL, ciUpper = NULL,
                              xName = NULL, yName = NULL,
                              group = NULL, groupName = NULL,
-                             horizontalAsymptote = NULL, horizontalAsymptoteLineType = "dashed",
+                             horizontalLine = NULL, horizontalLineLineType = "dashed",
                              position = ggplot2::position_dodge(.2),
                              lineSize = .7, pointSize = 4,
                              errorbarWidth = .2,
-                             hideXLevelNames = length(x) == 1L,
-                             showBreaksAtExtremaOnly = TRUE,
-                             doNotConnectPoints = FALSE,
+                             noXLevelNames = length(x) == 1L,
+                             breaksAtExtremaOnly = TRUE,
+                             connectedPoints = TRUE,
                              legendPosition = if (is.null(group)) "none" else "right"
                              ) {
 
@@ -53,15 +52,15 @@ descriptivesPlot <- function(x, y, ciLower = NULL, ciUpper = NULL,
     group = factor(if (hasGrouping) group else rep(1, length(x)))
   )
 
-  yBreaks <- getPrettyAxisBreaks(c(df$y, df$ymax, df$ymin, horizontalAsymptote))
+  yBreaks <- getPrettyAxisBreaks(c(df$y, df$ymax, df$ymin, horizontalLine))
   yLimits <- range(yBreaks)
 
-  if (showBreaksAtExtremaOnly)
-    yBreaks <- sort(c(yLimits, horizontalAsymptote))
+  if (breaksAtExtremaOnly)
+    yBreaks <- sort(c(yLimits, horizontalLine))
 
   horizontalAsymptoteLine <- NULL
-  if (!is.null(horizontalAsymptote))
-    horizontalAsymptoteLine <- ggplot2::geom_hline(yintercept = horizontalAsymptote, linetype = horizontalAsymptoteLineType)
+  if (!is.null(horizontalLine))
+    horizontalAsymptoteLine <- ggplot2::geom_hline(yintercept = horizontalLine, linetype = horizontalLineLineType)
 
 
   # This is not very pretty, but it's what JASP does...
@@ -83,7 +82,7 @@ descriptivesPlot <- function(x, y, ciLower = NULL, ciUpper = NULL,
 
   # length(x) > 1L avoids a warning whenever there is only one value and no lines can be drawn (e.g., the one-sample t-ttest)
   geomLine <- NULL
-  if (length(x) > 1L && !doNotConnectPoints)
+  if (length(x) > 1L && connectedPoints)
     geomLine <- ggplot2::geom_line(position = position, size = lineSize)
 
   p <- ggplot(df, mapping = mapping) +
@@ -97,7 +96,7 @@ descriptivesPlot <- function(x, y, ciLower = NULL, ciUpper = NULL,
     geom_rangeframe() +
     themeJaspRaw(legend.position = legendPosition)
 
-  if (hideXLevelNames)
+  if (noXLevelNames)
     p <- p + theme(axis.text.x =  element_blank(),
                    axis.ticks.x = element_blank())
 
