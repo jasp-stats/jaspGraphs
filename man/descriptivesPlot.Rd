@@ -19,7 +19,7 @@ descriptivesPlot(
   lineSize = 0.7,
   pointSize = 4,
   errorbarWidth = 0.2,
-  NoXLevelNames = length(x) == 1L,
+  noXLevelNames = length(x) == 1L,
   breaksAtExtremaOnly = TRUE,
   connectedPoints = TRUE,
   legendPosition = if (is.null(group)) "none" else "right"
@@ -54,7 +54,7 @@ descriptivesPlot(
 
 \item{errorbarWidth}{a value for the width argument of geom_errorbar.}
 
-\item{NoXLevelNames}{Logical, should the level names on the x-axis be hidden?}
+\item{noXLevelNames}{Logical, should the level names on the x-axis be hidden?}
 
 \item{breaksAtExtremaOnly}{Logical, Should only the outermost y-axis breaks be shown?}
 
@@ -74,7 +74,7 @@ x <- "A"
 y <- -0.188
 ciLower <- y - .1
 ciUpper <- y + .1
-descriptivesPlot(x, y, ciLower, ciUpper, horizontalAsymptote = -.1)
+descriptivesPlot(x, y, ciLower, ciUpper, horizontalLine = -.1)
 
 
 x <- c("Fast", "Slow")
@@ -84,7 +84,7 @@ ciUpper <- y + 3
 xName <- "Condition"
 yName <- "Response time"
 
-descriptivesPlot(x, y, ciLower, ciUpper, xName, yName, horizontalAsymptote = 18.5)
+descriptivesPlot(x, y, ciLower, ciUpper, xName, yName, horizontalLine = 18.5)
 
 x <- c("0", "1", "0", "1")
 y <- c(15, 22, 16, 21)
@@ -94,7 +94,7 @@ xName <- "contBinom"
 group <- c("m", "m", "f", "f")
 groupName <- "facGender"
 descriptivesPlot(x, y, ciLower, ciUpper, xName, group = group, groupName = groupName,
-                 horizontalAsymptote = 19)
+                 horizontalLine = 19)
 
 set.seed(42)
 kx <- 5
@@ -109,7 +109,7 @@ xName <- "Groups"
 yName <- "Performance"
 groupName <- "Legend title"
 descriptivesPlot(x, y, ciLower, ciUpper, xName, yName, group = group, groupName = groupName,
-                 showBreaksAtExtremaOnly = FALSE, doNotConnectPoints = TRUE)
+                 breaksAtExtremaOnly = FALSE, connectedPoints = FALSE)
 
 }
 }
