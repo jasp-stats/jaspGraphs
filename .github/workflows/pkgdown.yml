@@ -2,7 +2,7 @@ on:
   push:
     branches:
       - master
-    paths: ['**.R', '**.Rd']
+    paths: ['**.R', '**.Rd', '_pkgdown.yml']
 
 name: pkgdown
 
