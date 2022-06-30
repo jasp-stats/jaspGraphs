@@ -23,6 +23,8 @@ reference:
   - PlotRobustnessSequential
   - plotPieChart
   - plotQQnorm
+  - descriptivesPlot
+  - jaspHistogram
 
 - title: Geoms
   contents:
@@ -30,6 +32,7 @@ reference:
   - geom_point
   - geom_line
   - geom_rangeframe
+  - geom_abline2
 
 - title: Themes
   desc: >
