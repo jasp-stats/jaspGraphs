@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">jaspGraphs</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.15</span>
       </span>
     </div>
 
@@ -41,18 +43,18 @@
   <a href="reference/index.html">Functions</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Other Packages
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="https://vandenman.github.io/jaspResults">jaspResults</a>
+      <a href="https://vandenman.github.io/jaspResults" class="external-link">jaspResults</a>
     </li>
     <li class="dropdown-header">jaspBase</li>
     <li>
-      <a href="https://github.com/jasp-stats/jasp-desktop/blob/development/Docs/development/jasp-qml-guide.md">QML</a>
+      <a href="https://github.com/jasp-stats/jasp-desktop/blob/development/Docs/development/jasp-qml-guide.md" class="external-link">QML</a>
     </li>
   </ul>
 </li>
@@ -69,66 +71,78 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="jaspgraphs" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#jaspgraphs" class="anchor"></a>jaspGraphs</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="jaspgraphs">jaspGraphs<a class="anchor" aria-label="anchor" href="#jaspgraphs"></a>
+</h1></div>
 
-<div id="overview" class="section level2">
-<h2 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h2>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
 <p>jaspGraphs contains selective functions that extend ggplot2 for creating plots for JASP.</p>
 </div>
-<div id="typical-workflow" class="section level2">
-<h2 class="hasAnchor">
-<a href="#typical-workflow" class="anchor"></a>Typical workflow</h2>
+<div class="section level2">
+<h2 id="typical-workflow">Typical workflow<a class="anchor" aria-label="anchor" href="#typical-workflow"></a>
+</h2>
 <p>For almost all plots, the idea is that you only use two functions of jaspGraphs: <code><a href="reference/geom_rangeframe.html">geom_rangeframe()</a></code>, and <code><a href="reference/themeJaspRaw.html">themeJaspRaw()</a></code>.</p>
 <p>Assuming you created some ggplot2 object called <code>plot</code>, you can do:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">plot</span> <span class="op">+</span>
-  <span class="fu">jaspGraphs</span><span class="fu">::</span><span class="fu"><a href="reference/geom_rangeframe.html">geom_rangeframe</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># add lines on the x-axis and y-axis</span>
-  <span class="fu">jaspGraphs</span><span class="fu">::</span><span class="fu"><a href="reference/themeJaspRaw.html">themeJaspRaw</a></span><span class="op">(</span><span class="op">)</span>      <span class="co"># add the JASP theme</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">plot</span> <span class="op">+</span></span>
+<span>  <span class="fu">jaspGraphs</span><span class="fu">::</span><span class="fu"><a href="reference/geom_rangeframe.html">geom_rangeframe</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># add lines on the x-axis and y-axis</span></span>
+<span>  <span class="fu">jaspGraphs</span><span class="fu">::</span><span class="fu"><a href="reference/themeJaspRaw.html">themeJaspRaw</a></span><span class="op">(</span><span class="op">)</span>      <span class="co"># add the JASP theme</span></span></code></pre></div>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>jaspGraphs is only available through GitHub, so you need to use some package that supports that (e.g., <code>remotes</code>, <code>renv</code>, <code>pak</code>, etc.)</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"jasp-stats/jaspGraphs"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jasp-stats/jaspGraphs"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>GPL</li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing jaspGraphs</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li> JASP-team <br><small class="roles"> Maintainer </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/jasp-stats/jaspGraphs/actions"><img src="https://github.com/jasp-stats/jaspGraphs/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://vandenman.github.io/jaspGraphs"><img src="https://img.shields.io/badge/doc-latest-blue.svg" alt="Documentation"></a></li>
+<li><a href="https://github.com/jasp-stats/jaspGraphs/actions" class="external-link"><img src="https://github.com/jasp-stats/jaspGraphs/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://vandenman.github.io/jaspGraphs" class="external-link"><img src="https://img.shields.io/badge/doc-latest-blue.svg" alt="Documentation"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by  JASP-team.</p>
+  <p></p>
+<p>Developed by JASP-team.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>
@@ -136,6 +150,8 @@
 
   
 
+
+  
 
   </body>
 </html>
