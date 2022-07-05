@@ -64,7 +64,7 @@ names.jaspGraphsPlot <- function(x) {
 }
 
 reDrawJaspGraphsPlot <- function(subplots, args, grob = FALSE, newpage = TRUE,
-                                 decodeplotFun = get0("decodeplot"), ...) {
+                                 decodeplotFun = getDecodeplotFun(), ...) {
   # redraws plots from PlotPriorAndPosterior, PlotRobustnessSequential, and ggMatrixplot
   g <- gridExtra::arrangeGrob(
     grobs         = subplots,
@@ -83,7 +83,7 @@ reDrawJaspGraphsPlot <- function(subplots, args, grob = FALSE, newpage = TRUE,
 }
 
 reDrawAlignedPlot <- function(subplots, args, grob = FALSE, newpage = TRUE,
-                              decodeplotFun = get0("decodeplot"), ...) {
+                              decodeplotFun = getDecodeplotFun(), ...) {
   # redraws plots from JASPScatterPlot
   g <- makeGrobAlignedPlots(
     mainplot   = subplots[["mainPlot"]],
@@ -102,6 +102,16 @@ reDrawAlignedPlot <- function(subplots, args, grob = FALSE, newpage = TRUE,
       grid::grid.newpage()
     return(grid::grid.draw(g, ...))
   }
+}
+
+getDecodeplotFun <- function() {
+  jaspBaseInstalled <- length(find.package("jaspBase", .libPaths(), quiet = TRUE, verbose = FALSE)) != 0L
+  if (!jaspBaseInstalled)
+    return(NULL)
+  if (packageVersion("jaspBase") < "0.16.4")
+    return(get0("decodeplot"))
+  else # no longer in the global environment
+    return(get0("decodeplot", envir = asNamespace("jaspBase")))
 }
 
 currentDevIsSvg <- function() isTRUE(try(attr(grDevices::dev.cur(), "names") == "devSVG"))
