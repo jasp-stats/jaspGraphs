@@ -1,8 +1,8 @@
 on: 
   push:
-    paths: ['**.R', '**.svg', '**.Rd', 'DESCRIPTION', 'NAMESPACE', '/github/workflows/rcmdcheck.yml']
+    paths: ['**.R', '**.svg', '**.Rd', 'DESCRIPTION', 'NAMESPACE', '.github/workflows/rcmdcheck.yml']
   pull_request:
-    paths: ['**.R', '**.svg', '**.Rd', 'DESCRIPTION', 'NAMESPACE', '/github/workflows/rcmdcheck.yml']
+    paths: ['**.R', '**.svg', '**.Rd', 'DESCRIPTION', 'NAMESPACE', '.github/workflows/rcmdcheck.yml']
 
 name: R-CMD-check
 
