@@ -1,4 +1,3 @@
-\dontrun{
 x <- "A"
 y <- -0.188
 ciLower <- y - .1
@@ -39,5 +38,3 @@ yName <- "Performance"
 groupName <- "Legend title"
 descriptivesPlot(x, y, ciLower, ciUpper, xName, yName, group = group, groupName = groupName,
                  breaksAtExtremaOnly = FALSE, connectedPoints = FALSE)
-
-}

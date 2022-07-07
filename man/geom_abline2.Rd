@@ -42,13 +42,9 @@ often aesthetics, used to set an aesthetic to a fixed value, like
 \code{colour = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
 
-\item{slope}{Parameters that control the
-position of the line. If these are set, \code{data}, \code{mapping} and
-\code{show.legend} are overridden.}
+\item{slope}{controls the slope of the lines. If set, \code{data}, \code{mapping} and \code{show.legend} are overridden.}
 
-\item{intercept}{Parameters that control the
-position of the line. If these are set, \code{data}, \code{mapping} and
-\code{show.legend} are overridden.}
+\item{intercept}{controls the intercept of the lines. If set, \code{data}, \code{mapping} and \code{show.legend} are overridden.}
 
 \item{na.rm}{If \code{FALSE}, the default, missing values are removed with
 a warning. If \code{TRUE}, missing values are silently removed.}

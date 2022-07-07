@@ -6,6 +6,8 @@
 #'
 #' @inheritParams ggplot2::geom_abline
 #' @param method Either "breaks" (default) to respect the extrema of the axes or "ggplot2" to obtain the ggplot2 behavior.
+#' @param slope controls the slope of the lines. If set, \code{data}, \code{mapping} and \code{show.legend} are overridden.
+#' @param intercept controls the intercept of the lines. If set, \code{data}, \code{mapping} and \code{show.legend} are overridden.
 #'
 #' @example inst/examples/ex-geom_abline2.R
 #' @export

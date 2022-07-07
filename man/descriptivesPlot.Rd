@@ -69,7 +69,6 @@ a ggplot2 object.
 Descriptive plot of categorical variable (x-axis) vs. a continuous variable (y-axis)
 }
 \examples{
-\dontrun{
 x <- "A"
 y <- -0.188
 ciLower <- y - .1
@@ -110,6 +109,4 @@ yName <- "Performance"
 groupName <- "Legend title"
 descriptivesPlot(x, y, ciLower, ciUpper, xName, yName, group = group, groupName = groupName,
                  breaksAtExtremaOnly = FALSE, connectedPoints = FALSE)
-
-}
 }
