@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspGraphs 0.5.2.11\n"
 "POT-Creation-Date: 2022-04-23 03:25\n"
-"PO-Revision-Date: 2022-09-20 15:22+0000\n"
+"PO-Revision-Date: 2022-10-04 06:15+0000\n"
 "Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "jasp/jaspgraphs/zh_Hans/>\n"
@@ -38,19 +38,19 @@ msgid "Median:"
 msgstr "中位数："
 
 msgid "Anecdotal"
-msgstr "事例"
+msgstr "较弱"
 
 msgid "Moderate"
-msgstr "中性"
+msgstr "中等"
 
 msgid "Strong"
-msgstr "强"
+msgstr "较强"
 
 msgid "Very Strong"
-msgstr "极强"
+msgstr "很强"
 
 msgid "Extreme"
-msgstr "极端"
+msgstr "极强"
 
 msgid "Evidence"
 msgstr "证据"
