@@ -136,7 +136,13 @@ JASPScatterSubPlot <- function(x, group = NULL, type = c("density", "histogram",
 
     ans <- tapply(x, group, foo, simplify = FALSE)
     df <- do.call(rbind, ans)
-    df[["g"]] <- factor(rep(names(ans), vapply(ans, nrow, 1L)))
+
+    # fixes https://github.com/jasp-stats/jasp-issues/issues/1743, names should follow the order of the factor levels
+    nr <- vapply(ans, nrow, 1L)
+    df[["g"]] <- if (is.factor(group))
+      factor(rep(levels(group), nr), levels = levels(group))
+    else
+      factor(rep(names(ans), nr))
 
   } else {
     df <- data.frame(x = x, g = group)
