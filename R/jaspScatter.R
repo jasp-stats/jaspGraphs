@@ -49,7 +49,9 @@ jaspScatter <- function(
     predict            = c("none", "lm", "ellipse"),
     predictCiLevel     = 0.95,
     predictArgs        = list(),
-    suppressAxesLabels = FALSE
+    suppressAxesLabels = FALSE,
+    xBreaks            = NULL,
+    yBreaks            = NULL
 ) {
 
   if (is.null(group)) {
@@ -110,6 +112,16 @@ jaspScatter <- function(
     predictLayer <- NULL
   }
 
+  if (missing(xBreaks) || is.null(xBreaks))
+    xBreaks <- getPrettyAxisBreaks(x)
+  xRange <- range(c(x, xBreaks))
+  xScale <- scale_x_continuous(breaks = xBreaks)
+
+  if (missing(yBreaks) || is.null(yBreaks))
+    yBreaks <- getPrettyAxisBreaks(y)
+  yRange <- range(c(y, yBreaks))
+  yScale <- scale_y_continuous(breaks = yBreaks)
+
   plot <- ggplot2::ggplot(data = df, mapping = aes) +
     predictLayer +
     smoothLayer +
@@ -117,23 +129,56 @@ jaspScatter <- function(
     jaspGraphs::themeJaspRaw() +
     jaspGraphs::geom_rangeframe() +
     ggplot2::xlab(xName) +
-    ggplot2::ylab(yName)# +
-    # ggplot2::scale_fill_gradientn(limits = 0:1, colors = JASPcolors(palette = palette))
+    ggplot2::ylab(yName) +
+    xScale +
+    yScale +
+    # this ensures that the axes do not get stretched outside of the data range
+    # in case that the bounds of smoothLayer or predictLayer are outside of the region
+    ggplot2::coord_cartesian(xlim = xRange, ylim = yRange) +
+    scale_JASPcolor_discrete()
 
   return(plot)
 }
 
 
 jaspScatterWithMargins <- function(
-  x, y, group = NULL, xName = NULL, yName = NULL
+  x, y, group = NULL, xName = NULL, yName = NULL, margins = c(0.25, 0.75),
+  binWidthType = c("doane", "fd", "scott", "sturges", "manual"), numberOfBins = NA,
+  histogramArgs = list(density = TRUE)
   ) {
 
-  bottomLeft <- jaspScatter(x = x, y = y)
-  topLeft <- jaspHistogram(x = x)
-  bottomRight <- jaspHistogram(x = y) + ggplot2::coord_flip()
+  xBreaks <- getJaspHistogramBreaks(x = x, binWidthType = binWidthType, numberOfBins = numberOfBins)
+  yBreaks <- getJaspHistogramBreaks(x = y, binWidthType = binWidthType, numberOfBins = numberOfBins)
+
+  bottomLeft <- jaspScatter(x = x, y = y, group = group, xBreaks = xBreaks, yBreaks = yBreaks)
+
+  histogramArgs[["binWidthType"]] <- binWidthType
+  histogramArgs[["numberOfBins"]] <- numberOfBins
+
+  topLeftArgs                      <- histogramArgs
+  topLeftArgs[["x"]]               <- x
+  topLeftArgs[["groupingVariable"]]<- group
+  topLeftArgs[["groupingVariableName"]] <- " "
+  topLeftArgs[["hideXAxisLabels"]] <- TRUE
+  topLeftArgs[["hideYAxisLabels"]] <- TRUE
+  topLeftArgs[["hideXAxisName"]]   <- TRUE
+  topLeftArgs[["hideYAxisName"]]   <- TRUE
+  topLeft <- do.call(jaspHistogram, topLeftArgs)
+
+  bottomRightArgs                      <- histogramArgs
+  bottomRightArgs[["x"]]               <- y
+  bottomRightArgs[["hideXAxisLabels"]] <- TRUE
+  bottomRightArgs[["hideYAxisLabels"]] <- TRUE
+  bottomRightArgs[["hideXAxisName"]]   <- TRUE
+  bottomRightArgs[["hideYAxisName"]]   <- TRUE
+  bottomRight <- do.call(jaspHistogram, bottomRightArgs) +
+    ggplot2::coord_flip()
+
+
   topRight <- patchwork::plot_spacer()
 
   patchwork::wrap_plots(
-    topLeft, topRight, bottomLeft, bottomRight
+    topLeft, topRight, bottomLeft, bottomRight,
+    widths = rev(margins), heights = margins
   )
 }
