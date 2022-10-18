@@ -19,7 +19,9 @@ jaspScatter(
   predict = c("none", "lm", "ellipse"),
   predictCiLevel = 0.95,
   predictArgs = list(),
-  suppressAxesLabels = FALSE
+  suppressAxesLabels = FALSE,
+  xBreaks = NULL,
+  yBreaks = NULL
 )
 }
 \arguments{

@@ -22,7 +22,10 @@
 #' @param densityShade, logical, should the area underneath the density be shaded?
 #' @param densityShadeAlpha, numeric in \[0, 1\], transparancy for the shaded density.
 #' @param densityLineWidth, positive number, the line width of the superimposed density.
+#' @param hideXAxisLabels, logical, should the x-axis line be hidden? Defaults to \code{FALSE}.
 #' @param hideYAxisLabels, logical, should the y-axis line be hidden? Defaults to \code{showDensity}.
+#' @param hideXAxisName, logical, should the x-axis name be hidden? Defaults to \code{FALSE}.
+#' @param hideYAxisName, logical, should the y-axis name be hidden? Defaults to \code{FALSE}.
 #' @example inst/examples/ex-jaspHistogram.R
 #' @export
 jaspHistogram <- function(
@@ -40,7 +43,11 @@ jaspHistogram <- function(
   densityShade = FALSE,
   densityShadeAlpha = 0.6,
   densityLineWidth = 1,
-  hideYAxisLabels = density) {
+  hideXAxisLabels = FALSE,
+  hideYAxisLabels = density,
+  hideXAxisName = FALSE,
+  hideYAxisName = FALSE
+  ) {
 
   # validate input
   if (!is.vector(x, mode = "numeric"))
@@ -49,7 +56,7 @@ jaspHistogram <- function(
   if (missing(xName))
     xName <- deparse1(substitute(x)) # identical to plot.default
 
-  if (!is.character(xName))
+  if (!is.character(xName) && !is.null(xName))
     stop2("`xName` must be character but has class ", paste(class(xName), collapse = ", "), "!")
 
   if (!is.null(groupingVariable) && !is.factor(groupingVariable))
@@ -224,15 +231,61 @@ jaspHistogram <- function(
     densityShadedAreaGeom +
     densityLineGeom +
     rugGeom +
-    ggplot2::scale_x_continuous(name = xName, breaks = xBreaks, limits = range(xBreaks)) +
-    ggplot2::scale_y_continuous(name = yName, breaks = yBreaks, limits = range(yBreaks)) +
+    ggplot2::scale_x_continuous(breaks = xBreaks, limits = range(xBreaks)) +
+    ggplot2::xlab(xName) +
+    ggplot2::scale_y_continuous(breaks = yBreaks, limits = range(yBreaks)) +
+    ggplot2::ylab(yName) +
     scaleFill +
     scaleColor +
     geom_rangeframe() +
     themeJaspRaw(legend.position = "right")
 
+  if (hideXAxisLabels)
+    plot <- plot + theme(axis.ticks.x = element_blank(), axis.text.x = element_blank())
+
   if (hideYAxisLabels)
     plot <- plot + theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())
 
+  if (hideXAxisName)
+    plot <- plot + theme(axis.title.x = element_blank())
+
+  if (hideYAxisName)
+    plot <- plot + theme(axis.title.y = element_blank())
+
   return(plot)
+}
+
+getJaspHistogramBreaks <- function(x, binWidthType = c("doane", "fd", "scott", "sturges", "manual"), numberOfBins = NA) {
+  if (!is.vector(x, mode = "numeric"))
+    stop2("`x` must be a numeric vector but has class ", paste(class(x), collapse = ", "))
+
+  binWidthType <- match.arg(binWidthType)
+  x <- stats::na.omit(as.numeric(x))
+
+  if (binWidthType == "doane") {
+
+    # https://en.wikipedia.org/wiki/Histogram#Doane's_formula
+    sigma.g1 <- sqrt((6*(length(x) - 2)) / ((length(x) + 1)*(length(x) + 3)))
+    g1 <- mean(abs(x)^3)
+    k <- 1 + log2(length(x)) + log2(1 + (g1 / sigma.g1))
+    binWidthType <- k
+
+  } else if (binWidthType == "fd" && grDevices::nclass.FD(x) > 10000) { # FD-method will produce extreme number of bins and crash ggplot, mention this in footnote
+
+    warning2("The Freedman-Diaconis method would produce an extreme number of bins, setting the number of bins to 10,000.")
+    binWidthType <- 10000
+
+  } else if (binWidthType == "manual") {
+
+    if (is.na(numberOfBins))
+      stop2("numberOfBins argument must be specified when a binWidthType == 'manual'.")
+
+    binWidthType <- numberOfBins
+
+  }
+
+  h <- graphics::hist(x, plot = FALSE, breaks = binWidthType)
+  breaks <- getPrettyAxisBreaks(c(x, h[["breaks"]]), min.n = 3)
+
+  return(breaks)
 }
