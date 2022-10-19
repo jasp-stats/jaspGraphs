@@ -9,8 +9,8 @@
 #' @param x Numeric vector of values on the x-axis.
 #' @param y Numeric vector of values on the y-axis.
 #' @param group Optional grouping variable.
-#' @param xName Character; x-axis label.
-#' @param yName Character; y-axis label.
+#' @param xName Character; x-axis label. If left empty, the name of the \code{x} object is displayed. To remove the axis label, use \code{NULL}.
+#' @param yName Character; y-axis label. If left empty, the name of the \code{y} object is displayed. To remove the axis label, use \code{NULL}.
 #' @param type Character; How should the distribution of the data be displayed:
 #' \describe{
 #'    \item{"point"}{Using [geom_point].}
@@ -39,7 +39,7 @@
 #' @param suppressAxesLabels Logical; should axis labels be suppressed.
 #' @export
 jaspScatter <- function(
-    x, y, group = NULL, xName = NULL, yName = NULL,
+    x, y, group = NULL, xName, yName,
     type               = c("point", "hex", "bin", "density", "contour"),
     args               = list(),
     smooth             = c("none", "lm", "glm", "gam", "loess"),
@@ -62,6 +62,12 @@ jaspScatter <- function(
     aes <- ggplot2::aes(x = x, y = y, group = group, fill = group, color = group)
   }
 
+  if (missing(xName))
+    xName <- deparse1(substitute(x)) # identical to plot.default
+
+  if (missing(yName))
+    yName <- deparse1(substitute(y)) # identical to plot.default
+
   type    <- match.arg(type)
   smooth  <- match.arg(smooth)
   predict <- match.arg(predict)
@@ -81,7 +87,7 @@ jaspScatter <- function(
   formula <- switch(
     smooth,
     gam = if(is.null(smoothArgs$formula)) { y ~ s(x, bs = "cs") } else { smoothArgs$formula },
-          if(is.null(smoothArgs$formula)) { y ~ x }               else { smoothArgs$formula }
+    if(is.null(smoothArgs$formula)) { y ~ x }               else { smoothArgs$formula }
   )
 
   if (smooth != "none") {
@@ -139,7 +145,6 @@ jaspScatter <- function(
 
   return(plot)
 }
-
 
 jaspScatterWithMargins <- function(
   x, y, group = NULL, xName = NULL, yName = NULL, margins = c(0.25, 0.75),
