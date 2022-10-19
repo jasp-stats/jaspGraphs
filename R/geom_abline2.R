@@ -124,7 +124,7 @@ GeomAbline2 <- ggplot2::ggproto(
 
     }
 
-    GeomSegment$draw_panel(unique(data), panel_params, coord)
+    ggplot2::GeomSegment$draw_panel(unique(data), panel_params, coord)
 
   }
 )
