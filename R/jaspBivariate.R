@@ -42,7 +42,7 @@
 #' @export
 jaspBivariate <- function(
     x, y, group = NULL, xName, yName, groupName,
-    type               = c("point", "hex", "bin", "contour", "density"),
+    type               = c("point", "hex", "bin", "contour", "density", "none"),
     args               = list(color = "black"),
     smooth             = c("none", "lm", "glm", "gam", "loess"),
     smoothCi           = FALSE,
@@ -64,8 +64,8 @@ jaspBivariate <- function(
     df  <- data.frame(x = x, y = y)
     aes <- ggplot2::aes(x = x, y = y)
   } else {
-    if(type != "point")
-      stop("grouping variable is allowed only for type = 'point'.")
+    if(type != "point" && type != "none")
+      stop("grouping variable is allowed only for type = 'point' or 'none'.")
 
     df  <- data.frame(x = x, y = y, group = group)
     aes <- ggplot2::aes(x = x, y = y, group = group, fill = group, color = group)
@@ -87,7 +87,8 @@ jaspBivariate <- function(
     hex     = ggplot2::geom_hex,
     bin     = ggplot2::geom_bin2d,
     contour = ggplot2::geom_density2d,
-    density = ggplot2::geom_density2d_filled
+    density = ggplot2::geom_density2d_filled,
+    none    = function(...) { return(NULL) }
   )
   baseLayer <- do.call(baseGeom, args)
 

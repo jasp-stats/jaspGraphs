@@ -11,7 +11,7 @@ jaspBivariate(
   xName,
   yName,
   groupName,
-  type = c("point", "hex", "bin", "contour", "density"),
+  type = c("point", "hex", "bin", "contour", "density", "none"),
   args = list(color = "black"),
   smooth = c("none", "lm", "glm", "gam", "loess"),
   smoothCi = FALSE,
@@ -74,6 +74,8 @@ Passed as \code{level} argument to \link[ggplot2:geom_smooth]{ggplot2::geom_smoo
 \item{xBreaks}{Optional numeric vector that specifies the breaks along the x-axis.}
 
 \item{yBreaks}{Optional numeric vector that specifies the breaks along the y-axis.}
+
+\item{legendPosition}{Character; passed as \code{legend.position} to \link{themeJaspRaw}.}
 }
 \description{
 This plot consists of three layers:
