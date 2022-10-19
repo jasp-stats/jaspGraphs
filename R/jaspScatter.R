@@ -41,7 +41,7 @@
 jaspScatter <- function(
     x, y, group = NULL, xName, yName,
     type               = c("point", "hex", "bin", "density", "contour"),
-    args               = list(),
+    args               = list(color = "black"),
     smooth             = c("none", "lm", "glm", "gam", "loess"),
     smoothCi           = FALSE,
     smoothCiLevel      = 0.95,
@@ -54,10 +54,17 @@ jaspScatter <- function(
     yBreaks            = NULL
 ) {
 
+  type    <- match.arg(type)
+  smooth  <- match.arg(smooth)
+  predict <- match.arg(predict)
+
   if (is.null(group)) {
     df  <- data.frame(x = x, y = y)
     aes <- ggplot2::aes(x = x, y = y)
   } else {
+    if(type != "point")
+      stop("grouping variable is allowed only for type = 'point'.")
+
     df  <- data.frame(x = x, y = y, group = group)
     aes <- ggplot2::aes(x = x, y = y, group = group, fill = group, color = group)
   }
@@ -67,10 +74,6 @@ jaspScatter <- function(
 
   if (missing(yName))
     yName <- deparse1(substitute(y)) # identical to plot.default
-
-  type    <- match.arg(type)
-  smooth  <- match.arg(smooth)
-  predict <- match.arg(predict)
 
 
   baseGeom <- switch(
@@ -87,7 +90,7 @@ jaspScatter <- function(
   formula <- switch(
     smooth,
     gam = if(is.null(smoothArgs$formula)) { y ~ s(x, bs = "cs") } else { smoothArgs$formula },
-    if(is.null(smoothArgs$formula)) { y ~ x }               else { smoothArgs$formula }
+          if(is.null(smoothArgs$formula)) { y ~ x }               else { smoothArgs$formula }
   )
 
   if (smooth != "none") {
@@ -128,10 +131,24 @@ jaspScatter <- function(
   yRange <- range(c(y, yBreaks))
   yScale <- scale_y_continuous(breaks = yBreaks)
 
+
+  if (type == "point" && !is.null(group)) {
+    scales <- list(
+      scale_JASPfill_discrete(),
+      scale_JASPcolor_discrete()
+    )
+  } else if (type %in% c("hex", "bin")) {
+    scales <- scale_JASPfill_continuous()
+  } else if (type == "density") {
+    scales <- scale_JASPfill_discrete()
+  } else {
+    scales <- NULL
+  }
+
   plot <- ggplot2::ggplot(data = df, mapping = aes) +
-    predictLayer +
-    smoothLayer +
     baseLayer +
+    smoothLayer +
+    predictLayer +
     jaspGraphs::themeJaspRaw() +
     jaspGraphs::geom_rangeframe() +
     ggplot2::xlab(xName) +
@@ -141,21 +158,22 @@ jaspScatter <- function(
     # this ensures that the axes do not get stretched outside of the data range
     # in case that the bounds of smoothLayer or predictLayer are outside of the region
     ggplot2::coord_cartesian(xlim = xRange, ylim = yRange) +
-    scale_JASPcolor_discrete()
+    scales
 
   return(plot)
 }
 
 jaspScatterWithMargins <- function(
-  x, y, group = NULL, xName = NULL, yName = NULL, margins = c(0.25, 0.75),
+  x, y, group = NULL, xName, yName, margins = c(0.25, 0.75),
   binWidthType = c("doane", "fd", "scott", "sturges", "manual"), numberOfBins = NA,
-  histogramArgs = list(density = TRUE)
+  histogramArgs = list(density = TRUE),
+  ...
   ) {
 
   xBreaks <- getJaspHistogramBreaks(x = x, binWidthType = binWidthType, numberOfBins = numberOfBins)
   yBreaks <- getJaspHistogramBreaks(x = y, binWidthType = binWidthType, numberOfBins = numberOfBins)
 
-  bottomLeft <- jaspScatter(x = x, y = y, group = group, xBreaks = xBreaks, yBreaks = yBreaks)
+  bottomLeft <- jaspScatter(x = x, y = y, group = group, xName = xName, yName = yName, xBreaks = xBreaks, yBreaks = yBreaks, ...)
 
   histogramArgs[["binWidthType"]] <- binWidthType
   histogramArgs[["numberOfBins"]] <- numberOfBins
@@ -172,6 +190,8 @@ jaspScatterWithMargins <- function(
 
   bottomRightArgs                      <- histogramArgs
   bottomRightArgs[["x"]]               <- y
+  bottomRightArgs[["groupingVariable"]]<- group
+  bottomRightArgs[["groupingVariableName"]] <- " "
   bottomRightArgs[["hideXAxisLabels"]] <- TRUE
   bottomRightArgs[["hideYAxisLabels"]] <- TRUE
   bottomRightArgs[["hideXAxisName"]]   <- TRUE
@@ -185,5 +205,6 @@ jaspScatterWithMargins <- function(
   patchwork::wrap_plots(
     topLeft, topRight, bottomLeft, bottomRight,
     widths = rev(margins), heights = margins
-  )
+  ) +
+  patchwork::plot_layout(guides = "collect")
 }

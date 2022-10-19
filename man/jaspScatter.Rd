@@ -8,10 +8,10 @@ jaspScatter(
   x,
   y,
   group = NULL,
-  xName = NULL,
-  yName = NULL,
+  xName,
+  yName,
   type = c("point", "hex", "bin", "density", "contour"),
-  args = list(),
+  args = list(color = "black"),
   smooth = c("none", "lm", "glm", "gam", "loess"),
   smoothCi = FALSE,
   smoothCiLevel = 0.95,
@@ -31,9 +31,9 @@ jaspScatter(
 
 \item{group}{Optional grouping variable.}
 
-\item{xName}{Character; x-axis label.}
+\item{xName}{Character; x-axis label. If left empty, the name of the \code{x} object is displayed. To remove the axis label, use \code{NULL}.}
 
-\item{yName}{Character; y-axis label.}
+\item{yName}{Character; y-axis label. If left empty, the name of the \code{y} object is displayed. To remove the axis label, use \code{NULL}.}
 
 \item{type}{Character; How should the distribution of the data be displayed:
 \describe{
