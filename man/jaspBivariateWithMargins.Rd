@@ -10,6 +10,7 @@ jaspBivariateWithMargins(
   group = NULL,
   xName,
   yName,
+  groupName,
   margins = c(0.25, 0.75),
   binWidthType = c("doane", "fd", "scott", "sturges", "manual"),
   numberOfBins = NA,
@@ -29,6 +30,8 @@ jaspBivariateWithMargins(
 \item{xName}{Character; x-axis label. If left empty, the name of the \code{x} object is displayed. To remove the axis label, use \code{NULL}.}
 
 \item{yName}{Character; y-axis label. If left empty, the name of the \code{y} object is displayed. To remove the axis label, use \code{NULL}.}
+
+\item{groupName}{Character; label of the grouping variable displayed as a legend title. If left empty, the name of the \code{group} object is displayed.}
 
 \item{margins}{Numeric vector; The proportions of the subplots relative to each other.}
 
