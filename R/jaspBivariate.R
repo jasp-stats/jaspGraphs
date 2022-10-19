@@ -127,13 +127,19 @@ jaspBivariate <- function(
     predictLayer <- NULL
   }
 
-  if (missing(xBreaks) || is.null(xBreaks))
+  if (missing(xBreaks) || is.null(xBreaks)) {
     xBreaks <- getPrettyAxisBreaks(x)
+  } else {
+    xBreaks <- getPrettyAxisBreaks(xBreaks)
+  }
   xRange <- range(c(x, xBreaks))
   xScale <- scale_x_continuous(breaks = xBreaks)
 
-  if (missing(yBreaks) || is.null(yBreaks))
+  if (missing(yBreaks) || is.null(yBreaks)) {
     yBreaks <- getPrettyAxisBreaks(y)
+  } else {
+    yBreaks <- getPrettyAxisBreaks(yBreaks)
+  }
   yRange <- range(c(y, yBreaks))
   yScale <- scale_y_continuous(breaks = yBreaks)
 
@@ -195,7 +201,7 @@ jaspBivariate <- function(
 #' @export
 jaspBivariateWithMargins <- function(
   x, y, group = NULL, xName, yName, groupName, margins = c(0.25, 0.75),
-  binWidthType = c("doane", "fd", "scott", "sturges", "manual"), numberOfBins = NA,
+  binWidthType = "doane", numberOfBins = NULL,
   histogramArgs = list(density = TRUE),
   topRightPlotFunction = NULL,
   topRightPlotArgs = list(),
@@ -222,13 +228,13 @@ jaspBivariateWithMargins <- function(
   histogramArgs[["hideXAxisName"]]        <- TRUE
   histogramArgs[["hideYAxisName"]]        <- TRUE
 
-  topLeftArgs                           <- histogramArgs
-  topLeftArgs[["x"]]                    <- x
+  topLeftArgs        <- histogramArgs
+  topLeftArgs[["x"]] <- x
 
   topLeft <- do.call(jaspHistogram, topLeftArgs)
 
-  bottomRightArgs                           <- histogramArgs
-  bottomRightArgs[["x"]]                    <- y
+  bottomRightArgs        <- histogramArgs
+  bottomRightArgs[["x"]] <- y
 
   bottomRight <- do.call(jaspHistogram, bottomRightArgs) +
     ggplot2::coord_flip()
