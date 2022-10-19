@@ -23,6 +23,8 @@
 #'   \item{\code{"x"}}{x-axis gets overwritten (see option \code{"both"}), y-axis does not (see option \code{"none"}).}
 #'   \item{\code{"y"}}{y-axis gets overwritten (see option \code{"both"}), x-axis does not (see option \code{"none"}).}
 #' }
+#' @param binWidthType See [jaspHistogram]. Used for determining consistent axes.
+#' @param numberOfBins See [jaspHistogram]. Used for determining consistent axes.
 #' @param axesLabels Optional character vector; provide column/row names of the matrix.
 #' @export
 jaspMatrixPlot <- function(
@@ -36,6 +38,8 @@ jaspMatrixPlot <- function(
     overwriteDiagonalAxes      = "x",
     overwriteTopRightAxes      = "both",
     overwriteBottomLeftAxes    = "both",
+    binWidthType               = c("doane", "fd", "scott", "sturges", "manual"),
+    numberOfBins               = NA,
     axesLabels
 ) {
 
@@ -67,7 +71,7 @@ jaspMatrixPlot <- function(
   for (row in seq_along(axesLabels)) {
     y       <- data[[row]]
     yName   <- axesLabels[[row]]
-    yBreaks <- getJaspHistogramBreaks(y)
+    yBreaks <- getJaspHistogramBreaks(x = y, binWidthType = binWidthType, numberOfBins = numberOfBins)
 
     plots[[i]] <- .makeTitle(yName, angle = 90)
     i <- i + 1
@@ -75,12 +79,13 @@ jaspMatrixPlot <- function(
     for (col in seq_along(axesLabels)) {
       x       <- data[[col]]
       xName   <- axesLabels[[col]]
-      xBreaks <- getJaspHistogramBreaks(x)
+      xBreaks <- getJaspHistogramBreaks(x = x, binWidthType = binWidthType, numberOfBins = numberOfBins)
 
       if (row == col) { # diagonal
         if(is.function(diagonalPlotFunction)) {
-          diagonalPlotArgs[["x"]]   <- x
-          diagonalPlotArgs[["xName"]] <- xName
+          diagonalPlotArgs[["x"]]       <- x
+          diagonalPlotArgs[["xName"]]   <- xName
+          diagonalPlotArgs[["xBreaks"]] <- xBreaks
           plot <- .trySubPlot(diagonalPlotFunction, diagonalPlotArgs, overwriteDiagonalAxes)
         } else {
           plot <- patchwork::plot_spacer()
