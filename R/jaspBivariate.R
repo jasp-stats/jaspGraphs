@@ -212,28 +212,23 @@ jaspBivariateWithMargins <- function(
 
   bottomLeft <- jaspBivariate(x = x, y = y, group = group, xName = xName, yName = yName, groupName = groupName, xBreaks = xBreaks, yBreaks = yBreaks, ...)
 
-
-  histogramArgs[["binWidthType"]] <- binWidthType
-  histogramArgs[["numberOfBins"]] <- numberOfBins
+  histogramArgs[["binWidthType"]]         <- binWidthType
+  histogramArgs[["numberOfBins"]]         <- numberOfBins
+  histogramArgs[["groupingVariable"]]     <- group
+  histogramArgs[["groupingVariableName"]] <- groupName
+  histogramArgs[["hideXAxisLabel"]]       <- TRUE
+  histogramArgs[["hideXAxisLabel"]]       <- TRUE
+  histogramArgs[["hideXAxisName"]]        <- TRUE
+  histogramArgs[["hideYAxisName"]]        <- TRUE
 
   topLeftArgs                           <- histogramArgs
   topLeftArgs[["x"]]                    <- x
-  topLeftArgs[["groupingVariable"]]     <- group
-  topLeftArgs[["groupingVariableName"]] <- groupName
-  topLeftArgs[["hideXAxisLabels"]]      <- TRUE
-  topLeftArgs[["hideYAxisLabels"]]      <- TRUE
-  topLeftArgs[["hideXAxisName"]]        <- TRUE
-  topLeftArgs[["hideYAxisName"]]        <- TRUE
+
   topLeft <- do.call(jaspHistogram, topLeftArgs)
 
   bottomRightArgs                           <- histogramArgs
   bottomRightArgs[["x"]]                    <- y
-  bottomRightArgs[["groupingVariable"]]     <- group
-  bottomRightArgs[["groupingVariableName"]] <- groupName
-  bottomRightArgs[["hideXAxisLabels"]]      <- TRUE
-  bottomRightArgs[["hideYAxisLabels"]]      <- TRUE
-  bottomRightArgs[["hideXAxisName"]]        <- TRUE
-  bottomRightArgs[["hideYAxisName"]]        <- TRUE
+
   bottomRight <- do.call(jaspHistogram, bottomRightArgs) +
     ggplot2::coord_flip()
 
