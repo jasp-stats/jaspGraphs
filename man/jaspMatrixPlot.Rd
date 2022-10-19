@@ -15,8 +15,8 @@ jaspMatrixPlot(
   overwriteDiagonalAxes = "x",
   overwriteTopRightAxes = "both",
   overwriteBottomLeftAxes = "both",
-  binWidthType = c("doane", "fd", "scott", "sturges", "manual"),
-  numberOfBins = NA,
+  binWidthType = "doane",
+  numberOfBins = NULL,
   axesLabels
 )
 }

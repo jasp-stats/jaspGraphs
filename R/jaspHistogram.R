@@ -102,10 +102,9 @@ jaspHistogram <- function(
         size     = .7,
         position = histogramPosition
       )
-
       # for each groupingvariable, bin by breaks and find the largest count
       temp <- do.call(rbind, tapply(x, groupingVariable, function(subset) {
-        h <- graphics::hist(subset, plot = FALSE, breaks = binWidthType)
+        h <- getJaspHistogramData(subset, binWidthType = binWidthType, numberOfBins = numberOfBins)
         c(counts = max(h[["counts"]]), density = max(h[["density"]]))
       }))
       maxCounts  <- max(temp[, "counts"])
@@ -240,7 +239,7 @@ jaspHistogram <- function(
   return(plot)
 }
 
-getJaspHistogramData <- function(x, binWidthType = c("doane", "fd", "scott", "sturges", "manual"), numberOfBins = NA) {
+getJaspHistogramData <- function(x, binWidthType = c("doane", "fd", "scott", "sturges", "manual"), numberOfBins = NULL) {
   if (!is.vector(x, mode = "numeric"))
     stop2("`x` must be a numeric vector but has class ", paste(class(x), collapse = ", "))
 
@@ -273,7 +272,7 @@ getJaspHistogramData <- function(x, binWidthType = c("doane", "fd", "scott", "st
   return(h)
 }
 
-getJaspHistogramBreaks <- function(x, binWidthType = c("doane", "fd", "scott", "sturges", "manual"), numberOfBins = NA) {
+getJaspHistogramBreaks <- function(x, binWidthType = "doane", numberOfBins = NULL) {
   h <- getJaspHistogramData(x = x, binWidthType = binWidthType, numberOfBins = numberOfBins)
   return(h[["breaks"]])
 }
