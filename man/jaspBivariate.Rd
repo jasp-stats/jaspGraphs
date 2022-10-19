@@ -10,6 +10,7 @@ jaspBivariate(
   group = NULL,
   xName,
   yName,
+  groupName,
   type = c("point", "hex", "bin", "contour", "density"),
   args = list(color = "black"),
   smooth = c("none", "lm", "glm", "gam", "loess"),
@@ -17,10 +18,11 @@ jaspBivariate(
   smoothCiLevel = 0.95,
   smoothArgs = list(),
   predict = c("none", "lm", "ellipse"),
-  predictCiLevel = 0.95,
+  predictLevel = 0.95,
   predictArgs = list(),
   xBreaks = NULL,
-  yBreaks = NULL
+  yBreaks = NULL,
+  legendPosition = "none"
 )
 }
 \arguments{
@@ -33,6 +35,8 @@ jaspBivariate(
 \item{xName}{Character; x-axis label. If left empty, the name of the \code{x} object is displayed. To remove the axis label, use \code{NULL}.}
 
 \item{yName}{Character; y-axis label. If left empty, the name of the \code{y} object is displayed. To remove the axis label, use \code{NULL}.}
+
+\item{groupName}{Character; label of the grouping variable displayed as a legend title. If left empty, the name of the \code{group} object is displayed.}
 
 \item{type}{Character; How should the distribution of the data be displayed:
 \describe{
@@ -63,13 +67,13 @@ Passed as \code{level} argument to \link[ggplot2:geom_smooth]{ggplot2::geom_smoo
 \item{"ellipse"}{Prediction ellipse is plotted using \link[ggplot2:stat_ellipse]{ggplot2::stat_ellipse}.}
 }}
 
+\item{predictLevel}{Numeric; Confidence level of the prediction interval.}
+
 \item{predictArgs}{A list of additional arguments passed to the function that draws the prediction interval.}
 
 \item{xBreaks}{Optional numeric vector that specifies the breaks along the x-axis.}
 
 \item{yBreaks}{Optional numeric vector that specifies the breaks along the y-axis.}
-
-\item{predictLevel}{Numeric; Confidence level of the prediction interval.}
 }
 \description{
 This plot consists of three layers:

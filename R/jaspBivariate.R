@@ -11,6 +11,7 @@
 #' @param group Optional grouping variable.
 #' @param xName Character; x-axis label. If left empty, the name of the \code{x} object is displayed. To remove the axis label, use \code{NULL}.
 #' @param yName Character; y-axis label. If left empty, the name of the \code{y} object is displayed. To remove the axis label, use \code{NULL}.
+#' @param groupName Character; label of the grouping variable displayed as a legend title. If left empty, the name of the \code{group} object is displayed.
 #' @param type Character; How should the distribution of the data be displayed:
 #' \describe{
 #'    \item{"point"}{Using [geom_point].}
@@ -37,9 +38,10 @@
 #' @param predictArgs A list of additional arguments passed to the function that draws the prediction interval.
 #' @param xBreaks Optional numeric vector that specifies the breaks along the x-axis.
 #' @param yBreaks Optional numeric vector that specifies the breaks along the y-axis.
+#' @param legendPosition Character; passed as \code{legend.position} to [themeJaspRaw].
 #' @export
 jaspBivariate <- function(
-    x, y, group = NULL, xName, yName,
+    x, y, group = NULL, xName, yName, groupName,
     type               = c("point", "hex", "bin", "contour", "density"),
     args               = list(color = "black"),
     smooth             = c("none", "lm", "glm", "gam", "loess"),
@@ -47,10 +49,11 @@ jaspBivariate <- function(
     smoothCiLevel      = 0.95,
     smoothArgs         = list(),
     predict            = c("none", "lm", "ellipse"),
-    predictCiLevel     = 0.95,
+    predictLevel       = 0.95,
     predictArgs        = list(),
     xBreaks            = NULL,
-    yBreaks            = NULL
+    yBreaks            = NULL,
+    legendPosition     = "none"
 ) {
 
   type    <- match.arg(type)
@@ -73,6 +76,9 @@ jaspBivariate <- function(
 
   if (missing(yName))
     yName <- deparse1(substitute(y)) # identical to plot.default
+
+  if (!is.null(group) && missing(groupName))
+    groupName <- deparse1(substitute(group))
 
 
   baseGeom <- switch(
@@ -105,7 +111,7 @@ jaspBivariate <- function(
 
   if (predict == "lm") {
     fit <- lm(y~x, data = df)
-    preds <- predict(fit, newdata = df, interval = "prediction", level = predictCiLevel)
+    preds <- predict(fit, newdata = df, interval = "prediction", level = predictLevel)
     preds <- as.data.frame(preds)
     preds[["x"]] <- df[["x"]]
     predictArgs$data <- preds
@@ -114,7 +120,7 @@ jaspBivariate <- function(
   } else if (predict == "ellipse") {
     predictArgs$geom  <- "polygon"
     predictArgs$type  <- "t"
-    predictArgs$level <- predictCiLevel
+    predictArgs$level <- predictLevel
     predictLayer <- do.call(ggplot2::stat_ellipse, predictArgs)
   } else {
     predictLayer <- NULL
@@ -133,8 +139,8 @@ jaspBivariate <- function(
 
   if (type == "point" && !is.null(group)) {
     scales <- list(
-      scale_JASPfill_discrete(),
-      scale_JASPcolor_discrete()
+      scale_JASPfill_discrete(name = groupName),
+      scale_JASPcolor_discrete(name = groupName)
     )
   } else if (type %in% c("hex", "bin")) {
     scales <- scale_JASPfill_continuous()
@@ -148,7 +154,7 @@ jaspBivariate <- function(
     baseLayer +
     smoothLayer +
     predictLayer +
-    jaspGraphs::themeJaspRaw() +
+    jaspGraphs::themeJaspRaw(legend.position = legendPosition) +
     jaspGraphs::geom_rangeframe() +
     ggplot2::xlab(xName) +
     ggplot2::ylab(yName) +
@@ -176,6 +182,7 @@ jaspBivariate <- function(
 #' @param group Optional grouping variable.
 #' @param xName Character; x-axis label. If left empty, the name of the \code{x} object is displayed. To remove the axis label, use \code{NULL}.
 #' @param yName Character; y-axis label. If left empty, the name of the \code{y} object is displayed. To remove the axis label, use \code{NULL}.
+#' @param groupName Character; label of the grouping variable displayed as a legend title. If left empty, the name of the \code{group} object is displayed.
 #' @param margins Numeric vector; The proportions of the subplots relative to each other.
 #' @param binWidthType See [jaspHistogram]. Used for determining consistent axes for the bivariate and marginal distribution plots.
 #' @param numberOfBins See [jaspHistogram]. Used for determining consistent axes for the bivariate and marginal distribution plots.
@@ -186,7 +193,7 @@ jaspBivariate <- function(
 #'
 #' @export
 jaspBivariateWithMargins <- function(
-  x, y, group = NULL, xName, yName, margins = c(0.25, 0.75),
+  x, y, group = NULL, xName, yName, groupName, margins = c(0.25, 0.75),
   binWidthType = c("doane", "fd", "scott", "sturges", "manual"), numberOfBins = NA,
   histogramArgs = list(density = TRUE),
   topRightPlotFunction = NULL,
@@ -194,32 +201,39 @@ jaspBivariateWithMargins <- function(
   ...
   ) {
 
+  if (!is.null(group) && missing(groupName)) {
+    groupName <- deparse1(substitute(group))
+  } else if(missing(groupName)) {
+    groupName <- ""
+  }
+
   xBreaks <- getJaspHistogramBreaks(x = x, binWidthType = binWidthType, numberOfBins = numberOfBins)
   yBreaks <- getJaspHistogramBreaks(x = y, binWidthType = binWidthType, numberOfBins = numberOfBins)
 
-  bottomLeft <- jaspBivariate(x = x, y = y, group = group, xName = xName, yName = yName, xBreaks = xBreaks, yBreaks = yBreaks, ...)
+  bottomLeft <- jaspBivariate(x = x, y = y, group = group, xName = xName, yName = yName, groupName = groupName, xBreaks = xBreaks, yBreaks = yBreaks, ...)
+
 
   histogramArgs[["binWidthType"]] <- binWidthType
   histogramArgs[["numberOfBins"]] <- numberOfBins
 
-  topLeftArgs                      <- histogramArgs
-  topLeftArgs[["x"]]               <- x
-  topLeftArgs[["groupingVariable"]]<- group
-  topLeftArgs[["groupingVariableName"]] <- " "
-  topLeftArgs[["hideXAxisLabels"]] <- TRUE
-  topLeftArgs[["hideYAxisLabels"]] <- TRUE
-  topLeftArgs[["hideXAxisName"]]   <- TRUE
-  topLeftArgs[["hideYAxisName"]]   <- TRUE
+  topLeftArgs                           <- histogramArgs
+  topLeftArgs[["x"]]                    <- x
+  topLeftArgs[["groupingVariable"]]     <- group
+  topLeftArgs[["groupingVariableName"]] <- groupName
+  topLeftArgs[["hideXAxisLabels"]]      <- TRUE
+  topLeftArgs[["hideYAxisLabels"]]      <- TRUE
+  topLeftArgs[["hideXAxisName"]]        <- TRUE
+  topLeftArgs[["hideYAxisName"]]        <- TRUE
   topLeft <- do.call(jaspHistogram, topLeftArgs)
 
-  bottomRightArgs                      <- histogramArgs
-  bottomRightArgs[["x"]]               <- y
-  bottomRightArgs[["groupingVariable"]]<- group
-  bottomRightArgs[["groupingVariableName"]] <- " "
-  bottomRightArgs[["hideXAxisLabels"]] <- TRUE
-  bottomRightArgs[["hideYAxisLabels"]] <- TRUE
-  bottomRightArgs[["hideXAxisName"]]   <- TRUE
-  bottomRightArgs[["hideYAxisName"]]   <- TRUE
+  bottomRightArgs                           <- histogramArgs
+  bottomRightArgs[["x"]]                    <- y
+  bottomRightArgs[["groupingVariable"]]     <- group
+  bottomRightArgs[["groupingVariableName"]] <- groupName
+  bottomRightArgs[["hideXAxisLabels"]]      <- TRUE
+  bottomRightArgs[["hideYAxisLabels"]]      <- TRUE
+  bottomRightArgs[["hideXAxisName"]]        <- TRUE
+  bottomRightArgs[["hideYAxisName"]]        <- TRUE
   bottomRight <- do.call(jaspHistogram, bottomRightArgs) +
     ggplot2::coord_flip()
 
