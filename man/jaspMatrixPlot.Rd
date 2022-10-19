@@ -15,6 +15,8 @@ jaspMatrixPlot(
   overwriteDiagonalAxes = "x",
   overwriteTopRightAxes = "both",
   overwriteBottomLeftAxes = "both",
+  binWidthType = c("doane", "fd", "scott", "sturges", "manual"),
+  numberOfBins = NA,
   axesLabels
 )
 }
@@ -28,6 +30,10 @@ jaspMatrixPlot(
 \item{\code{"x"}}{x-axis gets overwritten (see option \code{"both"}), y-axis does not (see option \code{"none"}).}
 \item{\code{"y"}}{y-axis gets overwritten (see option \code{"both"}), x-axis does not (see option \code{"none"}).}
 }}
+
+\item{binWidthType}{See \link{jaspHistogram}. Used for determining consistent axes.}
+
+\item{numberOfBins}{See \link{jaspHistogram}. Used for determining consistent axes.}
 
 \item{axesLabels}{Optional character vector; provide column/row names of the matrix.}
 

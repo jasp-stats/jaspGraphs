@@ -12,7 +12,7 @@ jaspHistogram(
   histogram = TRUE,
   histogramPosition = "dodge",
   binWidthType = c("doane", "fd", "scott", "sturges", "manual"),
-  numberOfBins = NA,
+  numberOfBins = NULL,
   rugs = FALSE,
   rugsColor = FALSE,
   density = FALSE,
@@ -23,7 +23,8 @@ jaspHistogram(
   hideXAxisLabels = FALSE,
   hideYAxisLabels = density,
   hideXAxisName = FALSE,
-  hideYAxisName = FALSE
+  hideYAxisName = FALSE,
+  xBreaks = NULL
 )
 }
 \arguments{

@@ -30,23 +30,24 @@
 #' @export
 jaspHistogram <- function(
   x, xName,
-  groupingVariable = NULL,
+  groupingVariable  = NULL,
   groupingVariableName,
-  histogram = TRUE,
+  histogram         = TRUE,
   histogramPosition = "dodge",
-  binWidthType = c("doane", "fd", "scott", "sturges", "manual"),
-  numberOfBins = NA,
-  rugs = FALSE,
-  rugsColor = FALSE,
-  density = FALSE,
-  densityColor = FALSE,
-  densityShade = FALSE,
+  binWidthType      = c("doane", "fd", "scott", "sturges", "manual"),
+  numberOfBins      = NULL,
+  rugs              = FALSE,
+  rugsColor         = FALSE,
+  density           = FALSE,
+  densityColor      = FALSE,
+  densityShade      = FALSE,
   densityShadeAlpha = 0.6,
-  densityLineWidth = 1,
-  hideXAxisLabels = FALSE,
-  hideYAxisLabels = density,
-  hideXAxisName = FALSE,
-  hideYAxisName = FALSE
+  densityLineWidth  = 1,
+  hideXAxisLabels   = FALSE,
+  hideYAxisLabels   = density,
+  hideXAxisName     = FALSE,
+  hideYAxisName     = FALSE,
+  xBreaks           = NULL
   ) {
 
   # validate input
@@ -73,30 +74,14 @@ jaspHistogram <- function(
   hasGroupingVariable <- !is.null(groupingVariable)
   x <- stats::na.omit(as.numeric(x))
 
-  if (binWidthType == "doane") {
-
-    # https://en.wikipedia.org/wiki/Histogram#Doane's_formula
-    sigma.g1 <- sqrt((6*(length(x) - 2)) / ((length(x) + 1)*(length(x) + 3)))
-    g1 <- mean(abs(x)^3)
-    k <- 1 + log2(length(x)) + log2(1 + (g1 / sigma.g1))
-    binWidthType <- k
-
-  } else if (binWidthType == "fd" && grDevices::nclass.FD(x) > 10000) { # FD-method will produce extreme number of bins and crash ggplot, mention this in footnote
-
-    warning2("The Freedman-Diaconis method would produce an extreme number of bins, setting the number of bins to 10,000.")
-    binWidthType <- 10000
-
-  } else if (binWidthType == "manual") {
-
-    if (is.na(numberOfBins))
-      stop2("numberOfBins argument must be specified when a binWidthType == 'manual'.")
-
-    binWidthType <- numberOfBins
-
+  if(!is.null(xBreaks) || !missing(xBreaks)) {
+    binWidthType <- "manual"
+    numberOfBins <- xBreaks
   }
 
-  h <- graphics::hist(x, plot = FALSE, breaks = binWidthType)
+  h <- getJaspHistogramData(x = x, binWidthType = binWidthType, numberOfBins = numberOfBins)
   xBreaks <- getPrettyAxisBreaks(c(x, h[["breaks"]]), min.n = 3)
+
 
   histogramGeom <- scaleFill <- maxCounts <- maxDensity <- NULL
   if (histogram) {
@@ -255,7 +240,7 @@ jaspHistogram <- function(
   return(plot)
 }
 
-getJaspHistogramBreaks <- function(x, binWidthType = c("doane", "fd", "scott", "sturges", "manual"), numberOfBins = NA) {
+getJaspHistogramData <- function(x, binWidthType = c("doane", "fd", "scott", "sturges", "manual"), numberOfBins = NA) {
   if (!is.vector(x, mode = "numeric"))
     stop2("`x` must be a numeric vector but has class ", paste(class(x), collapse = ", "))
 
@@ -277,7 +262,7 @@ getJaspHistogramBreaks <- function(x, binWidthType = c("doane", "fd", "scott", "
 
   } else if (binWidthType == "manual") {
 
-    if (is.na(numberOfBins))
+    if (is.null(numberOfBins))
       stop2("numberOfBins argument must be specified when a binWidthType == 'manual'.")
 
     binWidthType <- numberOfBins
@@ -285,7 +270,10 @@ getJaspHistogramBreaks <- function(x, binWidthType = c("doane", "fd", "scott", "
   }
 
   h <- graphics::hist(x, plot = FALSE, breaks = binWidthType)
-  breaks <- getPrettyAxisBreaks(c(x, h[["breaks"]]), min.n = 3)
+  return(h)
+}
 
-  return(breaks)
+getJaspHistogramBreaks <- function(x, binWidthType = c("doane", "fd", "scott", "sturges", "manual"), numberOfBins = NA) {
+  h <- getJaspHistogramData(x = x, binWidthType = binWidthType, numberOfBins = numberOfBins)
+  return(h[["breaks"]])
 }
