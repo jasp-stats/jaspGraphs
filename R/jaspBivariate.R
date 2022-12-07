@@ -64,8 +64,8 @@ jaspBivariate <- function(
     df  <- data.frame(x = x, y = y)
     aes <- ggplot2::aes(x = x, y = y)
   } else {
-    if(type != "point" && type != "none")
-      stop("grouping variable is allowed only for type = 'point' or 'none'.")
+    if (type != "point" && type != "none")
+      stop2("grouping variable is allowed only for type = 'point' or 'none'.")
 
     df  <- data.frame(x = x, y = y, group = group)
     aes <- ggplot2::aes(x = x, y = y, group = group, fill = group, color = group)
@@ -111,8 +111,8 @@ jaspBivariate <- function(
 
 
   if (predict == "lm") {
-    fit <- lm(y~x, data = df)
-    preds <- predict(fit, newdata = df, interval = "prediction", level = predictLevel)
+    fit <- stats::lm(y~x, data = df)
+    preds <- stats::predict(fit, newdata = df, interval = "prediction", level = predictLevel)
     preds <- as.data.frame(preds)
     preds[["x"]] <- df[["x"]]
     predictArgs$data <- preds
