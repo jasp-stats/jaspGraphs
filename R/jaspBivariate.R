@@ -201,8 +201,8 @@ jaspBivariate <- function(
 #' @export
 jaspBivariateWithMargins <- function(
   x, y, group = NULL, xName, yName, groupName, margins = c(0.25, 0.75),
-  binWidthType = "doane", numberOfBins = NULL,
-  histogramArgs = list(density = TRUE),
+  xMarginalArgs = .marginalArgs(),
+  yMarginalArgs = .marginalArgs(),
   topRightPlotFunction = NULL,
   topRightPlotArgs = list(),
   ...
@@ -214,29 +214,42 @@ jaspBivariateWithMargins <- function(
     groupName <- ""
   }
 
-  xBreaks <- getJaspHistogramBreaks(x = x, binWidthType = binWidthType, numberOfBins = numberOfBins)
-  yBreaks <- getJaspHistogramBreaks(x = y, binWidthType = binWidthType, numberOfBins = numberOfBins)
+  if (missing(xName))
+    xName <- deparse1(substitute(x)) # identical to plot.default
 
-  bottomLeft <- jaspBivariate(x = x, y = y, group = group, xName = xName, yName = yName, groupName = groupName, xBreaks = xBreaks, yBreaks = yBreaks, ...)
+  if (missing(yName))
+    yName <- deparse1(substitute(y)) # identical to plot.default
 
-  histogramArgs[["binWidthType"]]         <- binWidthType
-  histogramArgs[["numberOfBins"]]         <- numberOfBins
-  histogramArgs[["groupingVariable"]]     <- group
-  histogramArgs[["groupingVariableName"]] <- groupName
-  histogramArgs[["hideXAxisLabel"]]       <- TRUE
-  histogramArgs[["hideXAxisLabel"]]       <- TRUE
-  histogramArgs[["hideXAxisName"]]        <- TRUE
-  histogramArgs[["hideYAxisName"]]        <- TRUE
+  if (is.null(group)) {
+    df <- data.frame(x = x, y = y)
+  } else {
+    df <- data.frame(x = x, y = y, group = group)
+  }
+  df <- na.omit(df)
 
-  topLeftArgs        <- histogramArgs
-  topLeftArgs[["x"]] <- x
+  xBreaks <- getJaspMarginalBreaks(x = df[["x"]], breaks = xMarginalArgs[["breaks"]])
+  yBreaks <- getJaspMarginalBreaks(x = df[["y"]], breaks = yMarginalArgs[["breaks"]])
 
-  topLeft <- do.call(jaspHistogram, topLeftArgs)
+  bottomLeft <- jaspBivariate(x = df[["x"]], y = df[["y"]], group = if(is.null(group)) NULL else group, xName = xName, yName = yName, groupName = groupName, xBreaks = xBreaks, yBreaks = yBreaks, ...)
 
-  bottomRightArgs        <- histogramArgs
-  bottomRightArgs[["x"]] <- y
+  xMarginalArgs[["x"]]          <- df[["x"]]
+  xMarginalArgs["group"]        <- if (is.null(group)) list(NULL) else list(df[["group"]])
+  xMarginalArgs["xName"]        <- list(NULL)
+  xMarginalArgs["yName"]        <- list(NULL)
+  xMarginalArgs["groupName"]    <- list(groupName)
+  xMarginalArgs[["axisLabels"]] <- "none"
 
-  bottomRight <- do.call(jaspHistogram, bottomRightArgs) +
+  topLeft <- do.call(jaspMarginal, xMarginalArgs)
+
+
+  yMarginalArgs[["x"]]          <- df[["y"]]
+  yMarginalArgs["group"]        <- if (is.null(group)) list(NULL) else list(df[["group"]])
+  yMarginalArgs["xName"]        <- list(NULL)
+  yMarginalArgs["yName"]        <- list(NULL)
+  yMarginalArgs["groupName"]    <- list(groupName)
+  yMarginalArgs[["axisLabels"]] <- "none"
+
+  bottomRight <- do.call(jaspMarginal, yMarginalArgs) +
     ggplot2::coord_flip()
 
 
