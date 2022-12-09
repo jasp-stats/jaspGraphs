@@ -82,7 +82,7 @@ jaspMarginal <- function(
   if (!is.null(group) && missing(groupName))
     groupName <- deparse1(substitute(group)) # identical to plot.default
 
-  if (!missing(groupName) && !is.character(groupName))
+  if (!missing(groupName) && !is.character(groupName) && !is.null(groupName))
     stop2("`groupName` must be character but has class ", paste(class(groupName), collapse = ", "), "!")
 
   axisLabels <- match.arg(axisLabels)
@@ -224,6 +224,11 @@ getJaspMarginalData <- function(x, breaks) {
 
   h <- graphics::hist(x, plot = FALSE, breaks = breaks)
   return(h)
+}
+
+getJaspMarginalBreaks <- function(x, breaks) {
+  h <- getJaspMarginalData(x, breaks)
+  return(h[["breaks"]])
 }
 
 #' @rdname jaspMarginal

@@ -12,9 +12,8 @@ jaspBivariateWithMargins(
   yName,
   groupName,
   margins = c(0.25, 0.75),
-  binWidthType = "doane",
-  numberOfBins = NULL,
-  histogramArgs = list(density = TRUE),
+  xMarginalArgs = .marginalArgs(),
+  yMarginalArgs = .marginalArgs(),
   topRightPlotFunction = NULL,
   topRightPlotArgs = list(),
   ...
@@ -35,17 +34,17 @@ jaspBivariateWithMargins(
 
 \item{margins}{Numeric vector; The proportions of the subplots relative to each other.}
 
-\item{binWidthType}{See \link{jaspHistogram}. Used for determining consistent axes for the bivariate and marginal distribution plots.}
-
-\item{numberOfBins}{See \link{jaspHistogram}. Used for determining consistent axes for the bivariate and marginal distribution plots.}
-
-\item{histogramArgs}{An optional list of options passed to \link{jaspHistogram}.}
-
 \item{topRightPlotFunction}{An optional function that can be used to plotting something in the top-right panel. If \code{NULL} (default), an empty area is plotted.}
 
 \item{topRightPlotArgs}{An optional list of options passed to \code{topRightPlotFunction}.}
 
 \item{...}{Additional options passed to \link{jaspBivariate}.}
+
+\item{binWidthType}{See \link{jaspHistogram}. Used for determining consistent axes for the bivariate and marginal distribution plots.}
+
+\item{numberOfBins}{See \link{jaspHistogram}. Used for determining consistent axes for the bivariate and marginal distribution plots.}
+
+\item{histogramArgs}{An optional list of options passed to \link{jaspHistogram}.}
 }
 \description{
 This plot consists of four elements:
