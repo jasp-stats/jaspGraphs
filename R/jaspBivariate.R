@@ -47,10 +47,10 @@ jaspBivariate <- function(
     smooth             = c("none", "lm", "glm", "gam", "loess"),
     smoothCi           = FALSE,
     smoothCiLevel      = 0.95,
-    smoothArgs         = list(),
+    smoothArgs         = list(color = "black"),
     predict            = c("none", "lm", "ellipse"),
     predictLevel       = 0.95,
-    predictArgs        = list(),
+    predictArgs        = list(color = "black", linetype = 2, linewidth = 1, fill = NA),
     xBreaks            = NULL,
     yBreaks            = NULL,
     legendPosition     = "none"
