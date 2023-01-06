@@ -122,7 +122,7 @@ validateGraphType <- function(graph) {
 
   # more to come!
   if (is.coordPolar(graph[["layout"]][["coord"]]))
-    unsupportedFigureError("This plot cannot be edited because it uses polar coordinates (e.g., pie chart).")
+    unsupportedFigureError(gettext("This plot cannot be edited because it uses polar coordinates (e.g., pie chart)."))
 
 }
 
