@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspGraphs 0.5.2.11\n"
-"POT-Creation-Date: 2022-04-23 03:25\n"
+"POT-Creation-Date: 2022-12-17 03:17\n"
 "PO-Revision-Date: 2022-10-04 06:15+0000\n"
 "Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -61,31 +61,8 @@ msgstr "证据，对于 H%s:"
 msgid "Evidence for H%s"
 msgstr "证据，对于 H%s"
 
-msgid "switchEnum: no default case nor an exhaustive set of cases!"
-msgstr "switchEnum：没有默认个案或详尽的个案集！"
-
-msgid "This function will be deprecated."
-msgstr "此函数即将被弃用。"
-
-msgid ""
-"aestethic 'method' for geom_abline2 expects either 'breaks' or 'ggplot2' but "
-"got something else!"
-msgstr ""
-"geom_abline2 的美学方法“method”需要“breaks”或“ggplot2”，但出现了其他情况！"
-
-msgid "jaspGraphs could not obtain axes labels from graph"
-msgstr "jaspGraphs 无法从图形中获取轴标签"
-
 msgid "Counts"
 msgstr "计数"
-
-msgid "input was not a valid R expression, reinterpreting as character"
-msgstr "输入不是有效的 R 表达式，正在重新转换为字符"
-
-msgid ""
-"Unknown title type: %s. I'm pretending it works as character and hope for "
-"the best..."
-msgstr "未知的标题类型：%s。我们假设它作为字符串来处理并希望它能工作......"
 
 msgid "Computing plotEditingOptions gave an error: %s"
 msgstr "计算 plotEditingOptions 时出错：%s"
@@ -124,7 +101,30 @@ msgstr "理论分位数( Theoretical Quantile)"
 msgid "Observed quantiles"
 msgstr "观测数据的分位数"
 
-msgid ""
-"Arguments xAxis and yAxis of themeJasp will be deprecated. Please use the "
-"argument \"sides\" instead."
-msgstr "themeJasp 的参数 xAxis 和 yAxis 将被弃用。请改用参数“sides”。"
+#~ msgid "switchEnum: no default case nor an exhaustive set of cases!"
+#~ msgstr "switchEnum：没有默认个案或详尽的个案集！"
+
+#~ msgid "This function will be deprecated."
+#~ msgstr "此函数即将被弃用。"
+
+#~ msgid ""
+#~ "aestethic 'method' for geom_abline2 expects either 'breaks' or 'ggplot2' "
+#~ "but got something else!"
+#~ msgstr ""
+#~ "geom_abline2 的美学方法“method”需要“breaks”或“ggplot2”，但出现了其他情况！"
+
+#~ msgid "jaspGraphs could not obtain axes labels from graph"
+#~ msgstr "jaspGraphs 无法从图形中获取轴标签"
+
+#~ msgid "input was not a valid R expression, reinterpreting as character"
+#~ msgstr "输入不是有效的 R 表达式，正在重新转换为字符"
+
+#~ msgid ""
+#~ "Unknown title type: %s. I'm pretending it works as character and hope for "
+#~ "the best..."
+#~ msgstr "未知的标题类型：%s。我们假设它作为字符串来处理并希望它能工作......"
+
+#~ msgid ""
+#~ "Arguments xAxis and yAxis of themeJasp will be deprecated. Please use the "
+#~ "argument \"sides\" instead."
+#~ msgstr "themeJasp 的参数 xAxis 和 yAxis 将被弃用。请改用参数“sides”。"

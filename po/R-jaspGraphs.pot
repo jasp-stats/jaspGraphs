@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspGraphs 0.5.2.17\n"
-"POT-Creation-Date: 2022-12-17 03:17\n"
+"POT-Creation-Date: 2023-01-14 03:18\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,6 +80,9 @@ msgid "Converting plotEditingOptions to JSON gave an error: %s."
 msgstr ""
 
 msgid "Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s To receive assistance with this problem, please report the message above at: https://jasp-stats.org/bug-reports"
+msgstr ""
+
+msgid "This plot cannot be edited because it uses polar coordinates (e.g., pie chart)."
 msgstr ""
 
 msgid "Theoretical quantiles"

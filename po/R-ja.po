@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspGraphs 0.5.2\n"
-"POT-Creation-Date: 2022-12-17 03:17\n"
+"POT-Creation-Date: 2023-01-14 03:18\n"
 "PO-Revision-Date: 2021-11-10 04:46+0000\n"
 "Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspgraphs/"
@@ -98,6 +98,13 @@ msgstr ""
 "プロット編集が予期せず終了しました。plotEditingOptionsで致命的なエラーが発生"
 "しました: %s この問題に対するサポートを受けるには、上記のメッセージを "
 "https://jasp-stats.org/bug-reports で報告してください"
+
+#, fuzzy
+msgid ""
+"This plot cannot be edited because it uses polar coordinates (e.g., pie "
+"chart)."
+msgstr ""
+"このプロットは、ggplotではなくqgraphで作成されているため、編集できません。"
 
 msgid "Theoretical quantiles"
 msgstr "理論上の分位数"

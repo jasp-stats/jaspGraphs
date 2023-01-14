@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspGraphs 0.5.2.15\n"
-"POT-Creation-Date: 2022-12-17 03:17\n"
+"POT-Creation-Date: 2023-01-14 03:18\n"
 "PO-Revision-Date: 2022-10-01 04:04+0000\n"
 "Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/jasp/jaspgraphs/"
@@ -102,6 +102,14 @@ msgstr ""
 "dans plotEditingOptions : %s. Pour obtenir de l'aide concernant ce problème, "
 "veuillez signaler le message ci-dessus à l'adresse suivante : https://jasp-"
 "stats.org/bug-reports."
+
+#, fuzzy
+msgid ""
+"This plot cannot be edited because it uses polar coordinates (e.g., pie "
+"chart)."
+msgstr ""
+"Ce graphique ne peut pas être édité car il a été créé avec qgraph au lieu de "
+"ggplot."
 
 msgid "Theoretical quantiles"
 msgstr "Quantiles théoriques"

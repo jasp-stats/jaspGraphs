@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspGraphs 0.5.2.11\n"
-"POT-Creation-Date: 2022-12-17 03:17\n"
+"POT-Creation-Date: 2023-01-14 03:18\n"
 "PO-Revision-Date: 2022-10-04 06:15+0000\n"
 "Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -94,6 +94,12 @@ msgid ""
 msgstr ""
 "绘图编辑意外终止。 plotEditingOptions 中出现致命错误：%s 。想要获得有关此问题"
 "的帮助，请在以下位置报告上述消息：https://jasp-stats.org/bug-reports"
+
+#, fuzzy
+msgid ""
+"This plot cannot be edited because it uses polar coordinates (e.g., pie "
+"chart)."
+msgstr "此绘图无法编辑，因为它是用 qgraph 而不是 ggplot 创建的。"
 
 msgid "Theoretical quantiles"
 msgstr "理论分位数( Theoretical Quantile)"
