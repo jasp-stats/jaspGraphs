@@ -18,7 +18,7 @@ geom_abline2(
 )
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}} or \code{\link[ggplot2:aes_]{aes_()}}.}
+\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}}.}
 
 \item{data}{The data to be displayed in this layer. There are three
 options:

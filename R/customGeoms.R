@@ -51,7 +51,7 @@ geom_point <- function(mapping = NULL, data = NULL, stat = "identity", position 
 jaspGeomLine <- ggplot2::ggproto(
   `_class`    = "jaspGeomLine",
   `_inherit`  = ggplot2::GeomLine,
-  default_aes = aes(size = 1.00, colour = "black", linetype = 1, alpha = NA)
+  default_aes = aes(linewidth = 1.00, colour = "black", linetype = 1, alpha = NA)
 )
 
 #' @rdname geom_point
@@ -59,7 +59,34 @@ jaspGeomLine <- ggplot2::ggproto(
 geom_line <- function(mapping = NULL, data = NULL, stat = "identity", position = "identity",
     ..., na.rm = FALSE, show.legend = NA, inherit.aes = TRUE) {
 
-  layer(data = data, mapping = mapping, stat = stat, geom = jaspGeomLine,
-        position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-        params = list(na.rm = na.rm, ...))
+  # ggplot2 3.4.0 renamed `size` to `linewidth`. Check if `size` was specified.
+  # If so, rename it to `linewidth` and show a deprecation warning.
+
+  if ("size" %in% ...names()) {
+    lifecycle::deprecate_warn(
+      "0.6.0",
+      "jaspGraphs::geom_line(size)",
+      "jaspGraphs::geom_line(linewidth)",
+      details = "In ggplot2 version 3.4.0 the argument `size` was renamed to `linewidth`, likewise in jaspGraphs. For now, jaspGraphs automatically assigned `linewidth = size`. Please fix this in your code, as this will become an error in a future version of jaspGraphs."
+    )
+
+    # specifying both `size` and `linewidth` is an error
+    if ("linewidth" %in% ...names())
+      stop("`jaspGraphs::geom_line`: Cannot specify both size and linewidth!", domain = NA)
+
+    params <- list(na.rm = na.rm, ...)
+    params[["linewidth"]] <- params[["size"]]
+    params <- params[setdiff(names(params), "size")]
+
+    layer(data = data, mapping = mapping, stat = stat, geom = jaspGeomLine,
+          position = position, show.legend = show.legend, inherit.aes = inherit.aes,
+          params = params)
+
+  } else {
+
+    layer(data = data, mapping = mapping, stat = stat, geom = jaspGeomLine,
+          position = position, show.legend = show.legend, inherit.aes = inherit.aes,
+          params = list(na.rm = na.rm, ...))
+
+  }
 }
