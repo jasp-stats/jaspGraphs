@@ -108,7 +108,7 @@ getDecodeplotFun <- function() {
   jaspBaseInstalled <- length(find.package("jaspBase", .libPaths(), quiet = TRUE, verbose = FALSE)) != 0L
   if (!jaspBaseInstalled)
     return(NULL)
-  if (packageVersion("jaspBase") < "0.16.4")
+  if (utils::packageVersion("jaspBase") < "0.16.4")
     return(get0("decodeplot"))
   else # no longer in the global environment
     return(get0("decodeplot", envir = asNamespace("jaspBase")))

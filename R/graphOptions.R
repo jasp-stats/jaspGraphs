@@ -16,7 +16,7 @@
   axisTickLength = grid::unit(x = .3, units = "cm"),
   axisTickWidth = .3,
   digits = list(axes = 3L, BF = 3L),
-  ggVersion = packageVersion("ggplot2"),
+  ggVersion = utils::packageVersion("ggplot2"),
   palette = "colorblind",
   debug = TRUE
 ))
