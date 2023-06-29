@@ -156,9 +156,9 @@ jaspHistogram <- function(
       )
 
       densityLineGeom <- ggplot2::geom_line(
-        data    = densDf,
-        mapping = aes(x = .data$x, y = .data$y, group = .data$g, color = .data$g),
-        lwd     = densityLineWidth,
+        data      = densDf,
+        mapping   = aes(x = .data$x, y = .data$y, group = .data$g, color = .data$g),
+        linewidth = densityLineWidth,
       )
 
       scaleColor <- scale_JASPcolor_discrete(name = groupingVariableName)
@@ -179,10 +179,10 @@ jaspHistogram <- function(
       densDf <- data.frame(x = dens[["x"]], y = dens[["y"]])
 
       densityLineGeom <- ggplot2::geom_line(
-        data    = densDf,
-        mapping = aes(x = .data$x, y = .data$y),
-        lwd     = densityLineWidth,
-        col     = "black"
+        data      = densDf,
+        mapping   = aes(x = .data$x, y = .data$y),
+        linewidth = densityLineWidth,
+        col       = "black"
       )
 
       if (densityShade)
