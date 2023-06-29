@@ -83,7 +83,7 @@ descriptivesPlot <- function(x, y, ciLower = NULL, ciUpper = NULL,
   # length(x) > 1L avoids a warning whenever there is only one value and no lines can be drawn (e.g., the one-sample t-ttest)
   geomLine <- NULL
   if (length(x) > 1L && connectedPoints)
-    geomLine <- ggplot2::geom_line(position = position, size = lineSize)
+    geomLine <- ggplot2::geom_line(position = position, linewidth = lineSize)
 
   p <- ggplot(df, mapping = mapping) +
     ggplot2::geom_errorbar(color = "black", width = errorbarWidth, position = position) +

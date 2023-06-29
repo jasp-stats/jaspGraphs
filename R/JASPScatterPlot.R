@@ -127,7 +127,7 @@ JASPScatterSubPlot <- function(x, group = NULL, type = c("density", "histogram",
 
   if (type == "density") {
     foo <- function(x, ...) as.data.frame(stats::density(x, from = range[1L], to = range[2L])[c("x", "y")])
-    geom <- geom_line(size = 0.5, show.legend = FALSE)
+    geom <- geom_line(linewidth = 0.5, show.legend = FALSE)
     geom2 <- if (colorAreaUnderDensity) {
       geom_ribbon(aes(ymin = 0, ymax = .data$y), alpha = alpha)
     } else {
