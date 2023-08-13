@@ -11,7 +11,7 @@ jaspGraphs_data <- list2env(list(
   gray           = list(colors = c("#DFDFDF", "#bfbfbf", "#999999", "#737373", "#505050", "#383838")), # bayesplot::color_scheme_get("gray")
   ggplot2        = list(colors = c("#F8766D", "#CD9600", "#7CAE00", "#00BE67", "#00BFC4", "#00A9FF", "#C77CFF", "#FF61CC"),
                      fun    = scales::hue_pal()),
-  nBA            = list(colors = c("#e13a3e", "#008348", "#061922", "#1d1160", "#860038", "#4d90cd", "#ffc633", "#0f586c", "#00471b", "#005083")), #  unique(teamcolors::league_pal("nba"))[-c(5,7,9,10,13)][1:10]
+  sportsTeamsNBA = list(colors = c("#e13a3e", "#008348", "#061922", "#1d1160", "#860038", "#4d90cd", "#ffc633", "#0f586c", "#00471b", "#005083")), #  unique(teamcolors::league_pal("nba"))[-c(5,7,9,10,13)][1:10]
   grandBudapest  = list(colors = c("#E6A0C4", "#C6CDF7", "#D8A499", "#7294D4", "#F1BB7B", "#FD6467", "#5B1A18", "#D67236"))# c( wesanderson:::wes_palettes[["GrandBudapest2"]],  wesanderson:::wes_palettes[["GrandBudapest1"]])
 ))
 
