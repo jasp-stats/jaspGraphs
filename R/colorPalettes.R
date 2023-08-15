@@ -3,14 +3,16 @@
 
 jaspGraphs_data <- list2env(list(
   # discrete color scales
-  colorblind  = list(colors = RColorBrewer::brewer.pal(8L, "Dark2")),
-  colorblind2 = list(colors = RColorBrewer::brewer.pal(8L, "Set2")),
-  colorblind3 = list(colors = c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")), # from ggthemes
-  viridis     = list(colors = viridisLite::viridis(256L)), # viridis::scale_color_viridis
-  blue        = list(colors = c("#d1e1ec", "#b3cde0", "#6497b1", "#005b96", "#03396c", "#011f4b")), # bayesplot::color_scheme_get("blue") 
-  gray        = list(colors = c("#DFDFDF", "#bfbfbf", "#999999", "#737373", "#505050", "#383838")), # bayesplot::color_scheme_get("gray")
-  ggplot2     = list(colors = c("#F8766D", "#CD9600", "#7CAE00", "#00BE67", "#00BFC4", "#00A9FF", "#C77CFF", "#FF61CC"),
-                     fun    = scales::hue_pal())
+  colorblind     = list(colors = RColorBrewer::brewer.pal(8L, "Dark2")),
+  colorblind2    = list(colors = RColorBrewer::brewer.pal(8L, "Set2")),
+  colorblind3    = list(colors = c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")), # from ggthemes
+  viridis        = list(colors = viridisLite::viridis(256L)), # viridis::scale_color_viridis
+  blue           = list(colors = c("#d1e1ec", "#b3cde0", "#6497b1", "#005b96", "#03396c", "#011f4b")), # bayesplot::color_scheme_get("blue")
+  gray           = list(colors = c("#DFDFDF", "#bfbfbf", "#999999", "#737373", "#505050", "#383838")), # bayesplot::color_scheme_get("gray")
+  ggplot2        = list(colors = c("#F8766D", "#CD9600", "#7CAE00", "#00BE67", "#00BFC4", "#00A9FF", "#C77CFF", "#FF61CC"),
+                     fun    = scales::hue_pal()),
+  sportsTeamsNBA = list(colors = c("#e13a3e", "#008348", "#061922", "#1d1160", "#860038", "#4d90cd", "#ffc633", "#0f586c", "#00471b", "#005083")), #  unique(teamcolors::league_pal("nba"))[-c(5,7,9,10,13)][1:10]
+  grandBudapest  = list(colors = c("#E6A0C4", "#C6CDF7", "#D8A499", "#7294D4", "#F1BB7B", "#FD6467", "#5B1A18", "#D67236"))# c( wesanderson:::wes_palettes[["GrandBudapest2"]],  wesanderson:::wes_palettes[["GrandBudapest1"]])
 ))
 
 #'@title JASP color palettes
