@@ -181,7 +181,7 @@ makeLegendPlot <- function(groupingVariable, colors = NULL, fill = NULL, linetyp
 
     legendPlot <- ggplot(data = dfLegendPlot,  aes(x = .data$x, y = .data$y, xend = .data$xend, yend = .data$yend, label = .data$l)) +
       ggplot2::geom_segment(mapping = aes(color = .data$y, linetype = .data$y), show.legend = FALSE,
-                            size = 1.15 * jaspGeomLine$default_aes$size) +
+                            linewidth = 1.15 * jaspGeomLine$default_aes$linewidth) +
       ggplot2::geom_text(nudge_x = 0.15, size = .35 * getGraphOption("fontsize"), hjust = 0,
                          parse = parse) +
       ggplot2::xlim(c(0, 1)) +
