@@ -19,14 +19,14 @@ jaspBivariate(
   smoothArgs = list(color = "black"),
   predict = c("none", "lm", "ellipse"),
   predictLevel = 0.95,
-  predictArgs = list(color = "black", linetype = 2, linewidth = 1, fill = NA),
+  predictArgs = .predictArgs(),
   xBreaks = NULL,
   yBreaks = NULL,
   legendPosition = "none"
 )
 }
 \arguments{
-\item{x}{Numeric vector of values on the x-axis.}
+\item{x}{Numeric vector of values on the x-axis. μ}
 
 \item{y}{Numeric vector of values on the y-axis.}
 
