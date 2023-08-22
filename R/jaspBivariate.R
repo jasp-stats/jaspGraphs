@@ -1,12 +1,12 @@
 #' @title Bivariate plots with optional confidence and prediction intervals.
-#'
+# #' @encoding UTF-8
 #' @description This plot consists of three layers:
 #' \enumerate{
 #'   \item The bivariate distribution.
 #'   \item Smooth line through the data displayed using [ggplot2::geom_smooth].
 #'   \item Prediction interval of y given x using [stats::predict.lm](assuming linear relationship), or prediction ellipse assuming bivariate normal distribution.
 #' }
-#' @param x Numeric vector of values on the x-axis.
+#' @param x Numeric vector of values on the x-axis. `r "\u03BC"`
 #' @param y Numeric vector of values on the y-axis.
 #' @param group Optional grouping variable.
 #' @param xName Character; x-axis label. If left empty, the name of the \code{x} object is displayed. To remove the axis label, use \code{NULL}.
@@ -50,7 +50,7 @@ jaspBivariate <- function(
     smoothArgs         = list(color = "black"),
     predict            = c("none", "lm", "ellipse"),
     predictLevel       = 0.95,
-    predictArgs        = list(color = "black", linetype = 2, linewidth = 1, fill = NA),
+    predictArgs        = .predictArgs(),
     xBreaks            = NULL,
     yBreaks            = NULL,
     legendPosition     = "none"
@@ -173,6 +173,26 @@ jaspBivariate <- function(
     scales
 
   return(plot)
+}
+
+.predictArgs <- function(color = "black", linetype = 2, linewidth = 1, fill = NA, ...) {
+  args <- list(...)
+  args[["color"]]     <- color
+  args[["linetype"]]  <- linetype
+  args[["linewidth"]] <- linewidth
+  args[["fill"]]       <- fill
+
+  return(args)
+}
+
+.smoothArgs <- function(method = "lm", se = FALSE, level = 0.95, formula = y~x, ...) {
+  args <- list(...)
+  args[["method"]]  <- method
+  args[["se"]]      <- se
+  args[["level"]]   <- level
+  args[["formula"]] <- formula
+
+  return(args)
 }
 
 #' @title Bivariate plots with marginal distributions along the axes.
