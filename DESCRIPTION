@@ -20,5 +20,6 @@ Imports:
     RColorBrewer,
     rlang,
     scales,
-    viridisLite
+    viridisLite,
+    patchwork
 Roxygen: list(markdown = TRUE)
