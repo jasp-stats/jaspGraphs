@@ -20,7 +20,7 @@
 #' jaspGraphs::plotQQnorm(x, lower, upper)
 #'
 #' @export
-plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineColor = "red",
+plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineOrigin = FALSE, ablineColor = "red", identicalAxes = FALSE, 
                        xName = gettext("Theoretical quantiles",domain="R-jaspGraphs"), yName = gettext("Observed quantiles",domain="R-jaspGraphs")) {
 
   n <- length(residuals)
@@ -36,8 +36,13 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
   }
 
   # determine axes breaks
-  xBreaks <- getPrettyAxisBreaks(df$x)
-  yBreaks <- getPrettyAxisBreaks(c(df$y, df$ymin, df$ymax))
+  if (identicalAxes) {
+    xBreaks <- yBreaks <- getPrettyAxisBreaks(unlist(df))
+  } else {
+    xBreaks <- getPrettyAxisBreaks(df$x)
+    yBreaks <- getPrettyAxisBreaks(c(df$y, df$ymin, df$ymax))
+  }
+
 
   # from stats::qqline
   xvals <- stats::quantile(df$y, c(0.25, 0.75), names = FALSE)
@@ -60,9 +65,15 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
   dfLine <- data.frame(x = xvals, y = yvals)
   g <- ggplot2::ggplot(data = df, aes(x = .data$x, y = .data$y))
 
-  if (abline)
+  if (abline && ablineOrigin) { 
+    g <- g + ggplot2::geom_line(data = data.frame(x = c(min(xvals), max(xvals)), y = c(min(xvals), max(xvals))),
+                                  mapping = ggplot2::aes(x = .data$x, y = .data$y),
+                                  col = ablineColor,
+                                  size = 1)
+  } else if (abline) {
     g <- g + ggplot2::geom_line(mapping = aes(x = .data$x, y = .data$y), data = dfLine, inherit.aes = FALSE, color = ablineColor)
-
+  }
+  
   if (hasErrorbars)
     g <- g + ggplot2::geom_errorbar(aes(ymin = .data$ymin, ymax = .data$ymax))
 
