@@ -20,7 +20,7 @@
 #' jaspGraphs::plotQQnorm(x, lower, upper)
 #'
 #' @export
-plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineColor = "red", plotDiagonal = FALSE, forceSameAxes = FALSE, 
+plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineColor = "red", ablineOrigin = FALSE, identicalAxes = FALSE, 
                        xName = gettext("Theoretical quantiles",domain="R-jaspGraphs"), yName = gettext("Observed quantiles",domain="R-jaspGraphs")) {
 
   n <- length(residuals)
@@ -36,9 +36,8 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
   }
 
   # determine axes breaks
-  if (forceSameAxes) {
-    xBreaks <- getPrettyAxisBreaks(unlist(df))
-    yBreaks <- getPrettyAxisBreaks(unlist(df))
+  if (identicalAxes) {
+    xBreaks <- yBreaks <- getPrettyAxisBreaks(unlist(df))
   } else {
     xBreaks <- getPrettyAxisBreaks(df$x)
     yBreaks <- getPrettyAxisBreaks(c(df$y, df$ymin, df$ymax))
@@ -66,7 +65,7 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
   dfLine <- data.frame(x = xvals, y = yvals)
   g <- ggplot2::ggplot(data = df, aes(x = .data$x, y = .data$y))
 
-  if (abline && plotDiagonal) { 
+  if (abline && ablineOrigin) { 
     g <- g + ggplot2::geom_line(data = data.frame(x = c(min(xvals), max(xvals)), y = c(min(xvals), max(xvals))),
                                   mapping = ggplot2::aes(x = .data$x, y = .data$y),
                                   col = ablineColor,
