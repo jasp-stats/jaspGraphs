@@ -63,7 +63,9 @@
 <span>  lower <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  upper <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  abline <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ablineOrigin <span class="op">=</span> <span class="cn">FALSE</span>, </span>
 <span>  ablineColor <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>  identicalAxes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  xName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/gettext.html" class="external-link">gettext</a></span><span class="op">(</span><span class="st">"Theoretical quantiles"</span>, domain <span class="op">=</span> <span class="st">"R-jaspGraphs"</span><span class="op">)</span>,</span>
 <span>  yName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/gettext.html" class="external-link">gettext</a></span><span class="op">(</span><span class="st">"Observed quantiles"</span>, domain <span class="op">=</span> <span class="st">"R-jaspGraphs"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -84,11 +86,19 @@
 
 
 <dt>abline</dt>
-<dd><p>Logical, should an abline be drawn through the origin?</p></dd>
+<dd><p>Logical, should an abline be drawn that best fits the points?</p></dd>
+
+
+<dt>ablineOrigin</dt>
+<dd><p>Logical, should the abline be drawn through the origin?</p></dd>
 
 
 <dt>ablineColor</dt>
 <dd><p>String, color of the abline.</p></dd>
+
+
+<dt>identicalAxes</dt>
+<dd><p>Logical, should the axes have the same range?</p></dd>
 
 
 <dt>xName</dt>
