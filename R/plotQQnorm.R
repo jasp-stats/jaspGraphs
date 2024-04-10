@@ -20,7 +20,7 @@
 #' jaspGraphs::plotQQnorm(x, lower, upper)
 #'
 #' @export
-plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineColor = "red", plotDiagonal = FALSE, forceSameAxes = FALSE,
+plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineColor = "red",
                        xName = gettext("Theoretical quantiles",domain="R-jaspGraphs"), yName = gettext("Observed quantiles",domain="R-jaspGraphs")) {
 
   n <- length(residuals)
@@ -60,31 +60,16 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
   dfLine <- data.frame(x = xvals, y = yvals)
   g <- ggplot2::ggplot(data = df, aes(x = .data$x, y = .data$y))
 
-  if (abline && plotDiagonal) { 
-    g <- g + ggplot2::geom_line(data = data.frame(x = c(min(xvals), max(xvals)), y = c(min(xvals), max(xvals))),
-                                  mapping = ggplot2::aes(x = x, y = y),
-                                  col = "darkred",
-                                  size = 1)
-  } else if (abline) {
+  if (abline)
     g <- g + ggplot2::geom_line(mapping = aes(x = .data$x, y = .data$y), data = dfLine, inherit.aes = FALSE, color = ablineColor)
-  }
-    
-  
+
   if (hasErrorbars)
     g <- g + ggplot2::geom_errorbar(aes(ymin = .data$ymin, ymax = .data$ymax))
 
-  if (forceSameAxes) {
-    axesBreaks <- union(xBreaks, yBreaks)
-    g <- g +
-      geom_point() +
-      scale_x_continuous(name = xName, breaks = axesBreaks) +
-      scale_y_continuous(name = yName, breaks = axesBreaks) 
-  } else {
-    g <- g +
-      geom_point() +
-      scale_x_continuous(name = xName, breaks = xBreaks) +
-      scale_y_continuous(name = yName, breaks = yBreaks) 
-  }
+  g <- g +
+    geom_point() +
+    scale_x_continuous(name = xName, breaks = xBreaks) +
+    scale_y_continuous(name = yName, breaks = yBreaks)
 
   return(jaspGraphs::themeJasp(g))
 
