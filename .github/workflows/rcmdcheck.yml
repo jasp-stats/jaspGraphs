@@ -1,4 +1,4 @@
-on: 
+on:
   push:
     paths: ['**.R', '**.svg', '**.Rd', 'DESCRIPTION', 'NAMESPACE', '.github/workflows/rcmdcheck.yml']
   pull_request:
@@ -16,9 +16,9 @@ jobs:
       fail-fast: false
       matrix:
         config: # current jasp version, latest r-release, and development
-          - {os: windows-latest, r: '4.2.3'}
-          - {os: macOS-latest,   r: '4.2.3'}
-          - {os: ubuntu-latest,  r: '4.2.3'}
+          - {os: windows-latest, r: 'oldrel-1'}
+          - {os: macOS-latest,   r: 'oldrel-1'}
+          - {os: ubuntu-latest,  r: 'oldrel-1'}
           - {os: windows-latest, r: 'release'}
           - {os: macOS-latest,   r: 'release'}
           - {os: ubuntu-latest,  r: 'release'}
