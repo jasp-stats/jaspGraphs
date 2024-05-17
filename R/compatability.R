@@ -29,7 +29,7 @@ getAxisBreaks.list <- function(x) getAxisBreaks.ggplot_built(x)
 #' @export
 getAxisBreaks.ggplot_built <- function(x) {
 
-  if (graphOptions("ggVersion") <= 2.21) {
+  if (graphOptions("ggVersion") <= "2.21") {
     return(list(
       x = x$layout$panel_scales$x[[1]]$break_positions(),
       y = x$layout$panel_scales$y[[1]]$break_positions()
