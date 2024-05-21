@@ -26,6 +26,7 @@
 #' @param hideYAxisLabels, logical, should the y-axis line be hidden? Defaults to \code{showDensity}.
 #' @param hideXAxisName, logical, should the x-axis name be hidden? Defaults to \code{FALSE}.
 #' @param hideYAxisName, logical, should the y-axis name be hidden? Defaults to \code{FALSE}.
+#' @param xBreaks custom x-axis breaks.
 #' @example inst/examples/ex-jaspHistogram.R
 #' @export
 jaspHistogram <- function(
@@ -74,7 +75,7 @@ jaspHistogram <- function(
   hasGroupingVariable <- !is.null(groupingVariable)
   x <- stats::na.omit(as.numeric(x))
 
-  if(!is.null(xBreaks) || !missing(xBreaks)) {
+  if (!is.null(xBreaks) || !missing(xBreaks)) {
     binWidthType <- "manual"
     numberOfBins <- xBreaks
   }

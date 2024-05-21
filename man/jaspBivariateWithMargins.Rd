@@ -11,11 +11,12 @@ jaspBivariateWithMargins(
   xName,
   yName,
   groupName,
-  margins = c(0.25, 0.75),
+  margins = c(1/6, 5/6),
   xMarginalArgs = .marginalArgs(),
   yMarginalArgs = .marginalArgs(),
   topRightPlotFunction = NULL,
   topRightPlotArgs = list(),
+  legendPosition = "topRight",
   ...
 )
 }
@@ -34,17 +35,17 @@ jaspBivariateWithMargins(
 
 \item{margins}{Numeric vector; The proportions of the subplots relative to each other.}
 
+\item{xMarginalArgs}{List, options for the marginal plot above. Defaults to the default values of \link{jaspMarginal}.}
+
+\item{yMarginalArgs}{List, options for the marginal plot to the right. Defaults to the default values of \link{jaspMarginal}.}
+
 \item{topRightPlotFunction}{An optional function that can be used to plotting something in the top-right panel. If \code{NULL} (default), an empty area is plotted.}
 
 \item{topRightPlotArgs}{An optional list of options passed to \code{topRightPlotFunction}.}
 
+\item{legendPosition}{Either "topRight" or any values that is accepted by \code{\link[ggplot2]{theme}} for \code{legend.position}. If set to "topRight" then \code{topRightPlotFunction} cannot be used.}
+
 \item{...}{Additional options passed to \link{jaspBivariate}.}
-
-\item{binWidthType}{See \link{jaspHistogram}. Used for determining consistent axes for the bivariate and marginal distribution plots.}
-
-\item{numberOfBins}{See \link{jaspHistogram}. Used for determining consistent axes for the bivariate and marginal distribution plots.}
-
-\item{histogramArgs}{An optional list of options passed to \link{jaspHistogram}.}
 }
 \description{
 This plot consists of four elements:

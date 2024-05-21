@@ -65,6 +65,8 @@ jaspHistogram(
 \item{hideXAxisName, }{logical, should the x-axis name be hidden? Defaults to \code{FALSE}.}
 
 \item{hideYAxisName, }{logical, should the y-axis name be hidden? Defaults to \code{FALSE}.}
+
+\item{xBreaks}{custom x-axis breaks.}
 }
 \description{
 A plot histogram with three components.

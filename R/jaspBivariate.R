@@ -6,7 +6,7 @@
 #'   \item Smooth line through the data displayed using [ggplot2::geom_smooth].
 #'   \item Prediction interval of y given x using [stats::predict.lm](assuming linear relationship), or prediction ellipse assuming bivariate normal distribution.
 #' }
-#' @param x Numeric vector of values on the x-axis. `r "\u03BC"`
+#' @param x Numeric vector of values on the x-axis.
 #' @param y Numeric vector of values on the y-axis.
 #' @param group Optional grouping variable.
 #' @param xName Character; x-axis label. If left empty, the name of the \code{x} object is displayed. To remove the axis label, use \code{NULL}.
@@ -43,11 +43,11 @@
 jaspBivariate <- function(
     x, y, group = NULL, xName, yName, groupName,
     type               = c("point", "hex", "bin", "contour", "density", "none"),
-    args               = list(color = "black"),
+    args               = list(),#color = "black"),
     smooth             = c("none", "lm", "glm", "gam", "loess"),
     smoothCi           = FALSE,
     smoothCiLevel      = 0.95,
-    smoothArgs         = list(color = "black"),
+    smoothArgs         = list(),#color = "black"),
     predict            = c("none", "lm", "ellipse"),
     predictLevel       = 0.95,
     predictArgs        = .predictArgs(),
@@ -67,6 +67,7 @@ jaspBivariate <- function(
     if (type != "point" && type != "none")
       stop2("grouping variable is allowed only for type = 'point' or 'none'.")
 
+    group <- factor(group)
     df  <- data.frame(x = x, y = y, group = group)
     aes <- ggplot2::aes(x = x, y = y, group = group, fill = group, color = group)
   }
@@ -116,7 +117,7 @@ jaspBivariate <- function(
     preds <- as.data.frame(preds)
     preds[["x"]] <- df[["x"]]
     predictArgs$data <- preds
-    predictArgs$mapping <- ggplot2::aes(x = x, ymin = lwr, ymax = upr)
+    predictArgs$mapping <- ggplot2::aes(x = x, ymin = .data$lwr, ymax = .data$upr)
     predictLayer <- do.call(ggplot2::geom_ribbon, predictArgs)
   } else if (predict == "ellipse") {
     predictArgs$geom  <- "polygon"
@@ -158,8 +159,8 @@ jaspBivariate <- function(
   }
 
   plot <- ggplot2::ggplot(data = df, mapping = aes) +
-    baseLayer +
     smoothLayer +
+    baseLayer +
     predictLayer +
     jaspGraphs::themeJaspRaw(legend.position = legendPosition) +
     jaspGraphs::geom_rangeframe() +
@@ -211,26 +212,27 @@ jaspBivariate <- function(
 #' @param yName Character; y-axis label. If left empty, the name of the \code{y} object is displayed. To remove the axis label, use \code{NULL}.
 #' @param groupName Character; label of the grouping variable displayed as a legend title. If left empty, the name of the \code{group} object is displayed.
 #' @param margins Numeric vector; The proportions of the subplots relative to each other.
-#' @param binWidthType See [jaspHistogram]. Used for determining consistent axes for the bivariate and marginal distribution plots.
-#' @param numberOfBins See [jaspHistogram]. Used for determining consistent axes for the bivariate and marginal distribution plots.
-#' @param histogramArgs An optional list of options passed to [jaspHistogram].
+#' @param xMarginalArgs List, options for the marginal plot above. Defaults to the default values of [jaspMarginal].
+#' @param yMarginalArgs List, options for the marginal plot to the right. Defaults to the default values of [jaspMarginal].
 #' @param topRightPlotFunction An optional function that can be used to plotting something in the top-right panel. If \code{NULL} (default), an empty area is plotted.
 #' @param topRightPlotArgs An optional list of options passed to \code{topRightPlotFunction}.
+#' @param legendPosition Either "topRight" or any values that is accepted by \code{\link[ggplot2]{theme}} for `legend.position`. If set to "topRight" then `topRightPlotFunction` cannot be used.
 #' @param ... Additional options passed to [jaspBivariate].
 #'
 #' @export
 jaspBivariateWithMargins <- function(
-  x, y, group = NULL, xName, yName, groupName, margins = c(0.25, 0.75),
+  x, y, group = NULL, xName, yName, groupName, margins = c(1/6, 5/6),
   xMarginalArgs = .marginalArgs(),
   yMarginalArgs = .marginalArgs(),
   topRightPlotFunction = NULL,
   topRightPlotArgs = list(),
+  legendPosition = "topRight",
   ...
   ) {
 
   if (!is.null(group) && missing(groupName)) {
     groupName <- deparse1(substitute(group))
-  } else if(missing(groupName)) {
+  } else if (missing(groupName)) {
     groupName <- ""
   }
 
@@ -245,7 +247,7 @@ jaspBivariateWithMargins <- function(
   } else {
     df <- data.frame(x = x, y = y, group = group)
   }
-  df <- na.omit(df)
+  df <- stats::na.omit(df)
 
   xBreaks <- getJaspMarginalBreaks(x = df[["x"]], breaks = xMarginalArgs[["breaks"]])
   yBreaks <- getJaspMarginalBreaks(x = df[["y"]], breaks = yMarginalArgs[["breaks"]])
@@ -258,6 +260,7 @@ jaspBivariateWithMargins <- function(
   xMarginalArgs["yName"]        <- list(NULL)
   xMarginalArgs["groupName"]    <- list(groupName)
   xMarginalArgs[["axisLabels"]] <- "none"
+  xMarginalArgs[["sides"]]      <- ""
 
   topLeft <- do.call(jaspMarginal, xMarginalArgs)
 
@@ -268,22 +271,30 @@ jaspBivariateWithMargins <- function(
   yMarginalArgs["yName"]        <- list(NULL)
   yMarginalArgs["groupName"]    <- list(groupName)
   yMarginalArgs[["axisLabels"]] <- "none"
+  yMarginalArgs[["sides"]]      <- ""
 
   bottomRight <- do.call(jaspMarginal, yMarginalArgs) +
     ggplot2::coord_flip()
 
 
+
   if (is.function(topRightPlotFunction) && is.list(topRightPlotArgs)) {
+
+    if (identical(legendPosition, "topRight")) stop2(r"{`legendPosition = "topRight"` cannot be used in conjunction with `topRightPlotFunction`.}")
+
     topRightPlotArgs[["x"]]     <- x
     topRightPlotArgs[["y"]]     <- y
     topRight <- do.call(topRightPlotFunction, topRightPlotArgs)
+
   } else if (is.null(topRightPlotFunction)) {
-    topRight <- patchwork::plot_spacer()
+    topRight <- if (identical(legendPosition, "topRight")) patchwork::guide_area() else patchwork::plot_spacer()
   }
+
+  extraLegend <- if (identical(legendPosition, "topRight")) NULL else theme(legend.position = legendPosition)
 
   patchwork::wrap_plots(
     topLeft, topRight, bottomLeft, bottomRight,
     widths = rev(margins), heights = margins
   ) +
-  patchwork::plot_layout(guides = "collect")
+  patchwork::plot_layout(guides = "collect") & extraLegend
 }

@@ -12,11 +12,11 @@ jaspBivariate(
   yName,
   groupName,
   type = c("point", "hex", "bin", "contour", "density", "none"),
-  args = list(color = "black"),
+  args = list(),
   smooth = c("none", "lm", "glm", "gam", "loess"),
   smoothCi = FALSE,
   smoothCiLevel = 0.95,
-  smoothArgs = list(color = "black"),
+  smoothArgs = list(),
   predict = c("none", "lm", "ellipse"),
   predictLevel = 0.95,
   predictArgs = .predictArgs(),
@@ -26,7 +26,7 @@ jaspBivariate(
 )
 }
 \arguments{
-\item{x}{Numeric vector of values on the x-axis. μ}
+\item{x}{Numeric vector of values on the x-axis.}
 
 \item{y}{Numeric vector of values on the y-axis.}
 

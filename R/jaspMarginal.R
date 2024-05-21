@@ -36,6 +36,7 @@
 #' @param densityOverlay, logical, should a density overlay be superimposed on the plot?
 #' @param densityOverlayArgs, logical, additional arguments passed to \code{\link[ggplot2]{geom_density}}. Use `.densityArgs` to set the options.
 #' @param axisLabels, string, which axes should have labels displayed? If \code{"auto"}, \code{"x"} is used if \code{type == "density"}, otherwise \code{"both"} is used.
+#' @param sides, string passed to [geom_rangeframe].
 #' @example inst/examples/ex-jaspMarginal.R
 #' @rdname jaspMarginal
 #' @export
@@ -55,7 +56,8 @@ jaspMarginal <- function(
     densityArgs        = .densityArgs(),
     densityOverlay     = FALSE,
     densityOverlayArgs = .densityArgs(linewidth = 1),
-    axisLabels         = c("auto", "both", "x", "y", "none")
+    axisLabels         = c("auto", "both", "x", "y", "none"),
+    sides              = "bl"
 ) {
 
   # validate input
@@ -71,7 +73,7 @@ jaspMarginal <- function(
     xName <- deparse1(substitute(x)) # identical to plot.default
 
   if (missing(yName))
-    yName <- if(type == "density") gettext("Density") else gettext("Count")
+    yName <- if (type == "density") gettext("Density") else gettext("Count")
 
   if (!is.character(xName) && !is.null(xName))
     stop2("`xName` must be character but has class ", paste(class(xName), collapse = ", "), "!")
@@ -92,12 +94,12 @@ jaspMarginal <- function(
 
   hasGroupingVariable <- !is.null(group)
 
-  if(hasGroupingVariable) {
+  if (hasGroupingVariable) {
     data <- data.frame(x = x, group = group)
   } else {
     data <- data.frame(x = x)
   }
-  data <- na.omit(data)
+  data <- stats::na.omit(data)
 
   h <- getJaspMarginalData(x = data[["x"]], breaks = breaks)
   xBreaks <- getPrettyAxisBreaks(c(data[["x"]], h[["breaks"]]), min.n = 3)
@@ -106,13 +108,13 @@ jaspMarginal <- function(
   if (histogram) {
     yy <- as.symbol(type)
     histogramAes <-
-      if(hasGroupingVariable) {
-        ggplot2::aes(x = x, y = ggplot2::after_stat({{yy}}), fill = group, group = group)
+      if (hasGroupingVariable) {
+        ggplot2::aes(x = x, y = ggplot2::after_stat({{yy}}), color = group, fill = group, group = group)
       } else {
         ggplot2::aes(x = x, y = ggplot2::after_stat({{yy}}))
       }
     # default gray filling
-    if(is.null(histogramArgs[["fill"]]) && is.null(histogramAes[["fill"]])) histogramArgs[["fill"]] <- "gray"
+    if (is.null(histogramArgs[["fill"]]) && is.null(histogramAes[["fill"]])) histogramArgs[["fill"]] <- "gray"
 
     histogramArgs[["mapping"]] <- histogramAes
     histogramArgs[["breaks"]]  <- h[["breaks"]]
@@ -123,15 +125,15 @@ jaspMarginal <- function(
   if (density) {
     bw <- diff(h[["breaks"]])[1]
     yy <- as.symbol(type)
-    yy <- if(type == "density") {
+    yy <- if (type == "density") {
       substitute(ggplot2::after_stat(yy))
     } else {
       substitute(bw * ggplot2::after_stat(yy))
     }
 
     densityAes <-
-      if(hasGroupingVariable) {
-        ggplot2::aes(x = x, y = {{yy}}, fill = group, group = group)
+      if (hasGroupingVariable) {
+        ggplot2::aes(x = x, y = {{yy}}, color = group, fill = group, group = group)
       } else {
         ggplot2::aes(x = x, y = {{yy}})
       }
@@ -145,7 +147,7 @@ jaspMarginal <- function(
   if (densityOverlay) {
     bw <- diff(h[["breaks"]])[1]
     yy <- as.symbol(type)
-    yy <- if(type == "density") {
+    yy <- if (type == "density") {
       substitute(ggplot2::after_stat(yy))
     } else {
       substitute(bw * ggplot2::after_stat(yy))
@@ -175,7 +177,7 @@ jaspMarginal <- function(
     densityLayer +
     densityOverlayLayer +
     rugLayer +
-    geom_rangeframe() +
+    geom_rangeframe(sides = sides) +
     themeJaspRaw(legend.position = "right") +
     scale_x_continuous(breaks = xBreaks, limits = range(xBreaks)) +
     ggplot2::xlab(xName) +
@@ -232,10 +234,12 @@ getJaspMarginalBreaks <- function(x, breaks) {
 }
 
 #' @rdname jaspMarginal
+#' @param size see `?ggplot2::aes_linetype_size_shape`
+#' @inheritParams ggplot2::geom_point
 #' @export
-.histogramArgs <- function(color = "black", size = 0.7, position = ggplot2::position_dodge(), ...) {
+.histogramArgs <- function(size = 0.7, position = ggplot2::position_dodge(), ...) {
   args <- list(...)
-  args[["color"]]    <- color
+  # args[["color"]]    <- color
   args[["size"]]     <- size
   args[["position"]] <- position
 
@@ -251,10 +255,13 @@ getJaspMarginalBreaks <- function(x, breaks) {
 }
 
 #' @rdname jaspMarginal
+#' @param linewidth see `?ggplot2::aes_linetype_size_shape`
+#' @param alpha color transparency
+#' @inheritParams ggplot2::geom_point
 #' @export
-.densityArgs <- function(color = "black", linewidth = 0.7, alpha = 0.5, ...) {
+.densityArgs <- function(linewidth = 0.7, alpha = 0.5, ...) {
   args <- list(...)
-  args[["color"]]     <- color
+  # args[["color"]]     <- color
   args[["linewidth"]] <- linewidth
   args[["alpha"]]     <- alpha
 

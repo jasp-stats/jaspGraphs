@@ -23,6 +23,18 @@ jaspMatrixPlot(
 \arguments{
 \item{data}{Data frame of data to plot.}
 
+\item{diagonalPlotFunction}{A function that draws the plots on the diagonal. Must accept arguments \code{x} (numeric), \code{xName} (character).}
+
+\item{diagonalPlotArgs}{A list of additional arguments to pass to \code{diagonalPlotFunction}.}
+
+\item{topRightPlotFunction}{A function that draws the plots in the upper triangle. Must accept arguments \code{x} (numeric), \code{xName} (character).}
+
+\item{topRightPlotArgs}{A list of additional arguments to pass to \code{topRightPlotFunction}.}
+
+\item{bottomLeftPlotFunction}{A function that draws the plots in the lower triangle. Must accept arguments \code{x} (numeric), \code{xName} (character).}
+
+\item{bottomLeftPlotArgs}{A list of additional arguments to pass to \code{bottomLeftPlotFunction}.}
+
 \item{overwriteDiagonalAxes, overwriteTopRightAxes, overwriteBottomLeftAxes}{Which axes should be overwritten such that they have a common range. Possible options:
 \describe{
 \item{\code{"none"}}{No axes are overwritten, hence the plots get their own scales given by \code{diagonal}, \code{topRight}, and \code{bottomLeft} functions, respectively.}
@@ -36,18 +48,6 @@ jaspMatrixPlot(
 \item{numberOfBins}{See \link{jaspHistogram}. Used for determining consistent axes.}
 
 \item{axesLabels}{Optional character vector; provide column/row names of the matrix.}
-
-\item{diagonal}{A function that draws the plots on the diagonal. Must accept arguments \code{x} (numeric), \code{xName} (character).}
-
-\item{diagonalArgs}{A list of additional arguments to pass to \code{diagonal}.}
-
-\item{topRight}{A function that draws the plots on the top right off-diagonal. Must accept arguments \code{x} (numeric), \code{y} (numeric), \code{xName} (character), and \code{yName} (character).}
-
-\item{topRightArgs}{A list of additional arguments to pass to \code{topRight}.}
-
-\item{bottomLeft}{A function that draws the plots on the bottom left off-diagonal. Must accept arguments \code{x} (numeric), \code{y} (numeric), \code{xName} (character), and \code{yName} (character).}
-
-\item{bottomLeftArgs}{A list of additional arguments to pass to \code{bottomLeft}.}
 }
 \description{
 Plot that consists of \code{ncol{data}} by \code{ncol{data}} plots,

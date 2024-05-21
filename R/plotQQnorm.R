@@ -5,6 +5,8 @@
 #' @param lower Numeric vector, lower confidence interval of each residual. If NULL, no error bars are drawn.
 #' @param upper Numeric vector, lower confidence interval of each residual. If NULL, no error bars are drawn.
 #' @param abline  Logical, should an abline be drawn through the origin?
+#' @param ablineOrigin Logical, should the abline go through the origin?
+#' @param identicalAxes Logical, should the x and y axis breaks be identical?
 #' @param ablineColor String, color of the abline.
 #' @param xName String, name for the x-axis.
 #' @param yName String, name for the y-axis.
@@ -20,8 +22,8 @@
 #' jaspGraphs::plotQQnorm(x, lower, upper)
 #'
 #' @export
-plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineOrigin = FALSE, ablineColor = "red", identicalAxes = FALSE, 
-                       xName = gettext("Theoretical quantiles",domain="R-jaspGraphs"), yName = gettext("Observed quantiles",domain="R-jaspGraphs")) {
+plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineOrigin = FALSE, ablineColor = "red", identicalAxes = FALSE,
+                       xName = gettext("Theoretical quantiles",domain = "R-jaspGraphs"), yName = gettext("Observed quantiles",domain = "R-jaspGraphs")) {
 
   n <- length(residuals)
   hasErrorbars <- !is.null(lower) && !is.null(upper)
@@ -65,7 +67,7 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
   dfLine <- data.frame(x = xvals, y = yvals)
   g <- ggplot2::ggplot(data = df, aes(x = .data$x, y = .data$y))
 
-  if (abline && ablineOrigin) { 
+  if (abline && ablineOrigin) {
     g <- g + ggplot2::geom_line(data = data.frame(x = c(min(xvals), max(xvals)), y = c(min(xvals), max(xvals))),
                                   mapping = ggplot2::aes(x = .data$x, y = .data$y),
                                   col = ablineColor,
@@ -73,7 +75,7 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
   } else if (abline) {
     g <- g + ggplot2::geom_line(mapping = aes(x = .data$x, y = .data$y), data = dfLine, inherit.aes = FALSE, color = ablineColor)
   }
-  
+
   if (hasErrorbars)
     g <- g + ggplot2::geom_errorbar(aes(ymin = .data$ymin, ymax = .data$ymax))
 

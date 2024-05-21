@@ -10,12 +10,12 @@
 #' }
 #'
 #' @param data Data frame of data to plot.
-#' @param diagonal A function that draws the plots on the diagonal. Must accept arguments \code{x} (numeric), \code{xName} (character).
-#' @param diagonalArgs A list of additional arguments to pass to \code{diagonal}.
-#' @param topRight A function that draws the plots on the top right off-diagonal. Must accept arguments \code{x} (numeric), \code{y} (numeric), \code{xName} (character), and \code{yName} (character).
-#' @param topRightArgs A list of additional arguments to pass to \code{topRight}.
-#' @param bottomLeft A function that draws the plots on the bottom left off-diagonal. Must accept arguments \code{x} (numeric), \code{y} (numeric), \code{xName} (character), and \code{yName} (character).
-#' @param bottomLeftArgs A list of additional arguments to pass to \code{bottomLeft}.
+#' @param diagonalPlotFunction A function that draws the plots on the diagonal. Must accept arguments \code{x} (numeric), \code{xName} (character).
+#' @param diagonalPlotArgs A list of additional arguments to pass to \code{diagonalPlotFunction}.
+#' @param topRightPlotFunction A function that draws the plots in the upper triangle. Must accept arguments \code{x} (numeric), \code{xName} (character).
+#' @param topRightPlotArgs A list of additional arguments to pass to \code{topRightPlotFunction}.
+#' @param bottomLeftPlotFunction A function that draws the plots in the lower triangle. Must accept arguments \code{x} (numeric), \code{xName} (character).
+#' @param bottomLeftPlotArgs A list of additional arguments to pass to \code{bottomLeftPlotFunction}.
 #' @param overwriteDiagonalAxes,overwriteTopRightAxes,overwriteBottomLeftAxes Which axes should be overwritten such that they have a common range. Possible options:
 #' \describe{
 #'   \item{\code{"none"}}{No axes are overwritten, hence the plots get their own scales given by \code{diagonal}, \code{topRight}, and \code{bottomLeft} functions, respectively.}
@@ -133,7 +133,7 @@ jaspMatrixPlot <- function(
     ggplot2::annotate(
       "text",
       x = 1/2, y = 1/2, label = nm, angle = angle,
-      size = 1.2 * jaspGraphs::getGraphOption("fontsize") / ggplot2::.pt
+      size = 1.2 * getGraphOption("fontsize") / ggplot2::.pt
     ) +
     ggplot2::ylim(0:1) + ggplot2::xlim(0:1) +
     ggplot2::theme_void()
@@ -149,9 +149,9 @@ jaspMatrixPlot <- function(
   res <- ggplot2::ggplot() +
     ggplot2::geom_label(
       data    = data.frame(x = 0.5, y = 0.5, label = message),
-      mapping = ggplot2::aes(x = x, y = y, label = label),
-      fill    = adjustcolor("red", alpha = 0.5),
-      size    = 0.7 * jaspGraphs::getGraphOption("fontsize") / ggplot2::.pt,
+      mapping = ggplot2::aes(x = .data$x, y = .data$y, label = .data$label),
+      fill    = grDevices::adjustcolor("red", alpha.f = 0.5),
+      size    = 0.7 * getGraphOption("fontsize") / ggplot2::.pt,
       hjust   = "center",
       vjust   = "center"
     ) +
