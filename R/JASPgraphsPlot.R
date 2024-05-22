@@ -1,5 +1,8 @@
 #' @importFrom ggplot2 is.ggplot
 
+# silences a note in the R CMD Check but is not strictly necessary
+#'@importFrom R6 R6Class
+
 jaspGraphsPlot <- R6::R6Class(
   classname = "jaspGraphsPlot",
   public = list(
