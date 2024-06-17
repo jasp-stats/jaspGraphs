@@ -207,7 +207,7 @@ GeomRangeFrame <- ggplot2::ggproto("GeomRangeFrame", ggplot2::Geom,
     }
     ggname("geom_rangeframe", gTree(children = do.call("gList", rugs)))
   },
-  default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
+  default_aes = ggplot2::aes(colour = "black", size = 0.5, linetype = 1, alpha = NA),
 
   draw_key = ggplot2::draw_key_path
 )

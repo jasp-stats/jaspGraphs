@@ -30,6 +30,7 @@ makeLabels <- function(label, angle = 0, size = 1, family = graphOptions("family
   UseMethod("makeLabels", label)
 }
 
+#' @exportS3Method
 makeLabels.default <- function(label, angle = 0, size = 1, family = graphOptions("family"),
                                vjust = "center", hjust = "center", x = .5, y = .5) {
 
@@ -70,6 +71,7 @@ makeLabels.default <- function(label, angle = 0, size = 1, family = graphOptions
   }
 }
 
+#' @exportS3Method
 makeLabels.list <- function(label, angle = 0, size = 1, family = graphOptions("family"),
                             vjust = "center", hjust = "center", x = .5, y = .5) {
 
@@ -384,6 +386,13 @@ ggMatrixPlot.default <- function(plotList = NULL, nr = NULL, nc = NULL,
                                  labelPos       = matrix(.5, 4, 2),
                                  scaleXYlabels  = c(.9,.9),
                                  debug          = FALSE) {
+
+  lifecycle::deprecate_warn(
+    "0.19.0.9000",
+    "jaspGraphs::ggMatrixPlot(...)",
+    "jaspGraphs::jaspMatrixPlot(...)",
+    details = "jaspMatrixPlot supersedes ggMatrixPlot."
+  )
 
   removeXYlabels <- match.arg(removeXYlabels)
   if (is.null(plotList) && debug) {

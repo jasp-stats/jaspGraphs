@@ -12,7 +12,7 @@ jaspHistogram(
   histogram = TRUE,
   histogramPosition = "dodge",
   binWidthType = c("doane", "fd", "scott", "sturges", "manual"),
-  numberOfBins = NA,
+  numberOfBins = NULL,
   rugs = FALSE,
   rugsColor = FALSE,
   density = FALSE,
@@ -20,7 +20,11 @@ jaspHistogram(
   densityShade = FALSE,
   densityShadeAlpha = 0.6,
   densityLineWidth = 1,
-  hideYAxisLabels = density
+  hideXAxisLabels = FALSE,
+  hideYAxisLabels = density,
+  hideXAxisName = FALSE,
+  hideYAxisName = FALSE,
+  xBreaks = NULL
 )
 }
 \arguments{
@@ -54,7 +58,15 @@ jaspHistogram(
 
 \item{densityLineWidth, }{positive number, the line width of the superimposed density.}
 
+\item{hideXAxisLabels, }{logical, should the x-axis line be hidden? Defaults to \code{FALSE}.}
+
 \item{hideYAxisLabels, }{logical, should the y-axis line be hidden? Defaults to \code{showDensity}.}
+
+\item{hideXAxisName, }{logical, should the x-axis name be hidden? Defaults to \code{FALSE}.}
+
+\item{hideYAxisName, }{logical, should the y-axis name be hidden? Defaults to \code{FALSE}.}
+
+\item{xBreaks}{custom x-axis breaks.}
 }
 \description{
 A plot histogram with three components.

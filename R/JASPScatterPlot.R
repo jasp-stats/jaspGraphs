@@ -1,7 +1,7 @@
 #' @importFrom ggplot2 geom_smooth theme_void geom_ribbon
 #' @importFrom rlang .data
 
-#' @title Create a scatter plot with density
+#' @title DEPRECATED, use [jaspBivariateWithMargins] instead. Create a scatter plot with density
 #'
 #' @param x x variable.
 #' @param y y variable.
@@ -19,6 +19,8 @@
 #' @param showLegend Should the legend be shown?
 #' @param legendTitle A string for the title of the legend. \code{NULL} implies the legend is not shown.
 #' @param emulateGgMarginal Should the result be as similar as possible to \code{\link[ggExtra]{ggMarginal}}? Overwrites other parameters.
+#' @param plotComposer, String, should "gridExtra" or "patchwork" be used for combining plots?
+#' @param legendPosition where should the legend position be placed? "topRightPatch",
 #' @param ... passed to \code{\link{themeJaspRaw}}.
 #'
 #' @details The only change added when \code{emulateGgMarginal = TRUE} is that \code{ggplot2::theme(plot.margin = unit(c(0, 0, 0.25, 0.25), "cm"))}
@@ -37,7 +39,15 @@ JASPScatterPlot <- function(x, y, group = NULL, xName = NULL, yName = NULL,
                             showLegend = !is.null(group),
                             legendTitle = NULL,
                             emulateGgMarginal = FALSE,
+                            plotComposer = c("gridExtra", "patchwork"),
+                            legendPosition = "topRightPatch",
                             ...) {
+
+  lifecycle::deprecate_warn(
+    "0.19.0.9000",
+    "JASPScatterPlot()",
+    "jaspBivariateWithMargins()"
+  )
 
   # TODO: make actual error messages
   stopifnot(
@@ -53,6 +63,7 @@ JASPScatterPlot <- function(x, y, group = NULL, xName = NULL, yName = NULL,
   )
   plotAbove <- match.arg(plotAbove)
   plotRight <- match.arg(plotRight)
+  plotComposer  <- match.arg(plotComposer)
 
   # can't make a legend without group
   showLegend <- showLegend && !is.null(group)
@@ -76,7 +87,7 @@ JASPScatterPlot <- function(x, y, group = NULL, xName = NULL, yName = NULL,
 
   dots <- list(...)
   if (showLegend)
-    dots <- setDefaults(dots, legend.position = "right")
+    dots <- setDefaults(dots, legend.position = if (identical(legendPosition, "topRightPatch")) "right" else legendPosition)
 
   mainPlot <- ggplot(df, mapping) +
     geom_point() +
@@ -99,16 +110,41 @@ JASPScatterPlot <- function(x, y, group = NULL, xName = NULL, yName = NULL,
   topPlot   <- JASPScatterSubPlot(x, group, plotAbove, x.range, colorAreaUnderDensity, alphaAreaUnderDensity)
   rightPlot <- JASPScatterSubPlot(y, group, plotRight, y.range, colorAreaUnderDensity, alphaAreaUnderDensity, flip = TRUE)
 
-  plotList <- list(mainPlot = mainPlot, topPlot = topPlot, rightPlot = rightPlot)
-  plotList <- plotList[lengths(plotList) > 0L]
+  if (plotComposer == "patchwork") {
 
-  plot <- jaspGraphsPlot$new(
-    subplots     = plotList,
-    plotFunction = reDrawAlignedPlot,
-    size         = 5,
-    showLegend   = showLegend
-  )
-  return(plot)
+    topRightPatch <- if (is.null(topPlot)) {
+      NULL
+    } else if (identical(legendPosition, "topRightPatch")) {
+       patchwork::guide_area()
+    } else {
+      patchwork::plot_spacer()
+    }
+    noLegend <- theme(legend.position = "none")
+    extraLegend <- if (identical(legendPosition, "topRightPatch")) NULL else theme(legend.position = legendPosition)
+
+    plot <-
+      (topPlot + noLegend) + topRightPatch          +
+      mainPlot             + (rightPlot + noLegend) +
+      patchwork::plot_layout(
+        widths  = c(1, 1 / 5),
+        heights = c(1 / 5, 1),
+        guides  = "collect"
+      ) & extraLegend
+    return(plot)
+
+  } else {
+
+    plotList <- list(mainPlot = mainPlot, topPlot = topPlot, rightPlot = rightPlot)
+    plotList <- plotList[lengths(plotList) > 0L]
+
+    plot <- jaspGraphsPlot$new(
+      subplots     = plotList,
+      plotFunction = reDrawAlignedPlot,
+      size         = 5,
+      showLegend   = showLegend
+    )
+    return(plot)
+  }
 }
 
 JASPScatterSubPlot <- function(x, group = NULL, type = c("density", "histogram", "none"), range,
@@ -129,7 +165,7 @@ JASPScatterSubPlot <- function(x, group = NULL, type = c("density", "histogram",
     foo <- function(x, ...) as.data.frame(stats::density(x, from = range[1L], to = range[2L])[c("x", "y")])
     geom <- geom_line(linewidth = 0.5, show.legend = FALSE)
     geom2 <- if (colorAreaUnderDensity) {
-      geom_ribbon(aes(ymin = 0, ymax = .data$y), alpha = alpha)
+      geom_ribbon(aes(ymin = 0, ymax = .data$y), alpha = alpha, show.legend = FALSE)
     } else {
       NULL
     }

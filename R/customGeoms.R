@@ -1,3 +1,4 @@
+#'@importFrom ggplot2 aes
 
 setDefaults <- function(lst, ...) {
 
@@ -23,7 +24,7 @@ setDefaults <- function(lst, ...) {
 jaspGeomPoint <- ggplot2::ggproto(
 	`_class`    = "jaspGeomPoint",
 	`_inherit`  = ggplot2::GeomPoint,
-	default_aes = aes(size = 3, shape = 21, colour = "black", fill = "grey", alpha = NA, stroke = 0.5)
+	default_aes = ggplot2::aes(size = 3, shape = 21, colour = "black", fill = "grey", alpha = NA, stroke = 0.5)
 )
 
 #' @title Custom geoms
@@ -51,7 +52,7 @@ geom_point <- function(mapping = NULL, data = NULL, stat = "identity", position 
 jaspGeomLine <- ggplot2::ggproto(
   `_class`    = "jaspGeomLine",
   `_inherit`  = ggplot2::GeomLine,
-  default_aes = aes(linewidth = 1.00, colour = "black", linetype = 1, alpha = NA)
+  default_aes = ggplot2::aes(linewidth = 1.00, colour = "black", linetype = 1, alpha = NA)
 )
 
 #' @rdname geom_point

@@ -2,7 +2,7 @@
 % Please edit documentation in R/JASPScatterPlot.R
 \name{JASPScatterPlot}
 \alias{JASPScatterPlot}
-\title{Create a scatter plot with density}
+\title{DEPRECATED, use \link{jaspBivariateWithMargins} instead. Create a scatter plot with density}
 \usage{
 JASPScatterPlot(
   x,
@@ -21,6 +21,8 @@ JASPScatterPlot(
   showLegend = !is.null(group),
   legendTitle = NULL,
   emulateGgMarginal = FALSE,
+  plotComposer = c("gridExtra", "patchwork"),
+  legendPosition = "topRightPatch",
   ...
 )
 }
@@ -57,10 +59,14 @@ JASPScatterPlot(
 
 \item{emulateGgMarginal}{Should the result be as similar as possible to \code{\link[ggExtra]{ggMarginal}}? Overwrites other parameters.}
 
+\item{plotComposer, }{String, should "gridExtra" or "patchwork" be used for combining plots?}
+
+\item{legendPosition}{where should the legend position be placed? "topRightPatch",}
+
 \item{...}{passed to \code{\link{themeJaspRaw}}.}
 }
 \description{
-Create a scatter plot with density
+DEPRECATED, use \link{jaspBivariateWithMargins} instead. Create a scatter plot with density
 }
 \details{
 The only change added when \code{emulateGgMarginal = TRUE} is that \code{ggplot2::theme(plot.margin = unit(c(0, 0, 0.25, 0.25), "cm"))}

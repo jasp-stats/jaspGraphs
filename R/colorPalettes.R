@@ -1,6 +1,10 @@
 
 #'@importFrom ggplot2 continuous_scale discrete_scale
 
+# these two silence a note in the R CMD Check but are not strictly necessary
+#'@importFrom viridisLite viridis
+#'@importFrom RColorBrewer brewer.pal
+
 jaspGraphs_data <- list2env(list(
   # discrete color scales
   colorblind     = list(colors = RColorBrewer::brewer.pal(8L, "Dark2")),
