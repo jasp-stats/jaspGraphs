@@ -1,14 +1,13 @@
 Package: jaspGraphs
 Type: Package
 Title: Custom Graphs for JASP
-Version: 0.19.0
+Version: 0.19.0.9000
 Author: Don van den Bergh
 Maintainer: JASP-team <info@jasp-stats.nl>
 Description: Graph making functions and wrappers for JASP.
 License: GPL
 Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Suggests: testthat
 Imports: 
     ggplot2 (>= 3.0.0),
@@ -20,5 +19,6 @@ Imports:
     RColorBrewer,
     rlang,
     scales,
-    viridisLite
+    viridisLite,
+    patchwork
 Roxygen: list(markdown = TRUE)

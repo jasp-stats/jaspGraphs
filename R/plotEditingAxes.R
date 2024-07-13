@@ -95,6 +95,7 @@ getAxisInfo <- function(x, opts, ggbuild) {
   UseMethod("getAxisInfo", x)
 }
 
+#' @exportS3Method
 getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
 
   xory <- getXorY(x, ggbuild)
@@ -168,6 +169,7 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
 
 }
 
+#' @exportS3Method
 getAxisInfo.ScaleDiscretePosition <- function(x, opts, ggbuild) {
 
   xory <- getXorY(x, ggbuild)
@@ -202,6 +204,7 @@ internalUpdateAxis <- function(currentAxis, newSettings) {
   UseMethod("internalUpdateAxis", currentAxis)
 }
 
+#' @exportS3Method
 internalUpdateAxis.ScaleContinuousPosition <- function(currentAxis, newSettings) {
 
   if (newSettings[["breaksType"]] == BreaksType$Null) {
@@ -237,6 +240,7 @@ internalUpdateAxis.ScaleContinuousPosition <- function(currentAxis, newSettings)
   return(currentAxis)
 }
 
+#' @exportS3Method
 internalUpdateAxis.ScaleDiscretePosition <- function(currentAxis, newSettings) {
 
   # newSettings only contains not modified settings!
