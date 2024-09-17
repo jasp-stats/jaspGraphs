@@ -6,7 +6,7 @@ jaspGraphs_data <- list2env(list(
   colorblind     = list(colors = RColorBrewer::brewer.pal(8L, "Dark2")),
   colorblind2    = list(colors = RColorBrewer::brewer.pal(8L, "Set2")),
   colorblind3    = list(colors = c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")), # from ggthemes
-  jaspo          = list(colors = c("#00A9E6", "#00BA63", "#BA0057", "#FB8B00", "#956BF8", "#38BBBB", "#633F33", "#EA008B")),  # JASP´s own palette, created by Vincent Ott
+  jaspPalette    = list(colors = c("#00A9E6", "#00BA63", "#BA0057", "#FB8B00", "#956BF8", "#38BBBB", "#633F33", "#EA008B")),  # JASP´s own palette, created by Vincent Ott
   viridis        = list(colors = viridisLite::viridis(256L)), # viridis::scale_color_viridis
   blue           = list(colors = c("#d1e1ec", "#b3cde0", "#6497b1", "#005b96", "#03396c", "#011f4b")), # bayesplot::color_scheme_get("blue")
   gray           = list(colors = c("#DFDFDF", "#bfbfbf", "#999999", "#737373", "#505050", "#383838")), # bayesplot::color_scheme_get("gray")
