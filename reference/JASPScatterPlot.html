@@ -3,7 +3,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -28,7 +28,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Other Packages
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -43,13 +43,13 @@
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create a scatter plot with density</h1>
-    
+
     <div class="hidden name"><code>JASPScatterPlot.Rd</code></div>
     </div>
 
@@ -81,71 +81,73 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>x</dt>
+
+
+<dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>x variable.</p></dd>
 
 
-<dt>y</dt>
+<dt id="arg-y">y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
 <dd><p>y variable.</p></dd>
 
 
-<dt>group</dt>
+<dt id="arg-group">group<a class="anchor" aria-label="anchor" href="#arg-group"></a></dt>
 <dd><p>optional grouping variable.</p></dd>
 
 
-<dt>xName</dt>
+<dt id="arg-xname">xName<a class="anchor" aria-label="anchor" href="#arg-xname"></a></dt>
 <dd><p>name on x-axis.</p></dd>
 
 
-<dt>yName</dt>
+<dt id="arg-yname">yName<a class="anchor" aria-label="anchor" href="#arg-yname"></a></dt>
 <dd><p>name on y-axis.</p></dd>
 
 
-<dt>addSmooth</dt>
+<dt id="arg-addsmooth">addSmooth<a class="anchor" aria-label="anchor" href="#arg-addsmooth"></a></dt>
 <dd><p>should a smoothed regression line be drawn?</p></dd>
 
 
-<dt>addSmoothCI</dt>
+<dt id="arg-addsmoothci">addSmoothCI<a class="anchor" aria-label="anchor" href="#arg-addsmoothci"></a></dt>
 <dd><p>should a confidence interval be added to the smoothed regression line?</p></dd>
 
 
-<dt>smoothCIValue</dt>
+<dt id="arg-smoothcivalue">smoothCIValue<a class="anchor" aria-label="anchor" href="#arg-smoothcivalue"></a></dt>
 <dd><p>a numeric in (0, 1) indicating the confidence interval.</p></dd>
 
 
-<dt>forceLinearSmooth</dt>
+<dt id="arg-forcelinearsmooth">forceLinearSmooth<a class="anchor" aria-label="anchor" href="#arg-forcelinearsmooth"></a></dt>
 <dd><p>should the regression line be linear?</p></dd>
 
 
-<dt>plotAbove</dt>
+<dt id="arg-plotabove">plotAbove<a class="anchor" aria-label="anchor" href="#arg-plotabove"></a></dt>
 <dd><p>type of plot above the scatter plot.</p></dd>
 
 
-<dt>plotRight</dt>
+<dt id="arg-plotright">plotRight<a class="anchor" aria-label="anchor" href="#arg-plotright"></a></dt>
 <dd><p>type of plot right of the scatter plot.</p></dd>
 
 
-<dt>colorAreaUnderDensity</dt>
+<dt id="arg-colorareaunderdensity">colorAreaUnderDensity<a class="anchor" aria-label="anchor" href="#arg-colorareaunderdensity"></a></dt>
 <dd><p>Logical, should the area under the density be colored?</p></dd>
 
 
-<dt>alphaAreaUnderDensity</dt>
+<dt id="arg-alphaareaunderdensity">alphaAreaUnderDensity<a class="anchor" aria-label="anchor" href="#arg-alphaareaunderdensity"></a></dt>
 <dd><p>Real in [0, 1], transparency for area under density.</p></dd>
 
 
-<dt>showLegend</dt>
+<dt id="arg-showlegend">showLegend<a class="anchor" aria-label="anchor" href="#arg-showlegend"></a></dt>
 <dd><p>Should the legend be shown?</p></dd>
 
 
-<dt>legendTitle</dt>
+<dt id="arg-legendtitle">legendTitle<a class="anchor" aria-label="anchor" href="#arg-legendtitle"></a></dt>
 <dd><p>A string for the title of the legend. <code>NULL</code> implies the legend is not shown.</p></dd>
 
 
-<dt>emulateGgMarginal</dt>
+<dt id="arg-emulateggmarginal">emulateGgMarginal<a class="anchor" aria-label="anchor" href="#arg-emulateggmarginal"></a></dt>
 <dd><p>Should the result be as similar as possible to <code>ggMarginal</code>? Overwrites other parameters.</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>passed to <code><a href="themeJaspRaw.html">themeJaspRaw</a></code>.</p></dd>
 
 </dl></div>
@@ -157,7 +159,7 @@ is added to the main plot</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span></span>
@@ -208,7 +210,7 @@ is added to the main plot</p>
 <span class="r-in"><span><span class="va">plot</span></span></span>
 <span class="r-in"><span><span class="co"># ggExtra::ggMarginal(plot$subplots[[1]])</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -223,15 +225,15 @@ is added to the main plot</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 

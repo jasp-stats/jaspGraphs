@@ -1,117 +1,41 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/JASPScatterPlot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PlotPriorAndPosterior.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PlotRobustnessSequential.html</loc>
-  </url>
-  <url>
-    <loc>/reference/axesLabeller.html</loc>
-  </url>
-  <url>
-    <loc>/reference/colors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/descriptivesPlot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/drawAxis.html</loc>
-  </url>
-  <url>
-    <loc>/reference/drawBFpizza.html</loc>
-  </url>
-  <url>
-    <loc>/reference/drawLines.html</loc>
-  </url>
-  <url>
-    <loc>/reference/drawPoints.html</loc>
-  </url>
-  <url>
-    <loc>/reference/drawSmooth.html</loc>
-  </url>
-  <url>
-    <loc>/reference/geom_abline2.html</loc>
-  </url>
-  <url>
-    <loc>/reference/geom_aligned_text.html</loc>
-  </url>
-  <url>
-    <loc>/reference/geom_point.html</loc>
-  </url>
-  <url>
-    <loc>/reference/geom_rangeframe.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getAxisBreaks.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getBFSubscripts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getEmptyTheme.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getPrettyAxisBreaks.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggMatrixPlot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/graphOptions.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hypothesis2BFtxt.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/jaspGraphsPlotMethods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/jaspHistogram.html</loc>
-  </url>
-  <url>
-    <loc>/reference/parseThis.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plotEditing.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plotEditingOptions.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plotPieChart.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plotQQnorm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/scale_x_continuous.html</loc>
-  </url>
-  <url>
-    <loc>/reference/themeApaRaw.html</loc>
-  </url>
-  <url>
-    <loc>/reference/themeJasp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/themeJaspRaw.html</loc>
-  </url>
-  <url>
-    <loc>/reference/themePubrRaw.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/JASPScatterPlot.html</loc></url>
+<url><loc>/reference/PlotPriorAndPosterior.html</loc></url>
+<url><loc>/reference/PlotRobustnessSequential.html</loc></url>
+<url><loc>/reference/axesLabeller.html</loc></url>
+<url><loc>/reference/colors.html</loc></url>
+<url><loc>/reference/descriptivesPlot.html</loc></url>
+<url><loc>/reference/drawAxis.html</loc></url>
+<url><loc>/reference/drawBFpizza.html</loc></url>
+<url><loc>/reference/drawLines.html</loc></url>
+<url><loc>/reference/drawPoints.html</loc></url>
+<url><loc>/reference/drawSmooth.html</loc></url>
+<url><loc>/reference/geom_abline2.html</loc></url>
+<url><loc>/reference/geom_aligned_text.html</loc></url>
+<url><loc>/reference/geom_point.html</loc></url>
+<url><loc>/reference/geom_rangeframe.html</loc></url>
+<url><loc>/reference/getAxisBreaks.html</loc></url>
+<url><loc>/reference/getBFSubscripts.html</loc></url>
+<url><loc>/reference/getEmptyTheme.html</loc></url>
+<url><loc>/reference/getPrettyAxisBreaks.html</loc></url>
+<url><loc>/reference/ggMatrixPlot.html</loc></url>
+<url><loc>/reference/graphOptions.html</loc></url>
+<url><loc>/reference/hypothesis2BFtxt.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/jaspGraphsPlotMethods.html</loc></url>
+<url><loc>/reference/jaspHistogram.html</loc></url>
+<url><loc>/reference/parseThis.html</loc></url>
+<url><loc>/reference/plotEditing.html</loc></url>
+<url><loc>/reference/plotEditingOptions.html</loc></url>
+<url><loc>/reference/plotPieChart.html</loc></url>
+<url><loc>/reference/plotQQnorm.html</loc></url>
+<url><loc>/reference/scale_x_continuous.html</loc></url>
+<url><loc>/reference/themeApaRaw.html</loc></url>
+<url><loc>/reference/themeJasp.html</loc></url>
+<url><loc>/reference/themeJaspRaw.html</loc></url>
+<url><loc>/reference/themePubrRaw.html</loc></url>
 </urlset>
+

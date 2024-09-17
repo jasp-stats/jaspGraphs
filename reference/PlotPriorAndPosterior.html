@@ -3,7 +3,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -28,7 +28,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Other Packages
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -43,13 +43,13 @@
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create a prior-posterior plot.</h1>
-    
+
     <div class="hidden name"><code>PlotPriorAndPosterior.Rd</code></div>
     </div>
 
@@ -82,83 +82,83 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>dfLines</dt>
+
+
+<dl><dt id="arg-dflines">dfLines<a class="anchor" aria-label="anchor" href="#arg-dflines"></a></dt>
 <dd><p>A dataframe with <code>$x</code>, <code>$y</code>, and optionally <code>$g</code>.</p></dd>
 
 
-<dt>dfPoints</dt>
+<dt id="arg-dfpoints">dfPoints<a class="anchor" aria-label="anchor" href="#arg-dfpoints"></a></dt>
 <dd><p>A dataframe with <code>$x</code>, <code>$y</code>, and optionally <code>$g</code>.</p></dd>
 
 
-<dt>BF</dt>
+<dt id="arg-bf">BF<a class="anchor" aria-label="anchor" href="#arg-bf"></a></dt>
 <dd><p>Numeric, with value of Bayes factor. This MUST correspond to bfType.</p></dd>
 
 
-<dt>CRI</dt>
+<dt id="arg-cri">CRI<a class="anchor" aria-label="anchor" href="#arg-cri"></a></dt>
 <dd><p>Numeric of length 2, Credible interval of posterior.</p></dd>
 
 
-<dt>median</dt>
+<dt id="arg-median">median<a class="anchor" aria-label="anchor" href="#arg-median"></a></dt>
 <dd><p>Numeric, median of posterior.</p></dd>
 
 
-<dt>xName</dt>
+<dt id="arg-xname">xName<a class="anchor" aria-label="anchor" href="#arg-xname"></a></dt>
 <dd><p>String or expression, displayed on the x-axis.</p></dd>
 
 
-<dt>yName</dt>
+<dt id="arg-yname">yName<a class="anchor" aria-label="anchor" href="#arg-yname"></a></dt>
 <dd><p>String or expression, displayed on the y-axis.</p></dd>
 
 
-<dt>drawPizzaTxt</dt>
+<dt id="arg-drawpizzatxt">drawPizzaTxt<a class="anchor" aria-label="anchor" href="#arg-drawpizzatxt"></a></dt>
 <dd><p>Logical, should there be text above and below the pizza plot?</p></dd>
 
 
-<dt>drawCRItxt</dt>
+<dt id="arg-drawcritxt">drawCRItxt<a class="anchor" aria-label="anchor" href="#arg-drawcritxt"></a></dt>
 <dd><p>Logical, should the credible interval be displayed in text?</p></dd>
 
 
-<dt>bfType</dt>
+<dt id="arg-bftype">bfType<a class="anchor" aria-label="anchor" href="#arg-bftype"></a></dt>
 <dd><p>String, what is the type of BF? Options are "BF01", "BF10", or "LogBF10".</p></dd>
 
 
-<dt>hypothesis</dt>
+<dt id="arg-hypothesis">hypothesis<a class="anchor" aria-label="anchor" href="#arg-hypothesis"></a></dt>
 <dd><p>String, what was the hypothesis? Options are "equal", "smaller", or "greater".</p></dd>
 
 
-<dt>bfSubscripts</dt>
+<dt id="arg-bfsubscripts">bfSubscripts<a class="anchor" aria-label="anchor" href="#arg-bfsubscripts"></a></dt>
 <dd><p>String, manually specify the BF labels.</p></dd>
 
 
-<dt>pizzaTxt</dt>
+<dt id="arg-pizzatxt">pizzaTxt<a class="anchor" aria-label="anchor" href="#arg-pizzatxt"></a></dt>
 <dd><p>String vector of length 2, text to be drawn above and below pizza plot.</p></dd>
 
 
-<dt>bty</dt>
+<dt id="arg-bty">bty<a class="anchor" aria-label="anchor" href="#arg-bty"></a></dt>
 <dd><p>List of three elements. Type specifies the box type, ldwX the width of the x-axis, lwdY the width of the y-axis.</p></dd>
 
 
-<dt>lineColors</dt>
+<dt id="arg-linecolors">lineColors<a class="anchor" aria-label="anchor" href="#arg-linecolors"></a></dt>
 <dd><p>NULL to omit line colors, a character vector with colors, or any other value to add <code>color = g</code> to the aesthetics of the main plot.</p></dd>
 
 
-<dt>CRItxt</dt>
+<dt id="arg-critxt">CRItxt<a class="anchor" aria-label="anchor" href="#arg-critxt"></a></dt>
 <dd><p>String, display the credible interval as <code>paste0(CRItxt, "[", lower, ", ", upper, "]")</code>.</p></dd>
 
 
-<dt>medianTxt</dt>
+<dt id="arg-mediantxt">medianTxt<a class="anchor" aria-label="anchor" href="#arg-mediantxt"></a></dt>
 <dd><p>String, display the median as <code>paste(medianTxt, formatC(median, 3, format = "f"))</code>.</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Unused.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>If BF, CRI, and median are all NULL a ggplot, otherwise a gtable.</p>
+    <p>If BF, CRI, and median are all NULL a ggplot, otherwise a gtable.</p>
     </div>
 
     <div id="ref-examples">
@@ -230,15 +230,15 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 

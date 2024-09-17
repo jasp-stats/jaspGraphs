@@ -8,7 +8,7 @@ Colors are taken from graphOptions("palette").'><!-- mathjax --><script src="htt
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -33,7 +33,7 @@ Colors are taken from graphOptions("palette").'><!-- mathjax --><script src="htt
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Other Packages
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -48,13 +48,13 @@ Colors are taken from graphOptions("palette").'><!-- mathjax --><script src="htt
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Histograms and Density plots for JASP</h1>
-    
+
     <div class="hidden name"><code>jaspHistogram.Rd</code></div>
     </div>
 
@@ -90,67 +90,69 @@ Colors are taken from <code>graphOptions("palette")</code>.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>x, </dt>
+
+
+<dl><dt id="arg-x-">x, <a class="anchor" aria-label="anchor" href="#arg-x-"></a></dt>
 <dd><p>numeric, the data to show a histogram for</p></dd>
 
 
-<dt>xName, </dt>
+<dt id="arg-xname-">xName, <a class="anchor" aria-label="anchor" href="#arg-xname-"></a></dt>
 <dd><p>string, the title on the x-axis</p></dd>
 
 
-<dt>groupingVariable, </dt>
+<dt id="arg-groupingvariable-">groupingVariable, <a class="anchor" aria-label="anchor" href="#arg-groupingvariable-"></a></dt>
 <dd><p>factor, show histograms and/ or densities for individual groups?</p></dd>
 
 
-<dt>groupingVariableName, </dt>
+<dt id="arg-groupingvariablename-">groupingVariableName, <a class="anchor" aria-label="anchor" href="#arg-groupingvariablename-"></a></dt>
 <dd><p>character, legend name of the grouping variable.</p></dd>
 
 
-<dt>histogram, </dt>
+<dt id="arg-histogram-">histogram, <a class="anchor" aria-label="anchor" href="#arg-histogram-"></a></dt>
 <dd><p>logical, should a histogram be shown?</p></dd>
 
 
-<dt>histogramPosition, </dt>
+<dt id="arg-histogramposition-">histogramPosition, <a class="anchor" aria-label="anchor" href="#arg-histogramposition-"></a></dt>
 <dd><p>character, see argument <code>position</code> in <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></code>.</p></dd>
 
 
-<dt>binWidthType, </dt>
+<dt id="arg-binwidthtype-">binWidthType, <a class="anchor" aria-label="anchor" href="#arg-binwidthtype-"></a></dt>
 <dd><p>string, type of bindwidth, matches the string values that can be passed to <code><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></code>.</p></dd>
 
 
-<dt>numberOfBins, </dt>
+<dt id="arg-numberofbins-">numberOfBins, <a class="anchor" aria-label="anchor" href="#arg-numberofbins-"></a></dt>
 <dd><p>if binWidthType is set to "manual", this value determines the number of bins.</p></dd>
 
 
-<dt>rugs, </dt>
+<dt id="arg-rugs-">rugs, <a class="anchor" aria-label="anchor" href="#arg-rugs-"></a></dt>
 <dd><p>logical, should rugs be shown on the x-axis?</p></dd>
 
 
-<dt>rugsColor, </dt>
+<dt id="arg-rugscolor-">rugsColor, <a class="anchor" aria-label="anchor" href="#arg-rugscolor-"></a></dt>
 <dd><p>logical, should the rugs be colored?</p></dd>
 
 
-<dt>density, </dt>
+<dt id="arg-density-">density, <a class="anchor" aria-label="anchor" href="#arg-density-"></a></dt>
 <dd><p>logical, should a density be superimposed on the plot?</p></dd>
 
 
-<dt>densityColor, </dt>
+<dt id="arg-densitycolor-">densityColor, <a class="anchor" aria-label="anchor" href="#arg-densitycolor-"></a></dt>
 <dd><p>logical, should the density be colored?</p></dd>
 
 
-<dt>densityShade, </dt>
+<dt id="arg-densityshade-">densityShade, <a class="anchor" aria-label="anchor" href="#arg-densityshade-"></a></dt>
 <dd><p>logical, should the area underneath the density be shaded?</p></dd>
 
 
-<dt>densityShadeAlpha, </dt>
+<dt id="arg-densityshadealpha-">densityShadeAlpha, <a class="anchor" aria-label="anchor" href="#arg-densityshadealpha-"></a></dt>
 <dd><p>numeric in [0, 1], transparancy for the shaded density.</p></dd>
 
 
-<dt>densityLineWidth, </dt>
+<dt id="arg-densitylinewidth-">densityLineWidth, <a class="anchor" aria-label="anchor" href="#arg-densitylinewidth-"></a></dt>
 <dd><p>positive number, the line width of the superimposed density.</p></dd>
 
 
-<dt>hideYAxisLabels, </dt>
+<dt id="arg-hideyaxislabels-">hideYAxisLabels, <a class="anchor" aria-label="anchor" href="#arg-hideyaxislabels-"></a></dt>
 <dd><p>logical, should the y-axis line be hidden? Defaults to <code>showDensity</code>.</p></dd>
 
 </dl></div>
@@ -243,15 +245,15 @@ Colors are taken from <code>graphOptions("palette")</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 

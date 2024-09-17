@@ -4,7 +4,7 @@ other themes, graph + themeApaRaw()."><!-- mathjax --><script src="https://cdnjs
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -29,7 +29,7 @@ other themes, graph + themeApaRaw()."><!-- mathjax --><script src="https://cdnjs
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Other Packages
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -44,13 +44,13 @@ other themes, graph + themeApaRaw()."><!-- mathjax --><script src="https://cdnjs
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>APA theme for ggplot2 objects based on <code>jtools::theme_apa</code></h1>
-    
+
     <div class="hidden name"><code>themeApaRaw.Rd</code></div>
     </div>
 
@@ -78,59 +78,61 @@ other themes, <code>graph + themeApaRaw()</code>.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>legend.pos</dt>
+
+
+<dl><dt id="arg-legend-pos">legend.pos<a class="anchor" aria-label="anchor" href="#arg-legend-pos"></a></dt>
 <dd><p>One of <code>"right"</code>, <code>"left"</code>, <code>"top"</code>, <code>"bottom"</code>,
 <code>"topleft"</code>, <code>"topright"</code>, <code>"topmiddle"</code>, <code>"bottomleft"</code>,
 <code>"bottomright"</code>, or <code>"bottommiddle"</code>.
 Positions the legend, which will layer on top of any geoms, on the plane.</p></dd>
 
 
-<dt>legend.use.title</dt>
+<dt id="arg-legend-use-title">legend.use.title<a class="anchor" aria-label="anchor" href="#arg-legend-use-title"></a></dt>
 <dd><p>Logical. Specify whether to include a legend title.
 Defaults to <code>FALSE</code>.</p></dd>
 
 
-<dt>legend.font.size</dt>
+<dt id="arg-legend-font-size">legend.font.size<a class="anchor" aria-label="anchor" href="#arg-legend-font-size"></a></dt>
 <dd><p>Integer indicating the font size of the labels in the
 legend. Default and APA-recommended is 12, but if there are many labels it
 may be necessary to choose a smaller size.</p></dd>
 
 
-<dt>font.size</dt>
+<dt id="arg-font-size">font.size<a class="anchor" aria-label="anchor" href="#arg-font-size"></a></dt>
 <dd><p>General font size.</p></dd>
 
 
-<dt>x.font.size</dt>
+<dt id="arg-x-font-size">x.font.size<a class="anchor" aria-label="anchor" href="#arg-x-font-size"></a></dt>
 <dd><p>Font size of x-axis label.</p></dd>
 
 
-<dt>y.font.size</dt>
+<dt id="arg-y-font-size">y.font.size<a class="anchor" aria-label="anchor" href="#arg-y-font-size"></a></dt>
 <dd><p>Font size of x-axis label.</p></dd>
 
 
-<dt>facet.title.size</dt>
+<dt id="arg-facet-title-size">facet.title.size<a class="anchor" aria-label="anchor" href="#arg-facet-title-size"></a></dt>
 <dd><p>Font size of facet labels.</p></dd>
 
 
-<dt>remove.y.gridlines</dt>
+<dt id="arg-remove-y-gridlines">remove.y.gridlines<a class="anchor" aria-label="anchor" href="#arg-remove-y-gridlines"></a></dt>
 <dd><p>Should the coordinate grid on the y-axis
 (horizontal lines) be removed? Default is TRUE.</p></dd>
 
 
-<dt>remove.x.gridlines</dt>
+<dt id="arg-remove-x-gridlines">remove.x.gridlines<a class="anchor" aria-label="anchor" href="#arg-remove-x-gridlines"></a></dt>
 <dd><p>Should the coordinate grid on the x-axis (vertical
 lines) be removed? Default is TRUE.</p></dd>
 
 
-<dt>family</dt>
+<dt id="arg-family">family<a class="anchor" aria-label="anchor" href="#arg-family"></a></dt>
 <dd><p>global font family.</p></dd>
 
 
-<dt>axisTickLength</dt>
+<dt id="arg-axisticklength">axisTickLength<a class="anchor" aria-label="anchor" href="#arg-axisticklength"></a></dt>
 <dd><p>length of axis ticks.</p></dd>
 
 
-<dt>axisTickWidth</dt>
+<dt id="arg-axistickwidth">axisTickWidth<a class="anchor" aria-label="anchor" href="#arg-axistickwidth"></a></dt>
 <dd><p>width of axis ticks.</p></dd>
 
 </dl></div>
@@ -152,8 +154,8 @@ print media.</p></li>
 <li><p>There are no hard and fast rules on font size, though APA recommends
 choosing between 8 and 14-point. Fonts in figures should be sans serif.</p></li>
 </ul><p>Because APA style calls for positioning legends on the plane itself, this
-function includes options for choosing a position--top left, top right, bottom
-left, bottom right--to place the legend. <code>ggplot2</code> provides no obvious
+function includes options for choosing a position–top left, top right, bottom
+left, bottom right–to place the legend. <code>ggplot2</code> provides no obvious
 way to automatically choose a position that overlaps least with the geoms (the
 plotted data), so users will need to choose one.</p>
 <p>Facetting is supported, but APA guidelines are considerably less clear for
@@ -176,15 +178,15 @@ APA style.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 
