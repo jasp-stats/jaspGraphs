@@ -27,7 +27,7 @@ jaspHistogram(
 jaspHistogramBinWidth(
   x,
   binWidthType = c("doane", "fd", "scott", "sturges", "manual"),
-  numberOfBins
+  numberOfBins = NA
 )
 }
 \arguments{

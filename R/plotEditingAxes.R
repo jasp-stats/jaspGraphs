@@ -16,7 +16,7 @@ getAxisType <- function(opts) {
   # UseMethod("getAxisType", x)
 }
 
-#' @exportS3Method
+#' @export
 getAxisType.list <- function(x) {
   # for output of layer_scales(plot)
   scaleX <- match(class(x[[1L]]), AxisTypes)
@@ -28,7 +28,7 @@ getAxisType.list <- function(x) {
   return(c("x" = scaleX, "y" = scaleY))
 }
 
-#' @exportS3Method
+#' @export
 getAxisType.ggplot_built <- function(x) {
   return(c(
     "x" = class(x[["layout"]][["panel_scales_x"]][[1L]])[[2L]],
@@ -36,7 +36,7 @@ getAxisType.ggplot_built <- function(x) {
   ))
 }
 
-#' @exportS3Method
+#' @export
 getAxisType.ggplot <- function(x) {
   return(getAxisType.list(layer_scales(x, i = 1L, j = 1L)))
 }
