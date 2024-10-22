@@ -12,6 +12,7 @@ createEnum <- function(nameValuePairs) {
   e
 }
 
+#' @exportS3Method "$" Enum
 `$.Enum` <- function(x, y) {
   out <- NextMethod(x, y)
   if (is.null(out)) stop2(sprintf("nonexisting enum type %s!", y))

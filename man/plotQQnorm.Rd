@@ -9,7 +9,7 @@ plotQQnorm(
   lower = NULL,
   upper = NULL,
   abline = TRUE,
-  ablineOrigin = FALSE, 
+  ablineOrigin = FALSE,
   ablineColor = "red",
   identicalAxes = FALSE,
   xName = gettext("Theoretical quantiles", domain = "R-jaspGraphs"),
@@ -23,13 +23,9 @@ plotQQnorm(
 
 \item{upper}{Numeric vector, lower confidence interval of each residual. If NULL, no error bars are drawn.}
 
-\item{abline}{Logical, should an abline be drawn that best fits the points?}
-
-\item{ablineOrigin}{Logical, should the abline be drawn through the origin?}
+\item{abline}{Logical, should an abline be drawn through the origin?}
 
 \item{ablineColor}{String, color of the abline.}
-
-\item{identicalAxes}{Logical, should the axes have the same range?}
 
 \item{xName}{String, name for the x-axis.}
 

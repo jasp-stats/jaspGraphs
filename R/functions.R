@@ -103,7 +103,13 @@ drawAxis <- function(graph = NULL, xName = waiver(), yName = waiver(), breaks = 
                      secondaryXaxis = waiver(), secondaryYaxis = waiver(),
                      xTrans = "identity", yTrans = "identity") {
 
-    warning("This function will be deprecated.")
+    lifecycle::deprecate_warn(
+      when = "0.19.0",
+      what = "drawAxis()",
+      with = "ggplot2::scale_x_continuous()",
+      details = "e.g., `ggplot2::ggplot() + ggplot2::scale_x_continuous(...)`."
+    )
+
     if (!is.null(dat) && is.null(breaks))
         breaks <- getPrettyAxisBreaks(dat)
 
