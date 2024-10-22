@@ -226,7 +226,7 @@ jaspHistogram <- function(
 #'
 #' @return a numeric value for the number of bins or a string for the type of the bins.
 #' @export
-jaspHistogramBinWidth <- function(x, binWidthType = c("doane", "fd", "scott", "sturges", "manual"), numberOfBins) {
+jaspHistogramBinWidth <- function(x, binWidthType = c("doane", "fd", "scott", "sturges", "manual"), numberOfBins = NA) {
   binWidthType <- match.arg(binWidthType)
   if (binWidthType == "doane") {
 
