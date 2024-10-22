@@ -25,7 +25,11 @@ plotQQnorm(
 
 \item{abline}{Logical, should an abline be drawn through the origin?}
 
+\item{ablineOrigin}{Logical, should the abline be drawn through the origin?}
+
 \item{ablineColor}{String, color of the abline.}
+
+\item{identicalAxes}{Logical, should the x- and y-axes have the same breaks?}
 
 \item{xName}{String, name for the x-axis.}
 
