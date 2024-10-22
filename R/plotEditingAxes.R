@@ -6,7 +6,6 @@ AxisTypes <- c(
   "ScaleDiscretePosition"
 )
 
-#' @export
 getAxisType <- function(opts) {
 
   # Could be more specific!
@@ -16,30 +15,27 @@ getAxisType <- function(opts) {
   # UseMethod("getAxisType", x)
 }
 
-#' @export
-getAxisType.list <- function(x) {
-  # for output of layer_scales(plot)
-  scaleX <- match(class(x[[1L]]), AxisTypes)
-  scaleY <- match(class(x[[2L]]), AxisTypes)
-  scaleX <- scaleX[!is.na(scaleX)]
-  scaleY <- scaleY[!is.na(scaleY)]
-  scaleX <- AxisTypes[scaleX]
-  scaleY <- AxisTypes[scaleY]
-  return(c("x" = scaleX, "y" = scaleY))
-}
-
-#' @export
-getAxisType.ggplot_built <- function(x) {
-  return(c(
-    "x" = class(x[["layout"]][["panel_scales_x"]][[1L]])[[2L]],
-    "y" = class(x[["layout"]][["panel_scales_y"]][[1L]])[[2L]]
-  ))
-}
-
-#' @export
-getAxisType.ggplot <- function(x) {
-  return(getAxisType.list(layer_scales(x, i = 1L, j = 1L)))
-}
+# getAxisType.list <- function(x) {
+#   # for output of layer_scales(plot)
+#   scaleX <- match(class(x[[1L]]), AxisTypes)
+#   scaleY <- match(class(x[[2L]]), AxisTypes)
+#   scaleX <- scaleX[!is.na(scaleX)]
+#   scaleY <- scaleY[!is.na(scaleY)]
+#   scaleX <- AxisTypes[scaleX]
+#   scaleY <- AxisTypes[scaleY]
+#   return(c("x" = scaleX, "y" = scaleY))
+# }
+#
+# getAxisType.ggplot_built <- function(x) {
+#   return(c(
+#     "x" = class(x[["layout"]][["panel_scales_x"]][[1L]])[[2L]],
+#     "y" = class(x[["layout"]][["panel_scales_y"]][[1L]])[[2L]]
+#   ))
+# }
+#
+# getAxisType.ggplot <- function(x) {
+#   return(getAxisType.list(layer_scales(x, i = 1L, j = 1L)))
+# }
 
 getAxisTitle <- function(x, xory) {
 
