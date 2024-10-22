@@ -27,6 +27,7 @@ getPlotEditingOptions <- function(graph) {
   UseMethod("getPlotEditingOptions", graph)
 }
 
+#' @exportS3Method
 getPlotEditingOptions.gg <- function(graph) {
   # ensures    that loading an edited graph returns the final set of options
   if (!is.null(graph[["plot_env"]][[".____plotEditingOptions____"]][["oldOptions"]]))
@@ -34,10 +35,12 @@ getPlotEditingOptions.gg <- function(graph) {
   return(getPlotEditingOptions.ggplot(graph))
 }
 
+#' @exportS3Method
 getPlotEditingOptions.ggplot <- function(graph) {
   getPlotEditingOptions.ggplot_built(ggplot_build(graph))
 }
 
+#' @exportS3Method
 getPlotEditingOptions.ggplot_built <- function(graph) {
 
   # TODO: test if graph can be edited at all!
@@ -72,18 +75,22 @@ getPlotEditingOptions.ggplot_built <- function(graph) {
   return(out)
 }
 
+#' @exportS3Method
 getPlotEditingOptions.qgraph <- function(graph) {
   plotEditingOptionsError(gettext("This plot cannot be edited because it was created with qgraph instead of ggplot."))
 }
 
+#' @exportS3Method
 getPlotEditingOptions.jaspGraphsPlot <- function(graph) {
   plotEditingOptionsError(gettext("This plot cannot be edited because it consists of multiple smaller figures."))
 }
 
+#' @exportS3Method getPlotEditingOptions "function"
 getPlotEditingOptions.function <- function(graph) {
   plotEditingOptionsError(gettext("This plot cannot be edited because it was created with base R instead of ggplot."))
 }
 
+#' @exportS3Method
 getPlotEditingOptions.default <- function(graph) {
   plotEditingOptionsError(
     gettextf("cannot create plotEditingOptions for object of class: %s.", paste(class(graph), collapse = ",")),
