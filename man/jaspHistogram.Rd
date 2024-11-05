@@ -2,6 +2,7 @@
 % Please edit documentation in R/jaspHistogram.R
 \name{jaspHistogram}
 \alias{jaspHistogram}
+\alias{jaspHistogramBinWidth}
 \title{Histograms and Density plots for JASP}
 \usage{
 jaspHistogram(
@@ -21,6 +22,12 @@ jaspHistogram(
   densityShadeAlpha = 0.6,
   densityLineWidth = 1,
   hideYAxisLabels = density
+)
+
+jaspHistogramBinWidth(
+  x,
+  binWidthType = c("doane", "fd", "scott", "sturges", "manual"),
+  numberOfBins = NA
 )
 }
 \arguments{
@@ -55,6 +62,9 @@ jaspHistogram(
 \item{densityLineWidth, }{positive number, the line width of the superimposed density.}
 
 \item{hideYAxisLabels, }{logical, should the y-axis line be hidden? Defaults to \code{showDensity}.}
+}
+\value{
+a numeric value for the number of bins or a string for the type of the bins.
 }
 \description{
 A plot histogram with three components.

@@ -15,27 +15,27 @@ getAxisType <- function(opts) {
   # UseMethod("getAxisType", x)
 }
 
-getAxisType.list <- function(x) {
-  # for output of layer_scales(plot)
-  scaleX <- match(class(x[[1L]]), AxisTypes)
-  scaleY <- match(class(x[[2L]]), AxisTypes)
-  scaleX <- scaleX[!is.na(scaleX)]
-  scaleY <- scaleY[!is.na(scaleY)]
-  scaleX <- AxisTypes[scaleX]
-  scaleY <- AxisTypes[scaleY]
-  return(c("x" = scaleX, "y" = scaleY))
-}
-
-getAxisType.ggplot_built <- function(x) {
-  return(c(
-    "x" = class(x[["layout"]][["panel_scales_x"]][[1L]])[[2L]],
-    "y" = class(x[["layout"]][["panel_scales_y"]][[1L]])[[2L]]
-  ))
-}
-
-getAxisType.ggplot <- function(x) {
-  return(getAxisType.list(layer_scales(x, i = 1L, j = 1L)))
-}
+# getAxisType.list <- function(x) {
+#   # for output of layer_scales(plot)
+#   scaleX <- match(class(x[[1L]]), AxisTypes)
+#   scaleY <- match(class(x[[2L]]), AxisTypes)
+#   scaleX <- scaleX[!is.na(scaleX)]
+#   scaleY <- scaleY[!is.na(scaleY)]
+#   scaleX <- AxisTypes[scaleX]
+#   scaleY <- AxisTypes[scaleY]
+#   return(c("x" = scaleX, "y" = scaleY))
+# }
+#
+# getAxisType.ggplot_built <- function(x) {
+#   return(c(
+#     "x" = class(x[["layout"]][["panel_scales_x"]][[1L]])[[2L]],
+#     "y" = class(x[["layout"]][["panel_scales_y"]][[1L]])[[2L]]
+#   ))
+# }
+#
+# getAxisType.ggplot <- function(x) {
+#   return(getAxisType.list(layer_scales(x, i = 1L, j = 1L)))
+# }
 
 getAxisTitle <- function(x, xory) {
 
@@ -95,6 +95,7 @@ getAxisInfo <- function(x, opts, ggbuild) {
   UseMethod("getAxisInfo", x)
 }
 
+#' @exportS3Method
 getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
 
   xory <- getXorY(x, ggbuild)
@@ -168,6 +169,7 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
 
 }
 
+#' @exportS3Method
 getAxisInfo.ScaleDiscretePosition <- function(x, opts, ggbuild) {
 
   xory <- getXorY(x, ggbuild)
@@ -202,6 +204,7 @@ internalUpdateAxis <- function(currentAxis, newSettings) {
   UseMethod("internalUpdateAxis", currentAxis)
 }
 
+#' @exportS3Method
 internalUpdateAxis.ScaleContinuousPosition <- function(currentAxis, newSettings) {
 
   if (newSettings[["breaksType"]] == BreaksType$Null) {
@@ -237,6 +240,7 @@ internalUpdateAxis.ScaleContinuousPosition <- function(currentAxis, newSettings)
   return(currentAxis)
 }
 
+#' @exportS3Method
 internalUpdateAxis.ScaleDiscretePosition <- function(currentAxis, newSettings) {
 
   # newSettings only contains not modified settings!
