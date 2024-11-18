@@ -6,6 +6,8 @@
 #' @param upper Numeric vector, lower confidence interval of each residual. If NULL, no error bars are drawn.
 #' @param abline  Logical, should an abline be drawn through the origin?
 #' @param ablineColor String, color of the abline.
+#' @param identicalAxes Logical, should both axes be identical?
+#' @param na.rm Logical, should NA's be removed from residuals?
 #' @param xName String, name for the x-axis.
 #' @param yName String, name for the y-axis.
 #'
