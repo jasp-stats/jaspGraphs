@@ -9,9 +9,10 @@ plotQQnorm(
   lower = NULL,
   upper = NULL,
   abline = TRUE,
-  ablineOrigin = FALSE, 
+  ablineOrigin = FALSE,
   ablineColor = "red",
   identicalAxes = FALSE,
+  na.rm = TRUE,
   xName = gettext("Theoretical quantiles", domain = "R-jaspGraphs"),
   yName = gettext("Observed quantiles", domain = "R-jaspGraphs")
 )
@@ -25,11 +26,13 @@ plotQQnorm(
 
 \item{abline}{Logical, should an abline be drawn that best fits the points?}
 
-\item{ablineOrigin}{Logical, should the abline be drawn through the origin?}
+\item{ablineOrigin}{Logical, should an abline be drawn through the origin?}
 
 \item{ablineColor}{String, color of the abline.}
 
 \item{identicalAxes}{Logical, should the axes have the same range?}
+
+\item{na.rm}{Logical, should NA's be removed from residuals?}
 
 \item{xName}{String, name for the x-axis.}
 

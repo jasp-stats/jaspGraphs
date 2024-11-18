@@ -4,9 +4,10 @@
 #'
 #' @param lower Numeric vector, lower confidence interval of each residual. If NULL, no error bars are drawn.
 #' @param upper Numeric vector, lower confidence interval of each residual. If NULL, no error bars are drawn.
-#' @param abline  Logical, should an abline be drawn through the origin?
+#' @param abline Logical, should an abline be drawn that best fits the points?
+#' @param ablineOrigin  Logical, should an abline be drawn through the origin?
 #' @param ablineColor String, color of the abline.
-#' @param identicalAxes Logical, should both axes be identical?
+#' @param identicalAxes Logical, should the axes have the same range?
 #' @param na.rm Logical, should NA's be removed from residuals?
 #' @param xName String, name for the x-axis.
 #' @param yName String, name for the y-axis.
@@ -36,11 +37,11 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
     df$ymin <- lower
     df$ymax <- upper
   }
-  
+
   if (isTRUE(na.rm)) {
     df <- df[isFALSE(is.na(residuals)), ]
   }
-  
+
   # determine axes breaks
   if (identicalAxes) {
     xBreaks <- yBreaks <- getPrettyAxisBreaks(unlist(df))
@@ -71,7 +72,7 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
   dfLine <- data.frame(x = xvals, y = yvals)
   g <- ggplot2::ggplot(data = df, aes(x = .data$x, y = .data$y))
 
-  if (abline && ablineOrigin) { 
+  if (abline && ablineOrigin) {
     g <- g + ggplot2::geom_line(data = data.frame(x = c(min(xvals), max(xvals)), y = c(min(xvals), max(xvals))),
                                   mapping = ggplot2::aes(x = .data$x, y = .data$y),
                                   col = ablineColor,
@@ -79,7 +80,7 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
   } else if (abline) {
     g <- g + ggplot2::geom_line(mapping = aes(x = .data$x, y = .data$y), data = dfLine, inherit.aes = FALSE, color = ablineColor)
   }
-  
+
   if (hasErrorbars)
     g <- g + ggplot2::geom_errorbar(aes(ymin = .data$ymin, ymax = .data$ymax))
 
