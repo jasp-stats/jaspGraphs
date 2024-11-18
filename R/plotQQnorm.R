@@ -20,16 +20,18 @@
 #' jaspGraphs::plotQQnorm(x, lower, upper)
 #'
 #' @export
-plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineOrigin = FALSE, ablineColor = "red", identicalAxes = FALSE, 
+plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineOrigin = FALSE, ablineColor = "red", identicalAxes = FALSE, ciLevel = NULL,
                        xName = gettext("Theoretical quantiles",domain="R-jaspGraphs"), yName = gettext("Observed quantiles",domain="R-jaspGraphs")) {
 
   n <- length(residuals)
+  p <- stats::ppoints(n)
   hasErrorbars <- !is.null(lower) && !is.null(upper)
 
   df <- data.frame(
     y = residuals,
     x = stats::qnorm(stats::ppoints(n))[order(order(residuals))]
   )
+  
   if (hasErrorbars) {
     df$ymin <- lower
     df$ymax <- upper
@@ -82,6 +84,35 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
     scale_x_continuous(name = xName, breaks = xBreaks) +
     scale_y_continuous(name = yName, breaks = yBreaks)
 
+  if(!is.null(ciLevel)) {
+    # Fox, J. (2016) Applied Regression Analysis and Generalized Linear Models, Third Edition. Sage.
+    # Chapter 3.1.3
+    args <- list(mean = 0, sd = 1)
+    args[["p"]] <- p
+    theoretical <- do.call(qnorm, args)
+    slope       <- 1
+    df[["theoretical"]] <- theoretical
+    alpha       <- 1-ciLevel
+    args        <- list(mean = 0, sd = 1)
+    args[["x"]] <- theoretical
+    pdf         <- do.call(dnorm, args)
+    se <- sqrt(p * (1 - p) / n) * slope / pdf
+    df[["upper"]] <- theoretical + se * qnorm(alpha/2, lower.tail = FALSE)
+    df[["lower"]] <- theoretical + se * qnorm(alpha/2, lower.tail = TRUE)
+    
+    ciLayer <-
+      ggplot2::geom_ribbon(
+        mapping = ggplot2::aes(x = theoretical, ymin = lower, ymax = upper), 
+        fill = "steelblue", color = "black", alpha = 0.5, data = df
+      )
+  } else {
+    ciLayer <- NULL
+  }
+  
+  g <- g + ciLayer
+  
   return(jaspGraphs::themeJasp(g))
 
 }
+plotQQnorm(rnorm(1e2), ciLevel = 0.95, ablineColor = "darkred", identicalAxes = TRUE)
+
