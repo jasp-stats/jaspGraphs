@@ -20,7 +20,7 @@
 #' jaspGraphs::plotQQnorm(x, lower, upper)
 #'
 #' @export
-plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineOrigin = FALSE, ablineColor = "red", identicalAxes = FALSE, 
+plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineOrigin = FALSE, ablineColor = "red", identicalAxes = FALSE, na.rm = TRUE,
                        xName = gettext("Theoretical quantiles",domain="R-jaspGraphs"), yName = gettext("Observed quantiles",domain="R-jaspGraphs")) {
 
   n <- length(residuals)
@@ -34,7 +34,11 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
     df$ymin <- lower
     df$ymax <- upper
   }
-
+  
+  if (isTRUE(na.rm)) {
+    df <- df[isFALSE(is.na(residuals)), ]
+  }
+  
   # determine axes breaks
   if (identicalAxes) {
     xBreaks <- yBreaks <- getPrettyAxisBreaks(unlist(df))
