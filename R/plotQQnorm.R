@@ -39,7 +39,7 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
   }
 
   if (isTRUE(na.rm)) {
-    df <- df[isFALSE(is.na(residuals)), ]
+    df <- df[!(is.na(residuals)), ]
   }
 
   # determine axes breaks
