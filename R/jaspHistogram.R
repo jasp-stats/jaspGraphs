@@ -111,13 +111,19 @@ jaspHistogram <- function(
         position = histogramPosition
       )
 
-      # for each groupingvariable, bin by breaks and find the largest count
-      temp <- do.call(rbind, tapply(x, groupingVariable, function(subset) {
-        h <- graphics::hist(subset, plot = FALSE, breaks = binWidthType)
-        c(counts = max(h[["counts"]]), density = max(h[["density"]]))
-      }))
-      maxCounts  <- max(temp[, "counts"])
-      maxDensity <- max(temp[, "density"])
+      if (identical(histogramPosition, "stack") || inherits(histogramPosition, "PositionStack")) {
+        # for a stacked figure we base maxCounts and maxDensity on the ungrouped data
+        maxCounts  <- h[["counts"]]
+        maxDensity <- h[["density"]]
+      } else {
+        # for each groupingvariable, bin by breaks and find the largest count
+        temp <- do.call(rbind, tapply(x, groupingVariable, function(subset) {
+          h <- graphics::hist(subset, plot = FALSE, breaks = binWidthType)
+          c(counts = max(h[["counts"]]), density = max(h[["density"]]))
+        }))
+        maxCounts  <- max(temp[, "counts"])
+        maxDensity <- max(temp[, "density"])
+      }
 
     } else {
       dataHistogram <- data.frame(x = x)
