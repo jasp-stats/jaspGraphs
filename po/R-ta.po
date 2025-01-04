@@ -2,91 +2,106 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspGraphs 0.19.2\n"
 "POT-Creation-Date: 2024-10-19 03:16\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2025-01-04 21:55+0000\n"
+"Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
+"Language-Team: Tamil <https://hosted.weblate.org/projects/jasp/jaspgraphs/ta/"
+">\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 msgid "data | H0"
-msgstr ""
+msgstr "தரவு | H0"
 
 msgid "data | H1"
-msgstr ""
+msgstr "தேதி | எச் 1"
 
 msgid "data | H-"
-msgstr ""
+msgstr "தரவு | H-"
 
 msgid "data | H+"
-msgstr ""
+msgstr "தரவு | எச்+"
 
 msgid "BF%s"
-msgstr ""
+msgstr "பி.எஃப்%s"
 
 msgid "log(BF%s)"
-msgstr ""
+msgstr "பதிவு (பி.எஃப்%s)"
 
 msgid "Density"
 msgstr ""
 
 msgid "Median:"
-msgstr ""
+msgstr "நடு:"
 
 msgid "Anecdotal"
-msgstr ""
+msgstr "நிகழ்வு"
 
 msgid "Moderate"
-msgstr ""
+msgstr "மிதமான"
 
 msgid "Strong"
-msgstr ""
+msgstr "வலுவான"
 
 msgid "Very Strong"
-msgstr ""
+msgstr "மிகவும் வலுவானது"
 
 msgid "Extreme"
-msgstr ""
+msgstr "எக்ச்ட்ரீம்"
 
 msgid "Evidence"
-msgstr ""
+msgstr "சான்றுகள்"
 
 msgid "Evidence for H%s:"
-msgstr ""
+msgstr "H%s க்கான சான்றுகள்:"
 
 msgid "Evidence for H%s"
-msgstr ""
+msgstr "H%s க்கான சான்றுகள்"
 
 msgid "Counts"
-msgstr ""
+msgstr "எண்ணிக்கைகள்"
 
 msgid "Computing plotEditingOptions gave an error: %s"
-msgstr ""
+msgstr "கம்ப்யூட்டிங் சூழ்ச்சி ஆப்சன்கள் ஒரு பிழையைக் கொடுத்தன: %s"
 
 msgid "This plot cannot be edited because it was created with qgraph instead of ggplot."
 msgstr ""
+"இந்த சதித்திட்டத்தைத் திருத்த முடியாது, ஏனெனில் இது சி.சி.பிளாட்டுக்கு பதிலாக Qgraph "
+"உடன் உருவாக்கப்பட்டது."
 
 msgid "This plot cannot be edited because it consists of multiple smaller figures."
 msgstr ""
+"இந்த சூழ்ச்சி திருத்த முடியாது, ஏனெனில் இது பல சிறிய புள்ளிவிவரங்களைக் கொண்டுள்ளது."
 
 msgid "This plot cannot be edited because it was created with base R instead of ggplot."
 msgstr ""
+"இந்த சூழ்ச்சி திருத்த முடியாது, ஏனெனில் இது சி.சி.பிளாட்டுக்கு பதிலாக அடிப்படை ஆர் உடன்"
+" உருவாக்கப்பட்டது."
 
 msgid "cannot create plotEditingOptions for object of class: %s."
 msgstr ""
+"வர்க்கத்தின் பொருளுக்கு சூழ்ச்சி செய்யும் விருப்பங்களை உருவாக்க முடியாது: %s."
 
 msgid "Converting plotEditingOptions to JSON gave an error: %s."
 msgstr ""
+"சாதொபொகு க்கு சதிபதிகள் மாற்றங்களை மாற்றுவது ஒரு பிழையைக் கொடுத்தது: %s."
 
 msgid "Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s To receive assistance with this problem, please report the message above at: https://jasp-stats.org/bug-reports"
 msgstr ""
+"சூழ்ச்சி திருத்துதல் எதிர்பாராத விதமாக நிறுத்தப்பட்டது. சூழ்ச்சி செய்யும் விருப்பங்களில் "
+"அபாயகரமான பிழை: இந்த சிக்கலுக்கு உதவியைப் பெற %s, தயவுசெய்து மேலே உள்ள செய்தியைப் "
+"புகாரளிக்கவும்: https://jasp-stats.org/bug-reports"
 
 msgid "This plot cannot be edited because it uses polar coordinates (e.g., pie chart)."
 msgstr ""
+"இந்த சதித்திட்டத்தைத் திருத்த முடியாது, ஏனெனில் இது துருவ ஆயத்தொலைவுகளைப் "
+"பயன்படுத்துகிறது (எ.கா., பை விளக்கப்படம்)."
 
 msgid "Theoretical quantiles"
-msgstr ""
+msgstr "தத்துவார்த்த அளவுகள்"
 
 msgid "Observed quantiles"
-msgstr ""
+msgstr "கவனிக்கப்பட்ட அளவுகள்"
