@@ -61,32 +61,11 @@ jaspHistogram <- function(
   if (!missing(groupingVariableName) && !is.character(groupingVariableName))
     stop2("`groupingVariableName` must be character but has class ", paste(class(groupingVariableName), collapse = ", "), "!")
 
-  binWidthType <- match.arg(binWidthType)
 
   hasGroupingVariable <- !is.null(groupingVariable)
   x <- stats::na.omit(as.numeric(x))
 
-  if (binWidthType == "doane") {
-
-    # https://en.wikipedia.org/wiki/Histogram#Doane's_formula
-    sigma.g1 <- sqrt((6*(length(x) - 2)) / ((length(x) + 1)*(length(x) + 3)))
-    g1 <- mean(abs(x)^3)
-    k <- 1 + log2(length(x)) + log2(1 + (g1 / sigma.g1))
-    binWidthType <- k
-
-  } else if (binWidthType == "fd" && grDevices::nclass.FD(x) > 10000) { # FD-method will produce extreme number of bins and crash ggplot, mention this in footnote
-
-    warning2("The Freedman-Diaconis method would produce an extreme number of bins, setting the number of bins to 10,000.")
-    binWidthType <- 10000
-
-  } else if (binWidthType == "manual") {
-
-    if (is.na(numberOfBins))
-      stop2("numberOfBins argument must be specified when a binWidthType == 'manual'.")
-
-    binWidthType <- numberOfBins
-
-  }
+  binWidthType <- jaspHistogramBinWidth(x, binWidthType, numberOfBins)
 
   h <- graphics::hist(x, plot = FALSE, breaks = binWidthType)
   xBreaks <- getPrettyAxisBreaks(c(x, h[["breaks"]]), min.n = 3)
@@ -241,4 +220,35 @@ jaspHistogram <- function(
     plot <- plot + theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())
 
   return(plot)
+}
+
+#' @rdname jaspHistogram
+#'
+#' @return a numeric value for the number of bins or a string for the type of the bins.
+#' @export
+jaspHistogramBinWidth <- function(x, binWidthType = c("doane", "fd", "scott", "sturges", "manual"), numberOfBins = NA) {
+  binWidthType <- match.arg(binWidthType)
+  if (binWidthType == "doane") {
+
+    # https://en.wikipedia.org/wiki/Histogram#Doane's_formula
+    sigma.g1 <- sqrt((6*(length(x) - 2)) / ((length(x) + 1)*(length(x) + 3)))
+    g1 <- mean(abs(x)^3)
+    k <- 1 + log2(length(x)) + log2(1 + (g1 / sigma.g1))
+    binWidthType <- k
+
+  } else if (binWidthType == "fd" && grDevices::nclass.FD(x) > 10000) { # FD-method will produce extreme number of bins and crash ggplot, mention this in footnote
+
+    warning2("The Freedman-Diaconis method would produce an extreme number of bins, setting the number of bins to 10,000.")
+    binWidthType <- 10000
+
+  } else if (binWidthType == "manual") {
+
+    if (is.na(numberOfBins))
+      stop2("numberOfBins argument must be specified when a binWidthType == 'manual'.")
+
+    binWidthType <- numberOfBins
+
+  } else {
+    return(binWidthType)
+  }
 }

@@ -30,6 +30,7 @@ makeLabels <- function(label, angle = 0, size = 1, family = graphOptions("family
   UseMethod("makeLabels", label)
 }
 
+#' @exportS3Method
 makeLabels.default <- function(label, angle = 0, size = 1, family = graphOptions("family"),
                                vjust = "center", hjust = "center", x = .5, y = .5) {
 
@@ -70,6 +71,7 @@ makeLabels.default <- function(label, angle = 0, size = 1, family = graphOptions
   }
 }
 
+#' @exportS3Method
 makeLabels.list <- function(label, angle = 0, size = 1, family = graphOptions("family"),
                             vjust = "center", hjust = "center", x = .5, y = .5) {
 
