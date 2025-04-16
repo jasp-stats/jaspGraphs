@@ -2,67 +2,70 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspGraphs 0.19.2\n"
 "POT-Creation-Date: 2024-10-19 03:16\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2025-04-16 17:19+0000\n"
+"Last-Translator: Tran Thien Truong <truongtrandds@gmail.com>\n"
+"Language-Team: Vietnamese <https://hosted.weblate.org/projects/jasp/"
+"jaspgraphs/vi/>\n"
 "Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.11.1-dev\n"
 
 msgid "data | H0"
-msgstr ""
+msgstr "data | H0"
 
 msgid "data | H1"
-msgstr ""
+msgstr "data | H1"
 
 msgid "data | H-"
-msgstr ""
+msgstr "data | H-"
 
 msgid "data | H+"
-msgstr ""
+msgstr "data | H+"
 
 msgid "BF%s"
-msgstr ""
+msgstr "BF%s"
 
 msgid "log(BF%s)"
-msgstr ""
+msgstr "log(BF%s)"
 
 msgid "Density"
-msgstr ""
+msgstr "Mật độ"
 
 msgid "Median:"
-msgstr ""
+msgstr "Trung vị:"
 
 msgid "Anecdotal"
-msgstr ""
+msgstr "Dữ liệu đơn lẻ"
 
 msgid "Moderate"
-msgstr ""
+msgstr "Trung bình"
 
 msgid "Strong"
-msgstr ""
+msgstr "Mạnh"
 
 msgid "Very Strong"
-msgstr ""
+msgstr "Rất mạnh"
 
 msgid "Extreme"
-msgstr ""
+msgstr "Cực đại"
 
 msgid "Evidence"
-msgstr ""
+msgstr "Bằng chứng"
 
 msgid "Evidence for H%s:"
-msgstr ""
+msgstr "Bằng chứng ủng hộ H%s:"
 
 msgid "Evidence for H%s"
-msgstr ""
+msgstr "Bằng chứng ủng hộ H%s"
 
 msgid "Counts"
-msgstr ""
+msgstr "Số đếm"
 
 msgid "Computing plotEditingOptions gave an error: %s"
-msgstr ""
+msgstr "Đã xảy ra lỗi khi tính toán Tùy chọn Chỉnh sửa biểu đồ: %s"
 
 msgid "This plot cannot be edited because it was created with qgraph instead of ggplot."
 msgstr ""
