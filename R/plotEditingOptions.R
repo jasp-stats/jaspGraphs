@@ -61,6 +61,8 @@ getPlotEditingOptions.ggplot_built <- function(graph) {
     ySettings <- tmp
   }
 
+  coords <- graph[["data"]][[1]]
+
   out <- list(
     xAxis = list(
       type     = axisTypes[["x"]],
@@ -69,6 +71,7 @@ getPlotEditingOptions.ggplot_built <- function(graph) {
       type     = axisTypes[["y"]],
       settings = ySettings
     ),
+    coords = coords,
     error = ErrorType$Success
   )
 
