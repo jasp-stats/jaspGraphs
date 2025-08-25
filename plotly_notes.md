@@ -6,11 +6,13 @@ Some ideas for converting jasp plots to plotly automatically.
 things that need to be done
 
 - [ ] fixes for all the Geoms in jaspGraphs
-    - [ ] jaspGeomPoint
-    - [ ] jaspGeomPoint2
+    - [x] jaspGeomPoint
+    - [x] jaspGeomLine
     - [ ] GeomAbline2
     - [ ] GeomAlignedText
     - [ ] GeomRangeFrame
+    
+these last three need js solutions
 
 - [ ] jaspResults to understand what to do for interactivity
 
