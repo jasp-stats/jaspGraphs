@@ -2,92 +2,108 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspGraphs 0.20.0\n"
 "POT-Creation-Date: 2025-04-26 03:23\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2025-09-05 09:01+0000\n"
+"Last-Translator: Jose Ramon Rueda <joseramon.rueda@ehu.eus>\n"
+"Language-Team: Basque <https://hosted.weblate.org/projects/jasp/jaspgraphs/"
+"eu/>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.13.1-rc\n"
 
 msgid "data | H0"
-msgstr ""
+msgstr "datuak | H0"
 
 msgid "data | H1"
-msgstr ""
+msgstr "datuak | H1"
 
 msgid "data | H-"
-msgstr ""
+msgstr "datuak | H-"
 
 msgid "data | H+"
-msgstr ""
+msgstr "datuak | H+"
 
 msgid "BF%s"
-msgstr ""
+msgstr "BF%a"
 
 msgid "log(BF%s)"
-msgstr ""
+msgstr "log(BF%a)"
 
 msgid "Density"
-msgstr ""
+msgstr "Dentsitatea"
 
 msgid "Median:"
-msgstr ""
+msgstr "Mediana:"
 
 msgid "Anecdotal"
-msgstr ""
+msgstr "Anekdotikoa"
 
 msgid "Moderate"
-msgstr ""
+msgstr "Moderatua"
 
 msgid "Strong"
-msgstr ""
+msgstr "Indartsua"
 
 msgid "Very Strong"
-msgstr ""
+msgstr "Oso Indartsua"
 
+#, fuzzy
 msgid "Extreme"
-msgstr ""
+msgstr "Muturrekoa"
 
 msgid "Evidence"
-msgstr ""
+msgstr "Ebidentzia"
 
+#, fuzzy
 msgid "Evidence for H%s:"
-msgstr ""
+msgstr "Ebidentzia H%a-rentzako:"
 
 msgid "Evidence for H%s"
-msgstr ""
+msgstr "Ebidentzia H%a-rentzako"
 
 msgid "Counts"
-msgstr ""
+msgstr "Zenbaketak"
 
+#, fuzzy
 msgid "Computing plotEditingOptions gave an error: %s"
-msgstr ""
+msgstr "plotEditingOptions kalkulatzean errore bat eman da: %a"
 
 msgid "This plot cannot be edited because it was created with qgraph instead of ggplot."
-msgstr ""
+msgstr "Ezin da grafiko hau editatu ggplot-en ordez qgraph-ekin sortu delako."
 
 msgid "This plot cannot be edited because it consists of multiple smaller figures."
-msgstr ""
+msgstr "Ezin da grafiko hau editatu hainbat irudi txikiagoz osatuta dagoelako."
 
+#, fuzzy
 msgid "This plot cannot be edited because it was created with base R instead of ggplot."
 msgstr ""
+"Ezin da grafiko hau editatu, ggplot-en ordez R oinarriarekin sortu delako."
 
+#, fuzzy
 msgid "cannot create plotEditingOptions for object of class: %s."
-msgstr ""
+msgstr "Ezin da plotEditingOptions sortu %a klaseko objektuarentzat."
 
+#, fuzzy
 msgid "Converting plotEditingOptions to JSON gave an error: %s."
-msgstr ""
+msgstr "plotEditingOptions JSON bihurtzean errore hau eman da: %a."
 
+#, fuzzy
 msgid "Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s To receive assistance with this problem, please report the message above at: https://jasp-stats.org/bug-reports"
 msgstr ""
+"Grafikoaren edizioa ustekabean amaitu da. Errore larria plotEditingOptions-"
+"en: %s. Arazo honekin laguntza jasotzeko, eman goiko mezuaren berri hemen: "
+"https://jasp-stats.org/bug-reports"
 
+#, fuzzy
 msgid "This plot cannot be edited because it uses polar coordinates (e.g., pie chart)."
 msgstr ""
+"Ezin da grafiko hau editatu koordenatu polarrak erabiltzen dituelako ("
+"adibidez, sektore-diagrama)."
 
 msgid "Theoretical quantiles"
-msgstr ""
+msgstr "Kuantil teorikoak"
 
 msgid "Observed quantiles"
-msgstr ""
+msgstr "Behatutako kuantilak"
