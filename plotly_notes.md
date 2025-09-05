@@ -8,8 +8,8 @@ things that need to be done
 - [ ] fixes for all the Geoms in jaspGraphs
     - [x] jaspGeomPoint
     - [x] jaspGeomLine
-    - [ ] GeomAbline2
-    - [ ] GeomAlignedText
+    - [x] GeomAbline2
+    - [x] GeomAlignedText
     - [ ] GeomRangeFrame
     
 these last three need js solutions

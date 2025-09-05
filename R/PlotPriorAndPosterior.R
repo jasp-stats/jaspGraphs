@@ -155,7 +155,6 @@ makeLegendPlot <- function(groupingVariable, colors = NULL, fill = NULL, linetyp
       )
 
       if (is.null(sizes)) {
-        size <-
         gp <- geom_point(show.legend = FALSE, size = 1.15 * formals(jaspGraphs::geom_point)$size)
       } else {
         gp <- geom_point(show.legend = FALSE)
