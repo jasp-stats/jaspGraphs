@@ -8,17 +8,16 @@ Description: Graph making functions and wrappers for JASP.
 License: GPL
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Suggests: testthat
 Imports: 
+    cli,
     ggplot2 (>= 3.0.0),
     gridExtra,
     gtable,
-    lifecycle,
     jsonlite,
+    lifecycle,
     R6,
-    RColorBrewer,
     rlang,
-    scales,
-    viridisLite
+    scales
 Roxygen: list(markdown = TRUE)

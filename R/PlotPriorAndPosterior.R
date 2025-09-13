@@ -133,7 +133,7 @@ makeLegendPlot <- function(groupingVariable, colors = NULL, fill = NULL, linetyp
       parse <- needsParsing(label1) || needsParsing(label2)
 
       if (is.null(sizes)) {
-        gp <- geom_point(show.legend = FALSE, size = 1.15 * jaspGeomPoint$default_aes$size)
+        gp <- geom_point(show.legend = FALSE, size = 1.15 * formals(jaspGraphs::geom_point)$size)
       } else {
         gp <- geom_point(show.legend = FALSE)
       }
@@ -155,7 +155,8 @@ makeLegendPlot <- function(groupingVariable, colors = NULL, fill = NULL, linetyp
       )
 
       if (is.null(sizes)) {
-        gp <- geom_point(show.legend = FALSE, size = 1.15 * jaspGeomPoint$default_aes$size)
+        size <-
+        gp <- geom_point(show.legend = FALSE, size = 1.15 * formals(jaspGraphs::geom_point)$size)
       } else {
         gp <- geom_point(show.legend = FALSE)
       }
@@ -181,7 +182,7 @@ makeLegendPlot <- function(groupingVariable, colors = NULL, fill = NULL, linetyp
 
     legendPlot <- ggplot(data = dfLegendPlot,  aes(x = .data$x, y = .data$y, xend = .data$xend, yend = .data$yend, label = .data$l)) +
       ggplot2::geom_segment(mapping = aes(color = .data$y, linetype = .data$y), show.legend = FALSE,
-                            linewidth = 1.15 * jaspGeomLine$default_aes$linewidth) +
+                            linewidth = 1.15 * formals(jaspGraphs::geom_line)$linewidth) +
       ggplot2::geom_text(nudge_x = 0.15, size = .35 * getGraphOption("fontsize"), hjust = 0,
                          parse = parse) +
       ggplot2::xlim(c(0, 1)) +
