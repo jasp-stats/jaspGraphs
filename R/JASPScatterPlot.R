@@ -95,8 +95,6 @@ JASPScatterPlot <- function(x, y, group = NULL, xName = NULL, yName = NULL,
   scales <- gb$layout$get_scales(1L)
   x.range <- scales$x$get_limits()
   y.range <- scales$y$get_limits()
-print(x.range)
-print(y.range)
 
   topPlot   <- JASPScatterSubPlot(x, group, plotAbove, x.range, colorAreaUnderDensity, alphaAreaUnderDensity)
   rightPlot <- JASPScatterSubPlot(y, group, plotRight, y.range, colorAreaUnderDensity, alphaAreaUnderDensity, flip = TRUE)
