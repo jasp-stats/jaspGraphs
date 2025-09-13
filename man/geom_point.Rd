@@ -46,6 +46,18 @@ geom_line(
 
 \item{position}{see details}
 
+\item{size}{JASP default}
+
+\item{shape}{JASP default}
+
+\item{colour}{JASP default}
+
+\item{fill}{JASP default}
+
+\item{alpha}{JASP default}
+
+\item{stroke}{JASP default}
+
 \item{...}{see details}
 
 \item{na.rm}{see details}
@@ -53,6 +65,10 @@ geom_line(
 \item{show.legend}{see details}
 
 \item{inherit.aes}{see details}
+
+\item{linewidth}{JASP default}
+
+\item{linetype}{JASP default}
 }
 \description{
 Custom geoms

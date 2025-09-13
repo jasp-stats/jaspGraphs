@@ -12,6 +12,7 @@
 #' @param oob see details
 #' @param na.value see details
 #' @param trans see details
+#' @param transform see details
 #' @param guide see details
 #' @param position see details
 #' @param sec.axis see details
@@ -29,14 +30,14 @@ scale_x_continuous <- function(name = waiver(), breaks = getPrettyAxisBreaks, mi
   if (graphOptions("ggVersion") >= "4.0.0") {
     call <- rlang::caller_call()
     sc <- continuous_scale(
-      ggplot2:::ggplot_global$x_aes,
+      get_ggplot_global()$x_aes,
       palette = identity, name = name, breaks = breaks, n.breaks = n.breaks,
       minor_breaks = minor_breaks, labels = labels, limits = if (identical(limits, "JASP")) NULL else limits,
       expand = expand, oob = oob, na.value = na.value, transform = transform,
       guide = guide, position = position, call = call,
       super = ScaleContinuousPositionJASP
     )
-    sc <- ggplot2:::set_sec_axis(sec.axis, sc)
+    sc <- set_sec_axis4_0_0(sec.axis, sc)
 
   } else if (graphOptions("ggVersion") >= "3.3.0") {
 
@@ -75,6 +76,7 @@ scale_x_continuous <- function(name = waiver(), breaks = getPrettyAxisBreaks, mi
   sc
 }
 
+
 #' @rdname scale_x_continuous
 #' @export
 scale_y_continuous <- function(name = waiver(), breaks = getPrettyAxisBreaks, minor_breaks = waiver(),
@@ -85,14 +87,14 @@ scale_y_continuous <- function(name = waiver(), breaks = getPrettyAxisBreaks, mi
   if (graphOptions("ggVersion") >= "4.0.0") {
     call <- rlang::caller_call()
     sc <- continuous_scale(
-      ggplot2:::ggplot_global$y_aes,
+      get_ggplot_global()$y_aes,
       palette = identity, name = name, breaks = breaks, n.breaks = n.breaks,
       minor_breaks = minor_breaks, labels = labels, limits = if (identical(limits, "JASP")) NULL else limits,
       expand = expand, oob = oob, na.value = na.value, transform = transform,
       guide = guide, position = position, call = call,
       super = ScaleContinuousPositionJASP
     )
-    sc <- ggplot2:::set_sec_axis(sec.axis, sc)
+    sc <- set_sec_axis4_0_0(sec.axis, sc)
 
   } else if (graphOptions("ggVersion") >= "3.3.0") {
 
@@ -163,6 +165,32 @@ set_sec_axis <- function(sec.axis, scale) {
   }
   return(scale)
 }
+
+set_sec_axis4_0_0 <- function(sec.axis, scale) {
+  # copied from ggplot2:::set_sec_axis in ggplot2 4.0.0
+  # this function exists to please the R CMD check
+  is_sec_axis <- function(x) inherits(x, "AxisSecondary")
+
+  if (!ggplot2::is_waiver(sec.axis)) {
+    if (scale$is_discrete()) {
+      if (!identical(.subset2(sec.axis, "trans"), identity)) {
+        cli::cli_abort("Discrete secondary axes must have the {.fn identity} transformation.")
+      }
+    }
+    if (rlang::is_formula(sec.axis)) sec.axis <- ggplot2::sec_axis(sec.axis)
+    if (!is_sec_axis(sec.axis)) {
+      cli::cli_abort("Secondary axes must be specified using {.fn sec_axis}.")
+    }
+    scale$secondary.axis <- sec.axis
+  }
+  return(scale)
+}
+
+get_ggplot_global <- function() {
+  # this function exists to please the R CMD check
+  utils::getFromNamespace("ggplot_global", "ggplot2")
+}
+
 
 # Custom scale prototype for ggplot2 >= 4.0.0
 ScaleContinuousPositionJASP <- ggplot2::ggproto(

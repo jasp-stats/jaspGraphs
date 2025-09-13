@@ -60,6 +60,8 @@ scale_y_continuous(
 
 \item{trans}{see details}
 
+\item{transform}{see details}
+
 \item{guide}{see details}
 
 \item{position}{see details}

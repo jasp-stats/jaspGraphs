@@ -1,6 +1,7 @@
 #' @importFrom ggplot2 is.ggplot
+#' @importFrom R6 R6Class
 
-jaspGraphsPlot <- R6::R6Class(
+jaspGraphsPlot <- R6Class(
   classname = "jaspGraphsPlot",
   public = list(
     initialize = function(subplots, plotFunction = reDrawJaspGraphsPlot, ...) {

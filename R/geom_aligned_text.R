@@ -96,6 +96,8 @@ GeomAlignedText <- ggplot2::ggproto(
 #'@description TODO
 #'
 #'@inheritParams ggplot2::geom_text
+#'@param nudge_x Amount to adjust the position of the text labels by.
+#'@param nudge_y Amount to adjust the position of the text labels by.
 #'
 #'@section Aesthetics:
 #' \itemize{

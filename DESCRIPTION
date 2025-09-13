@@ -11,14 +11,13 @@ LazyData: true
 RoxygenNote: 7.3.3
 Suggests: testthat
 Imports: 
+    cli,
     ggplot2 (>= 3.0.0),
     gridExtra,
     gtable,
-    lifecycle,
     jsonlite,
+    lifecycle,
     R6,
-    RColorBrewer,
     rlang,
-    scales,
-    viridisLite
+    scales
 Roxygen: list(markdown = TRUE)
