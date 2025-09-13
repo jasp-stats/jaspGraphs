@@ -16,6 +16,7 @@ scale_x_continuous(
   oob = censor,
   na.value = NA_real_,
   trans = "identity",
+  transform = "identity",
   guide = waiver(),
   position = "bottom",
   sec.axis = waiver()
@@ -32,6 +33,7 @@ scale_y_continuous(
   oob = censor,
   na.value = NA_real_,
   trans = "identity",
+  transform = "identity",
   guide = waiver(),
   position = "left",
   sec.axis = waiver()
