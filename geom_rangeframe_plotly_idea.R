@@ -67,11 +67,30 @@ js_code <- "
   var lastUpdateTime = 0;
   var updateThrottle = 16; // milliseconds (roughly 60fps)
 
-  function updateRangeFrame(eventdata) {
+  function updateRangeFrame(eventdata, eventType) {
 
     console.log('updateRangeFrame got called!');
+    console.log('Event type:', eventType);
     console.log(gd);
     console.log('eventdata:', eventdata);
+    console.log('eventdata:', gd._fullLayout._draggers);
+
+    // Check if this is a box select/zoom event and ignore it
+    if (eventdata) {
+
+        var hasXUpdate = eventdata['xaxis.range[0]'] !== undefined ||
+                          (eventdata['xaxis.range'] !== undefined) ||
+                          (eventdata.xaxis && eventdata.xaxis.range);
+        var hasYUpdate = eventdata['yaxis.range[0]'] !== undefined ||
+                         (eventdata['yaxis.range'] !== undefined) ||
+                         (eventdata.yaxis && eventdata.yaxis.range);
+
+      console.log({hasXUpdate, hasYUpdate});
+      if (hasXUpdate || hasYUpdate) {
+          console.log('Ignoring range update during zoom dragmode');
+          return;
+      }
+    }
 
     // Prevent recursive calls and throttle updates
     var now = Date.now();
@@ -84,9 +103,9 @@ js_code <- "
 
     var xaxis2 = gd._fullLayout.xaxis;
     var yaxis2 = gd._fullLayout.yaxis;
-    console.log({xaxis, yaxis});
-    console.log({xaxis2, yaxis2});
-    console.log({x:xaxis2._r, y:yaxis2._r});
+    //console.log({xaxis, yaxis});
+    //console.log({xaxis2, yaxis2});
+    //console.log({x:xaxis2._r, y:yaxis2._r});
 
     if (!xaxis || !yaxis) return;
 
@@ -136,8 +155,9 @@ js_code <- "
     var y0 = yaxis2._tmin;
     var y1 = yaxis2._tmax;
 
-    console.log({x0, x1, y0, y1});
-    console.log({x0a, x1a, y0a, y1a});    var newShapes = [
+    //console.log({x0, x1, y0, y1});
+    //console.log({x0a, x1a, y0a, y1a});
+    var newShapes = [
       {
         type: 'line', xref: 'x', yref: 'y',
         x0: x0, x1: x1, y0: y0a, y1: y0a,  // Horizontal line from min to max x-break, at bottom of visible y-range
@@ -182,7 +202,7 @@ js_code <- "
 
     // Only update if shapes are different
     if (!shapesEqual) {
-      console.log('Updating shapes...');
+      //console.log('Updating shapes...');
       isUpdating = true;
       lastUpdateTime = now;
 
@@ -204,17 +224,25 @@ js_code <- "
       console.log('Shapes are the same. No update needed.');
     }
   }  // Attach event listeners for all relevant events
-  gd.on('plotly_relayouting', function(eventdata) { updateRangeFrame(eventdata); });  // Fires continuously during panning/zooming
-  gd.on('plotly_relayout',    function(eventdata) { updateRangeFrame(eventdata); });     // Fires after panning/zooming ends
-  gd.on('plotly_zoom',        function(eventdata) { updateRangeFrame(eventdata); });         // Fires after zooming ends
-  gd.on('plotly_pan',         function(eventdata) { updateRangeFrame(eventdata); });          // Fires after panning ends
-  gd.on('plotly_autosize',    function(eventdata) { updateRangeFrame(eventdata); });         // Fires during autosizing
-  gd.on('plotly_doubleclick', function(eventdata) { updateRangeFrame(eventdata); });        // Fires on double-click (reset zoom)
+  gd.on('plotly_relayouting', function(eventdata) {
+    // Only respond to relayouting if it's not a box select
+    if (eventdata && (eventdata['selections'] ||
+                     (eventdata['xaxis.range[0]'] !== undefined && eventdata['yaxis.range[0]'] !== undefined))) {
+      console.log('Ignoring plotly_relayouting during box select');
+      return;
+    }
+    updateRangeFrame(eventdata, 'plotly_relayouting');
+  });  // Fires continuously during panning/zooming
+  gd.on('plotly_relayout',    function(eventdata) { updateRangeFrame(eventdata, 'plotly_relayout'); });     // Fires after panning/zooming ends
+  gd.on('plotly_zoom',        function(eventdata) { updateRangeFrame(eventdata, 'plotly_zoom'); });         // Fires after zooming ends
+  gd.on('plotly_pan',         function(eventdata) { updateRangeFrame(eventdata, 'plotly_pan'); });          // Fires after panning ends
+  gd.on('plotly_autosize',    function(eventdata) { updateRangeFrame(eventdata, 'plotly_autosize'); });         // Fires during autosizing
+  gd.on('plotly_doubleclick', function(eventdata) { updateRangeFrame(eventdata, 'plotly_doubleclick'); });        // Fires on double-click (reset zoom)
 
   // Add a more comprehensive listener for any layout changes
   gd.on('plotly_framework',   function(eventdata) {
     console.log('plotly_framework event:', eventdata);
-    updateRangeFrame(eventdata);
+    updateRangeFrame(eventdata, 'plotly_framework');
   });
 
   // Add a periodic check as fallback for any missed events (like axis dragging)
@@ -234,13 +262,13 @@ js_code <- "
 
         console.log('Periodic check detected range change');
         lastKnownRange = currentRange;
-        updateRangeFrame(null);
+        updateRangeFrame(null, 'periodic_check');
       }
     }
   }, 100); // Check every 100ms
 
   // Initial update
-  setTimeout(function() { updateRangeFrame(null); }, 500);
+  setTimeout(function() { updateRangeFrame(null, 'initial_update'); }, 500);
 });
 "
 
@@ -254,7 +282,9 @@ fig <- layout(fig, title = 'Highlighting with Lines', shapes = lines,
 fig$x$elementId <- "myPlotlyRangeFrame"
 
 fig2 <- htmlwidgets::onRender(fig, jsCode = js_code)
-fig2
+# fig2
+options("viewer" = NULL)#  utils::browseURL)
+print(fig2)
 
 # dd <- read.csv("~/github/jasp/jasp-desktop/Resources/Data Sets/debug.csv")
 # p <- jaspGraphs::jaspHistogram(dd$contNormal)
