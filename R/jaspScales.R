@@ -23,10 +23,22 @@
 #' @export
 scale_x_continuous <- function(name = waiver(), breaks = getPrettyAxisBreaks, minor_breaks = waiver(),
                                n.breaks = NULL, labels = axesLabeller, limits = "JASP", expand = waiver(), oob = censor,
-                               na.value = NA_real_, trans = "identity", guide = waiver(), position = "bottom",
+                               na.value = NA_real_, trans = "identity", transform = "identity", guide = waiver(), position = "bottom",
                                sec.axis = waiver()) {
 
-  if (graphOptions("ggVersion") >= "3.3.0") {
+  if (graphOptions("ggVersion") >= "4.0.0") {
+    call <- rlang::caller_call()
+    sc <- continuous_scale(
+      ggplot2:::ggplot_global$x_aes,
+      palette = identity, name = name, breaks = breaks, n.breaks = n.breaks,
+      minor_breaks = minor_breaks, labels = labels, limits = if (identical(limits, "JASP")) NULL else limits,
+      expand = expand, oob = oob, na.value = na.value, transform = transform,
+      guide = guide, position = position, call = call,
+      super = ScaleContinuousPositionJASP
+    )
+    sc <- ggplot2:::set_sec_axis(sec.axis, sc)
+
+  } else if (graphOptions("ggVersion") >= "3.3.0") {
 
     sc <- continuous_scale(c("x", "xmin", "xmax", "xend", "xintercept",
                              "xmin_final", "xmax_final", "xlower", "xmiddle", "xupper",
@@ -34,7 +46,10 @@ scale_x_continuous <- function(name = waiver(), breaks = getPrettyAxisBreaks, mi
                            n.breaks = n.breaks, minor_breaks = minor_breaks, labels = labels,
                            limits = limits, expand = expand, oob = oob, na.value = na.value,
                            trans = trans, guide = guide, position = position, super = ScaleContinuousPosition)
-    set_sec_axis(sec.axis, sc)
+    sc <- set_sec_axis(sec.axis, sc)
+
+    if (identical(limits, "JASP"))
+      sc$get_limits <- jaspLimits
 
   } else {
 
@@ -52,36 +67,34 @@ scale_x_continuous <- function(name = waiver(), breaks = getPrettyAxisBreaks, mi
         stop2("Secondary axes must be specified using 'sec_axis()'")
       sc$secondary.axis <- sec.axis
     }
-  }
 
-  if (identical(limits, "JASP"))
-    sc$get_limits <- jaspLimits
+    if (identical(limits, "JASP"))
+      sc$get_limits <- jaspLimits
+  }
 
   sc
 }
-
-set_sec_axis <- function(sec.axis, scale) {
-  # copied from ggplot2:::set_sec_axis
-  # this function exists to please the R CMD check
-  if (!is.waive(sec.axis)) {
-    if (is.formula(sec.axis))
-      sec.axis <- sec_axis(sec.axis)
-    if (!is.sec_axis(sec.axis))
-      stop2("Secondary axes must be specified using 'sec_axis()'")
-    scale$secondary.axis <- sec.axis
-  }
-  return(scale)
-}
-
 
 #' @rdname scale_x_continuous
 #' @export
 scale_y_continuous <- function(name = waiver(), breaks = getPrettyAxisBreaks, minor_breaks = waiver(),
                                n.breaks = NULL, labels = axesLabeller, limits = "JASP", expand = waiver(), oob = censor,
-                               na.value = NA_real_, trans = "identity", guide = waiver(), position = "left",
+                               na.value = NA_real_, trans = "identity", transform = "identity", guide = waiver(), position = "left",
                                sec.axis = waiver()) {
 
-  if (graphOptions("ggVersion") >= "3.3.0") {
+  if (graphOptions("ggVersion") >= "4.0.0") {
+    call <- rlang::caller_call()
+    sc <- continuous_scale(
+      ggplot2:::ggplot_global$y_aes,
+      palette = identity, name = name, breaks = breaks, n.breaks = n.breaks,
+      minor_breaks = minor_breaks, labels = labels, limits = if (identical(limits, "JASP")) NULL else limits,
+      expand = expand, oob = oob, na.value = na.value, transform = transform,
+      guide = guide, position = position, call = call,
+      super = ScaleContinuousPositionJASP
+    )
+    sc <- ggplot2:::set_sec_axis(sec.axis, sc)
+
+  } else if (graphOptions("ggVersion") >= "3.3.0") {
 
     sc <- continuous_scale(c("y", "ymin", "ymax", "yend", "yintercept",
                              "ymin_final", "ymax_final", "lower", "middle", "upper",
@@ -90,7 +103,10 @@ scale_y_continuous <- function(name = waiver(), breaks = getPrettyAxisBreaks, mi
                            limits = limits, expand = expand, oob = oob, na.value = na.value,
                            trans = trans, guide = guide, position = position, super = ScaleContinuousPosition)
 
-    set_sec_axis(sec.axis, sc)
+    sc <- set_sec_axis(sec.axis, sc)
+
+    if (identical(limits, "JASP"))
+      sc$get_limits <- jaspLimits
 
   } else {
     sc <- continuous_scale(c("y", "ymin", "ymax", "yend", "yintercept",
@@ -107,20 +123,22 @@ scale_y_continuous <- function(name = waiver(), breaks = getPrettyAxisBreaks, mi
         stop2("Secondary axes must be specified using 'sec_axis()'")
       sc$secondary.axis <- sec.axis
     }
-  }
 
-  if (identical(limits, "JASP"))
-    sc$get_limits <- jaspLimits
+    if (identical(limits, "JASP"))
+      sc$get_limits <- jaspLimits
+  }
 
   sc
 }
+
 
 jaspLimits <- function(..., self = self) {
   # this function is basically identical to what is normally is in sc$get_limits,
   # except for everything inside if (identical(self$limits, "JASP"))
 
-  if (self$is_empty())
+  if (self$is_empty()) {
     return(c(0, 1))
+  }
   if (identical(self$limits, "JASP")) {
     # ensures that outer breakpoints are always included in plot
     range(getPrettyAxisBreaks(self$range$range))
@@ -129,51 +147,41 @@ jaspLimits <- function(..., self = self) {
   } else {
     self$range$range
   }
-
 }
 
-# The approach below is preferred but errors using ggplot2 3.2.1
-#'
-#' scale_x_continuous <- function(name = waiver(), breaks = getPrettyAxisBreaks, minor_breaks = waiver(),
-#'                                labels = axesLabeller, limits = jaspLimits, expand = waiver(), oob = censor,
-#'                                na.value = NA_real_, trans = "identity", position = "bottom",
-#'                                sec.axis = waiver()) {
-#'   return(ggplot2::scale_x_continuous(
-#'     name         = name,
-#'     breaks       = breaks,
-#'     minor_breaks = minor_breaks,
-#'     labels       = labels,
-#'     limits       = limits,
-#'     expand       = expand,
-#'     oob          = oob,
-#'     sec.axis     = sec.axis
-#'   ))
-#' }
-#'
-#'
-#' scale_y_continuous <- function(name = waiver(), breaks = getPrettyAxisBreaks, minor_breaks = waiver(),
-#'                                labels = axesLabeller, limits = jaspLimits, expand = waiver(), oob = censor,
-#'                                na.value = NA_real_, trans = "identity", position = "left",
-#'                                sec.axis = waiver()) {
-#'     return(ggplot2::scale_y_continuous(
-#'     name         = name,
-#'     breaks       = breaks,
-#'     minor_breaks = minor_breaks,
-#'     labels       = labels,
-#'     limits       = limits,
-#'     expand       = expand,
-#'     oob          = oob,
-#'     sec.axis     = sec.axis
-#'   ))
-#' }
-#'
-#'
-#' jaspLimits <- function(...) {
-#'
-#'   dots <- c(...)
-#'   if (length(dots) != 2L)
-#'     return(c(0, 1))
-#'   else
-#'     return(range(getPrettyAxisBreaks(dots)))
-#'
-#' }
+set_sec_axis <- function(sec.axis, scale) {
+  # copied from ggplot2:::set_sec_axis
+  # this function exists to please the R CMD check
+  if (!is.waive(sec.axis)) {
+    if (is.formula(sec.axis)) {
+      sec.axis <- sec_axis(sec.axis)
+    }
+    if (!is.sec_axis(sec.axis)) {
+      stop2("Secondary axes must be specified using 'sec_axis()'")
+    }
+    scale$secondary.axis <- sec.axis
+  }
+  return(scale)
+}
+
+# Custom scale prototype for ggplot2 >= 4.0.0
+ScaleContinuousPositionJASP <- ggplot2::ggproto(
+  "ScaleContinuousPositionJASP",
+  ggplot2::ScaleContinuousPosition,
+
+  get_limits = function(self) {
+    if (self$is_empty()) {
+      return(c(0, 1))
+    }
+
+    if (identical(self$limits, "JASP")) {
+      # ensures that outer breakpoints are always included in plot
+      rng <- self$range$range
+      range(getPrettyAxisBreaks(rng))
+    } else if (!is.null(self$limits)) {
+      ifelse(!is.na(self$limits), self$limits, self$range$range)
+    } else {
+      self$range$range
+    }
+  }
+)

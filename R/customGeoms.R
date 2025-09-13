@@ -8,24 +8,6 @@ setDefaults <- function(lst, ...) {
 
 }
 
-# #' @export
-# geom_point <- function(mapping = NULL, data = NULL, stat = "identity", position = "identity",
-#     ..., na.rm = FALSE, show.legend = NA, inherit.aes = TRUE) {
-#
-#   dots <- list(...)
-#   dots <- setDefaults(dots, size = 3, shape = 21, fill = "gray")
-#
-#   ggplot2::layer(data = data, mapping = mapping, stat = stat, geom = ggplot2::GeomPoint,
-#       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-#       params = c(list(na.rm = na.rm), dots))
-# }
-
-jaspGeomPoint <- ggplot2::ggproto(
-	`_class`    = "jaspGeomPoint",
-	`_inherit`  = ggplot2::GeomPoint,
-	default_aes = aes(size = 3, shape = 21, colour = "black", fill = "grey", alpha = NA, stroke = 0.5)
-)
-
 #' @title Custom geoms
 #' @param mapping see details
 #' @param data see details
@@ -40,23 +22,32 @@ jaspGeomPoint <- ggplot2::ggproto(
 #'
 #' @rdname geom_point
 #' @export
-geom_point <- function(mapping = NULL, data = NULL, stat = "identity", position = "identity",
+geom_point <- function(
+    # default values
+    mapping = NULL, data = NULL, stat = "identity", position = "identity",
+    # custom jasp defaults
+    size = 3, shape = 21, colour = "black",
+    fill = "grey", alpha = NA, stroke = 0.5,
+    # other defaults
     ..., na.rm = FALSE, show.legend = NA, inherit.aes = TRUE) {
 
-  layer(data = data, mapping = mapping, stat = stat, geom = jaspGeomPoint,
-        position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-        params = list(na.rm = na.rm, ...))
+  ggplot2::geom_point(
+    mapping = mapping, data = data, stat = stat, position = position,
+    size = size, shape = shape, colour = colour,
+    fill = fill, alpha = alpha, stroke = stroke,
+    ...,
+    na.rm = na.rm, show.legend = show.legend, inherit.aes = inherit.aes
+  )
 }
-
-jaspGeomLine <- ggplot2::ggproto(
-  `_class`    = "jaspGeomLine",
-  `_inherit`  = ggplot2::GeomLine,
-  default_aes = aes(linewidth = 1.00, colour = "black", linetype = 1, alpha = NA)
-)
 
 #' @rdname geom_point
 #' @export
-geom_line <- function(mapping = NULL, data = NULL, stat = "identity", position = "identity",
+geom_line <- function(
+        # default values
+    mapping = NULL, data = NULL, stat = "identity", position = "identity",
+    # custom jasp defaults
+    linewidth = 1.00, colour = "black", linetype = 1, alpha = NA,
+    # other defaults
     ..., na.rm = FALSE, show.legend = NA, inherit.aes = TRUE) {
 
   # ggplot2 3.4.0 renamed `size` to `linewidth`. Check if `size` was specified.
@@ -74,19 +65,14 @@ geom_line <- function(mapping = NULL, data = NULL, stat = "identity", position =
     if ("linewidth" %in% ...names())
       stop("`jaspGraphs::geom_line`: Cannot specify both size and linewidth!", domain = NA)
 
-    params <- list(na.rm = na.rm, ...)
-    params[["linewidth"]] <- params[["size"]]
-    params <- params[setdiff(names(params), "size")]
-
-    layer(data = data, mapping = mapping, stat = stat, geom = jaspGeomLine,
-          position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-          params = params)
-
-  } else {
-
-    layer(data = data, mapping = mapping, stat = stat, geom = jaspGeomLine,
-          position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-          params = list(na.rm = na.rm, ...))
-
   }
+
+  ggplot2::geom_line(
+    mapping = mapping, data = data, stat = stat, position = position,
+    linewidth = linewidth, colour = colour, linetype = linetype,
+    alpha = alpha,
+    ...,
+    na.rm = na.rm, show.legend = show.legend, inherit.aes = inherit.aes
+  )
+
 }
