@@ -75,11 +75,24 @@ js_code <- "
     console.log('eventdata:', eventdata);
     console.log('eventdata:', gd._fullLayout._draggers);
 
-    // Check if this is a box select/zoom event and ignore it
-    if (eventdata) {
+    var xaxis = gd.layout.xaxis;
+    var yaxis = gd.layout.yaxis;
+    var xaxis2 = gd._fullLayout.xaxis;
+    var yaxis2 = gd._fullLayout.yaxis;
+    console.log({xaxis2, yaxis2});
 
+    // Check if this is a box select/zoom event and ignore it
+    if (false && eventdata) {
+
+        // test if the event lies within the current axes ranges
         var hasXUpdate = eventdata['xaxis.range[0]'] !== undefined ||
                           (eventdata['xaxis.range'] !== undefined) ||
+//        if (hasXUpdate) {
+
+//        if (eventdata.xaxis.range[0] > )
+
+  //      }
+
                           (eventdata.xaxis && eventdata.xaxis.range);
         var hasYUpdate = eventdata['yaxis.range[0]'] !== undefined ||
                          (eventdata['yaxis.range'] !== undefined) ||
@@ -98,82 +111,84 @@ js_code <- "
       return;
     }
 
-    var xaxis = gd.layout.xaxis;
-    var yaxis = gd.layout.yaxis;
-
-    var xaxis2 = gd._fullLayout.xaxis;
-    var yaxis2 = gd._fullLayout.yaxis;
-    //console.log({xaxis, yaxis});
-    //console.log({xaxis2, yaxis2});
-    //console.log({x:xaxis2._r, y:yaxis2._r});
-
-    if (!xaxis || !yaxis) return;
-
-    // Get the current range - handle different event data structures
-    var x0a, x1a, y0a, y1a;
-
-    // Check for different possible eventdata structures
-    if (eventdata && eventdata['xaxis.range[0]'] !== undefined) {
-      // Standard relayouting events
-      x0a = eventdata['xaxis.range[0]'];
-      x1a = eventdata['xaxis.range[1]'];
-      y0a = eventdata['yaxis.range[0]'];
-      y1a = eventdata['yaxis.range[1]'];
-    } else if (eventdata && eventdata['xaxis.range'] !== undefined) {
-      // Alternative eventdata structure
-      x0a = eventdata['xaxis.range'][0];
-      x1a = eventdata['xaxis.range'][1];
-      y0a = eventdata['yaxis.range'] ? eventdata['yaxis.range'][0] : yaxis2._r[0];
-      y1a = eventdata['yaxis.range'] ? eventdata['yaxis.range'][1] : yaxis2._r[1];
-    } else if (eventdata && (eventdata.xaxis || eventdata.yaxis)) {
-      // Check for axis-specific updates
-      if (eventdata.xaxis && eventdata.xaxis.range) {
-        x0a = eventdata.xaxis.range[0];
-        x1a = eventdata.xaxis.range[1];
-      } else {
-        x0a = xaxis2._r[0];
-        x1a = xaxis2._r[1];
-      }
-      if (eventdata.yaxis && eventdata.yaxis.range) {
-        y0a = eventdata.yaxis.range[0];
-        y1a = eventdata.yaxis.range[1];
-      } else {
-        y0a = yaxis2._r[0];
-        y1a = yaxis2._r[1];
-      }
-    } else {
-      // Fallback to _r ranges when eventdata is not available or doesn't contain range info
-      x0a = xaxis2._r[0];
-      x1a = xaxis2._r[1];
-      y0a = yaxis2._r[0];
-      y1a = yaxis2._r[1];
-    }
 
     // Get tick ranges - these should ALWAYS be the actual tick positions, never the visible range
     var x0 = xaxis2._tmin;
     var x1 = xaxis2._tmax;
     var y0 = yaxis2._tmin;
     var y1 = yaxis2._tmax;
+    var xmin = xaxis2._r[0];
+    var ymin = yaxis2._r[0];
 
-    //console.log({x0, x1, y0, y1});
-    //console.log({x0a, x1a, y0a, y1a});
+    var xmin2 = gd.layout.xaxis.range[0];
+    var ymin2 = gd.layout.yaxis.range[0];
+
+    console.log({x0, x1, y0, y1, xmin, ymin, xmin2, ymin2});
+
+    // Get the current range - handle different event data structures
+    var x0a, x1a, y0a, y1a;
+
+    // Check for different possible eventdata structures
+    // TODO: this should test if we're doing translations vs zooming!
+    if (eventdata) {
+      if (eventdata['xaxis.range[0]'] !== undefined && eventdata['yaxis.range[0]'] !== undefined) {
+        // Standard relayouting events
+        x0a = eventdata['xaxis.range[0]'];
+        x1a = eventdata['xaxis.range[1]'];
+        y0a = eventdata['yaxis.range[0]'];
+        y1a = eventdata['yaxis.range[1]'];
+        xmin = Math.min(x0a, xmin);
+        ymin = Math.min(y0a, ymin);
+      } else if (eventdata['xaxis.range[0]'] !== undefined) {
+        // Alternative eventdata structure
+        x0a = eventdata['xaxis.range[0]'];
+        x1a = eventdata['xaxis.range[1]'];
+        xmin = Math.min(x0a, xmin);
+        y0a = y0;
+        y1a = y1;
+      } else if (eventdata['yaxis.range[0]'] !== undefined) {
+        // Check for axis-specific updates
+        x0a = x0;
+        x1a = x1;
+        y0a = eventdata['yaxis.range[0]'];
+        y1a = eventdata['yaxis.range[1]'];
+        ymin = Math.min(y0a, ymin);
+        //ymin = y0a;
+      } else {
+        // Fallback to _r ranges when eventdata is not available or doesn't contain range info
+        console.log('Falling back to _r ranges');
+        x0a = xaxis2._r[0];
+        x1a = xaxis2._r[1];
+        y0a = yaxis2._r[0];
+        y1a = yaxis2._r[1];
+      }
+    }
+//    xmin = xaxis2._r[0];
+//    ymin = yaxis2._r[0];
+
+    // Get current shapes from the layout
+    var currentShapes = gd.layout.shapes || [];
+    var x0b = currentShapes[0].x0;
+    var x1b = currentShapes[0].x1;
+    var y0b = currentShapes[1].y0;
+    var y1b = currentShapes[1].y1;
+
+    console.log({x0b, x1b, y0b, y1b});
     var newShapes = [
       {
-        type: 'line', xref: 'x', yref: 'y',
-        x0: x0, x1: x1, y0: y0a, y1: y0a,  // Horizontal line from min to max x-break, at bottom of visible y-range
+        type: 'line', xref: 'x', yref: 'paper',
+        x0: x0, x1: x1, y0: 0, y1: 0,  // Horizontal line from min to max x-break, at bottom of visible y-range
         line: { color: 'darkblue', width: 1.2},
         name: 'rangeframe_b'
       },
       {
-        type: 'line', xref: 'x', yref: 'y',
-        x0: x0a, x1: x0a, y0: y0, y1: y1,  // Vertical line from min to max y-break, at left of visible x-range
+        type: 'line', xref: 'paper', yref: 'y',
+        x0: 0, x1: 0, y0: y0, y1: y1,  // Vertical line from min to max y-break, at left of visible x-range
         line: { color: 'darkblue', width: 1.2},
         name: 'rangeframe_l'
       }
     ];
 
-    // Get current shapes from the layout
-    var currentShapes = gd.layout.shapes || [];
 
     // Filter out non-rangeframe shapes and compare
     var currentRangeframeShapes = currentShapes.filter(shape =>
@@ -191,7 +206,8 @@ js_code <- "
             Math.abs(currentShape.x0 - newShape.x0) > 1e-10 ||
             Math.abs(currentShape.x1 - newShape.x1) > 1e-10 ||
             Math.abs(currentShape.y0 - newShape.y0) > 1e-10 ||
-            Math.abs(currentShape.y1 - newShape.y1) > 1e-10) {
+            Math.abs(currentShape.y1 - newShape.y1) > 1e-10// ||
+           ) {
           shapesEqual = false;
           break;
         }
@@ -203,6 +219,7 @@ js_code <- "
     // Only update if shapes are different
     if (!shapesEqual) {
       //console.log('Updating shapes...');
+      console.log([currentRangeframeShapes, newShapes]);
       isUpdating = true;
       lastUpdateTime = now;
 
@@ -225,19 +242,14 @@ js_code <- "
     }
   }  // Attach event listeners for all relevant events
   gd.on('plotly_relayouting', function(eventdata) {
-    // Only respond to relayouting if it's not a box select
-    if (eventdata && (eventdata['selections'] ||
-                     (eventdata['xaxis.range[0]'] !== undefined && eventdata['yaxis.range[0]'] !== undefined))) {
-      console.log('Ignoring plotly_relayouting during box select');
-      return;
-    }
     updateRangeFrame(eventdata, 'plotly_relayouting');
   });  // Fires continuously during panning/zooming
   gd.on('plotly_relayout',    function(eventdata) { updateRangeFrame(eventdata, 'plotly_relayout'); });     // Fires after panning/zooming ends
-  gd.on('plotly_zoom',        function(eventdata) { updateRangeFrame(eventdata, 'plotly_zoom'); });         // Fires after zooming ends
-  gd.on('plotly_pan',         function(eventdata) { updateRangeFrame(eventdata, 'plotly_pan'); });          // Fires after panning ends
-  gd.on('plotly_autosize',    function(eventdata) { updateRangeFrame(eventdata, 'plotly_autosize'); });         // Fires during autosizing
-  gd.on('plotly_doubleclick', function(eventdata) { updateRangeFrame(eventdata, 'plotly_doubleclick'); });        // Fires on double-click (reset zoom)
+  //gd.on('plotly_zoom',        function(eventdata) { updateRangeFrame(eventdata, 'plotly_zoom'); });         // Fires after zooming ends
+  //gd.on('plotly_pan',         function(eventdata) { updateRangeFrame(eventdata, 'plotly_pan'); });          // Fires after panning ends
+  //gd.on('plotly_autosize',    function(eventdata) { updateRangeFrame(eventdata, 'plotly_autosize'); });         // Fires during autosizing
+  //gd.on('plotly_doubleclick', function(eventdata) { updateRangeFrame(eventdata, 'plotly_doubleclick'); });        // Fires on double-click (reset zoom)
+
 
   // Add a more comprehensive listener for any layout changes
   gd.on('plotly_framework',   function(eventdata) {
@@ -247,25 +259,6 @@ js_code <- "
 
   // Add a periodic check as fallback for any missed events (like axis dragging)
   var lastKnownRange = null;
-  var periodicCheck = setInterval(function() {
-    if (gd._fullLayout && gd._fullLayout.xaxis && gd._fullLayout.yaxis) {
-      var currentRange = {
-        x: [gd._fullLayout.xaxis._r[0], gd._fullLayout.xaxis._r[1]],
-        y: [gd._fullLayout.yaxis._r[0], gd._fullLayout.yaxis._r[1]]
-      };
-
-      if (!lastKnownRange ||
-          Math.abs(lastKnownRange.x[0] - currentRange.x[0]) > 1e-10 ||
-          Math.abs(lastKnownRange.x[1] - currentRange.x[1]) > 1e-10 ||
-          Math.abs(lastKnownRange.y[0] - currentRange.y[0]) > 1e-10 ||
-          Math.abs(lastKnownRange.y[1] - currentRange.y[1]) > 1e-10) {
-
-        console.log('Periodic check detected range change');
-        lastKnownRange = currentRange;
-        updateRangeFrame(null, 'periodic_check');
-      }
-    }
-  }, 100); // Check every 100ms
 
   // Initial update
   setTimeout(function() { updateRangeFrame(null, 'initial_update'); }, 500);
