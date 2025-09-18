@@ -40,28 +40,12 @@ lines <- list(
   )
 )
 
-# Two bugs with the x-axis, the y-axis works fine.
-# 1. if I drag the y-axis, only the y-axis updates correctly.
-# The x-axis does not update its y-coordinate.
-# 2. if I drag the x-axis, the y-axis updates correctly.
-# However, while moving, the x-axis line becomes diagonal!
-# Its x-coordinates are correct, but both the left and right y coordinate are wrong.
-# The rightmost is largest
-# nice to have:while selecting a region, the lines are drawn at incorrect positions.
-# I think we should figure out what event type is triggered while selecting a region,
-# and just make sure the callback is _not_ trigered then.
 js_code <- "
 (function(el, x) {
-  // var gd = document.getElementById('%s');
-
-
-
-  console.log('got called!');
-  console.log(el);
-  console.log(x);
 
   var gd = el;
-  // if (!gd) return;
+
+  // TODO: we only want to do the stuff below if tickmode is not array!
 
   var isUpdating = false;
   var lastUpdateTime = 0;
@@ -79,7 +63,6 @@ js_code <- "
     var yaxis = gd.layout.yaxis;
     var xaxis2 = gd._fullLayout.xaxis;
     var yaxis2 = gd._fullLayout.yaxis;
-    console.log({xaxis2, yaxis2});
 
     // Check if this is a box select/zoom event and ignore it
     if (false && eventdata) {
@@ -87,18 +70,12 @@ js_code <- "
         // test if the event lies within the current axes ranges
         var hasXUpdate = eventdata['xaxis.range[0]'] !== undefined ||
                           (eventdata['xaxis.range'] !== undefined) ||
-//        if (hasXUpdate) {
-
-//        if (eventdata.xaxis.range[0] > )
-
-  //      }
-
                           (eventdata.xaxis && eventdata.xaxis.range);
+
         var hasYUpdate = eventdata['yaxis.range[0]'] !== undefined ||
                          (eventdata['yaxis.range'] !== undefined) ||
                          (eventdata.yaxis && eventdata.yaxis.range);
 
-      console.log({hasXUpdate, hasYUpdate});
       if (hasXUpdate || hasYUpdate) {
           console.log('Ignoring range update during zoom dragmode');
           return;
@@ -123,13 +100,10 @@ js_code <- "
     var xmin2 = gd.layout.xaxis.range[0];
     var ymin2 = gd.layout.yaxis.range[0];
 
-    console.log({x0, x1, y0, y1, xmin, ymin, xmin2, ymin2});
-
     // Get the current range - handle different event data structures
     var x0a, x1a, y0a, y1a;
 
     // Check for different possible eventdata structures
-    // TODO: this should test if we're doing translations vs zooming!
     if (eventdata) {
       if (eventdata['xaxis.range[0]'] !== undefined && eventdata['yaxis.range[0]'] !== undefined) {
         // Standard relayouting events
@@ -163,17 +137,10 @@ js_code <- "
         y1a = yaxis2._r[1];
       }
     }
-//    xmin = xaxis2._r[0];
-//    ymin = yaxis2._r[0];
 
     // Get current shapes from the layout
     var currentShapes = gd.layout.shapes || [];
-    var x0b = currentShapes[0].x0;
-    var x1b = currentShapes[0].x1;
-    var y0b = currentShapes[1].y0;
-    var y1b = currentShapes[1].y1;
 
-    console.log({x0b, x1b, y0b, y1b});
     var newShapes = [
       {
         type: 'line', xref: 'x', yref: 'paper',
@@ -240,11 +207,10 @@ js_code <- "
     } else {
       console.log('Shapes are the same. No update needed.');
     }
-  }  // Attach event listeners for all relevant events
-  gd.on('plotly_relayouting', function(eventdata) {
-    updateRangeFrame(eventdata, 'plotly_relayouting');
-  });  // Fires continuously during panning/zooming
-  gd.on('plotly_relayout',    function(eventdata) { updateRangeFrame(eventdata, 'plotly_relayout'); });     // Fires after panning/zooming ends
+  }
+  // Attach event listeners for all relevant events
+  gd.on('plotly_relayouting',   function(eventdata) {updateRangeFrame(eventdata,  'plotly_relayouting');});
+  gd.on('plotly_relayout',      function(eventdata) { updateRangeFrame(eventdata, 'plotly_relayout'); });     // Fires after panning/zooming ends
   //gd.on('plotly_zoom',        function(eventdata) { updateRangeFrame(eventdata, 'plotly_zoom'); });         // Fires after zooming ends
   //gd.on('plotly_pan',         function(eventdata) { updateRangeFrame(eventdata, 'plotly_pan'); });          // Fires after panning ends
   //gd.on('plotly_autosize',    function(eventdata) { updateRangeFrame(eventdata, 'plotly_autosize'); });         // Fires during autosizing
@@ -279,8 +245,52 @@ fig2 <- htmlwidgets::onRender(fig, jsCode = js_code)
 options("viewer" = NULL)#  utils::browseURL)
 print(fig2)
 
-# dd <- read.csv("~/github/jasp/jasp-desktop/Resources/Data Sets/debug.csv")
-# p <- jaspGraphs::jaspHistogram(dd$contNormal)
+dd <- read.csv("~/github/jasp/jasp-desktop/Resources/Data Sets/debug.csv")
+p <- jaspGraphs::jaspHistogram(dd$contNormal)
+xyax <- list(
+  zeroline = FALSE,
+  showline = FALSE
+)
+p2 <- ggplotly(p)
+
+lines <- list(
+  list(
+    type = "line",
+    line = list(color = "blue"),
+    xref = "x",
+    yref = "paper",
+    x0 = -4, x1 = 4,
+    y0 = 0, y1 = 0,
+    name = "rangeframe_l"
+  ),
+  list(
+    type = "line",
+    line = list(color = "green"),
+    xref = "paper",
+    yref = "y",
+    x0 = 0, x1 = 0,
+    y0 = 0, y1 = 30,
+    name = "rangeframe_b"
+  )
+)
+
+# TODO: the size of the line should account for the width of the tick!
+p2 <- layout(p2, shapes = lines, xaxis = xyax, yaxis = xyax)
+p2$x$layout$shapes <- list()
+p2$x$layout$shapes <- p2$x$layoutAttrs[[1]]$shapes
+p2$x$layout$xaxis$tickmode <- "auto"
+p2$x$layout$yaxis$tickmode <- "auto"
+p2
+
+p2$x$layout$xaxis$range
+p2$x$layout$xaxis$ticks
+p2$x$layout$xaxis$
+p2
+
+p3 <- htmlwidgets::onRender(p2, jsCode = js_code)
+p3
+
+
 #
 # info <- jaspGraphs:::plotEditingOptions(p)
 # p1 <- plotly::ggplotly(p)
