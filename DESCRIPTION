@@ -17,6 +17,7 @@ Imports:
     gtable,
     jsonlite,
     lifecycle,
+    plotly,
     R6,
     rlang,
     scales
