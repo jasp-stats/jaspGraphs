@@ -4,10 +4,10 @@
 \alias{convertGgplotToPlotly}
 \title{convert a ggplot object to a plotly object and store the json in the image list}
 \usage{
-convertGgplotToPlotly(ggplot_obj, returnJSON = TRUE)
+convertGgplotToPlotly(ggplotObj, returnJSON = TRUE)
 }
 \arguments{
-\item{ggplot_obj}{a ggplot object}
+\item{ggplotObj}{a ggplot object}
 }
 \description{
 convert a ggplot object to a plotly object and store the json in the image list
