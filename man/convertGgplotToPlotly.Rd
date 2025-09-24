@@ -8,6 +8,8 @@ convertGgplotToPlotly(ggplotObj, returnJSON = TRUE)
 }
 \arguments{
 \item{ggplotObj}{a ggplot object}
+
+\item{returnJSON}{Should a plotly object be returned (FALSE) or a JSON object for JASP (TRUE)?}
 }
 \description{
 convert a ggplot object to a plotly object and store the json in the image list
