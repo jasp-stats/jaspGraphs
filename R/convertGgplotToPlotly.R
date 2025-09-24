@@ -2,6 +2,7 @@
 
 #' @title convert a ggplot object to a plotly object and store the json in the image list
 #' @param ggplotObj a ggplot object
+#' @param returnJSON Should a plotly object be returned (FALSE) or a JSON object for JASP (TRUE)?
 #'@export
 convertGgplotToPlotly <- function(ggplotObj, returnJSON = TRUE) {
   # see https://github.com/Rdatatable/data.table/issues/5375
