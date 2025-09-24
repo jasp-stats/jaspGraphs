@@ -87,7 +87,7 @@ maybeRemoveRangeFrameLayer <- function(ggplotObj) {
 
 rangeFrameLayerToShapes <- function(ggplotObj, rangeFrameLayer) {
 
-  opts <- jaspGraphs:::getPlotEditingOptions(ggplotObj)
+  opts <- getPlotEditingOptions(ggplotObj)
   ranges <- list(
     x = range(opts$xAxis$settings$breaks),
     y = range(opts$yAxis$settings$breaks)

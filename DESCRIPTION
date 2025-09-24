@@ -15,6 +15,7 @@ Imports:
     ggplot2 (>= 3.0.0),
     gridExtra,
     gtable,
+    htmlwidgets,
     jsonlite,
     lifecycle,
     plotly,
