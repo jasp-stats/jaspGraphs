@@ -1,46 +1,124 @@
-library(plotly)
+#' convert a ggplot object to a plotly object and store the json in the image list
+#' @param ggplot_obj a ggplot object
+#'@export
+convertGgplotToPlotly <- function(ggplot_obj, returnJSON = TRUE) {
+  # see https://github.com/Rdatatable/data.table/issues/5375
+  # we must set getOption("datatable.alloccol"), verbose = getOption("datatable.verbose")
+  # options(datatable.alloccol = 1024L, datatable.verbose = FALSE) # default values
+  # https://github.com/Rdatatable/data.table/blob/35544d34ce779599cb2ed8900da2ffbac0ffbf29/R/onLoad.R#L76C11-L94C9
+  options(
+    "datatable.verbose" = FALSE,        # datatable.<argument name>
+    "datatable.optimize" = Inf,             # datatable.<argument name>
+    "datatable.print.nrows" = 100L,         # datatable.<argument name>
+    "datatable.print.topn" = 5L,            # datatable.<argument name>
+    "datatable.print.class" = TRUE,         # for print.data.table
+    "datatable.print.rownames" = TRUE,      # for print.data.table
+    "datatable.print.colnames" = "'auto'",    # for print.data.table
+    "datatable.print.keys" = TRUE,          # for print.data.table
+    "datatable.print.trunc.cols" = FALSE,   # for print.data.table
+    "datatable.show.indices" = FALSE,       # for print.data.table
+    "datatable.allow.cartesian" = FALSE,    # datatable.<argument name>
+    "datatable.join.many" = TRUE,           # mergelist, [.data.table #4383 #914
+    "datatable.dfdispatchwarn" = TRUE,                   # not a function argument
+    "datatable.warnredundantby" = TRUE,                  # not a function argument
+    "datatable.alloccol" = 1024L,           # argument 'n' of alloc.col. Over-allocate 1024 spare column slots
+    "datatable.auto.index" = TRUE,          # DT[col=="val"] to auto add index so 2nd time faster
+    "datatable.use.index" = TRUE,           # global switch to address #1422
+    "datatable.prettyprint.char"   = NULL     # FR #1091
+  )
 
-s <- seq.int(0, 15)
-fig <- plot_ly(x = ~s, y = ~sin(s), mode = "lines")
+  # TODO: a lot of the ggplot2 stuff below assumes ggplot2 4.0.0 or higher!
 
-# initiate a line shape object
-line <- list(
-  type = "line",
-  line = list(color = "pink"),
-  xref = "x",
-  yref = "y"
-)
+  e <- try({
 
-lines <- list()
-for (i in c(0, 3, 5, 7, 9, 13)) {
-  line[["x0"]] <- i
-  line[["x1"]] <- i + 2
-  line[c("y0", "y1")] <- sin(i + 1)
-  lines <- c(lines, list(line))
+    # first we maybe need to remove the rangeframe laye
+    temp <- maybeRemoveRangeFrameLayer(ggplotObj = p)
+
+    pNoRangeframe <- temp$ggplotObjNoRangeFrame
+    plotlyplotje <- plotly::ggplotly(pNoRangeframe)
+
+    if (!is.null(temp$shapes)) {
+      plotlyplotje <- plotly::layout(plotlyplotje, shapes = temp$shapes)
+
+      sides <- temp$rangeFrameLayer$geom_rangeframe$geom_params$sides
+      if (grepl("b", sides) || grepl("l", sides)) {
+        hasRangeFrame <- TRUE
+      } else {
+        hasRangeFrame <- FALSE
+      }
+
+      if (grepl("b", sides))
+        plotlyplotje$x$layout$xaxis$tickmode <- "auto"
+
+      if (grepl("l", sides))
+        plotlyplotje$x$layout$yaxis$tickmode <- "auto"
+
+      plotlyplotje <- htmlwidgets::onRender(plotlyplotje, jsCode = js_code_rangeframe)
+
+    }
+
+    plotlybuild <- plotly::plotly_build(plotlyplotje)
+
+    # TODO: we should decode any column names in the data in plotlybuild$x
+    if (returnJSON) {
+      json <- toJSON(list(data = plotlybuild$x$data, layout = plotlybuild$x$layout, hasRangeFrame = hasRangeFrame))
+      json
+    } else {
+      plotlybuild
+    }
+  })
+  return(e)
 }
 
-lines <- list(
-  list(
+findRangeFrame <- function(ggplot_obj) {
+  which(vapply(ggplot_obj@layers, FUN = \(layer) inherits(layer$geom, "GeomRangeFrame"), FUN.VALUE = logical(1L)))
+}
+
+maybeRemoveRangeFrameLayer <- function(ggplotObj) {
+  idx <- findRangeFrame(ggplotObj)
+  if (length(idx) == 0L) return(list(ggplotObjNoRangeFrame = ggplotObj))
+  ggplotObjNoRangeFrame <- ggplotObj
+  rangeFrameLayer <- ggplotObjNoRangeFrame@layers[idx]
+  ggplotObjNoRangeFrame@layers <- ggplotObjNoRangeFrame@layers[-idx]
+  shapes <- rangeFrameLayerToShapes(ggplotObjNoRangeFrame, rangeFrameLayer)
+  return(list(ggplotObjNoRangeFrame = ggplotObjNoRangeFrame, rangeFrameLayer = rangeFrameLayer, shapes = shapes))
+}
+
+rangeFrameLayerToShapes <- function(ggplotObj, rangeFrameLayer) {
+
+  opts <- jaspGraphs:::getPlotEditingOptions(ggplotObj)
+  ranges <- list(
+    x = range(opts$xAxis$settings$breaks),
+    y = range(opts$yAxis$settings$breaks)
+  )
+
+  geom <- rangeFrameLayer$geom_rangeframe
+  sides <- geom$geom_params$sides
+  color <- geom$aes_params$colour %||% geom$geom$default_aes$colour
+  shapes <- list()
+
+  if (grepl("b", sides)) shapes[[length(shapes) + 1L]] <- list(
     type = "line",
-    line = list(color = "pink"),
+    line = list(color = color),
     xref = "x",
-    yref = "y",
-    x0 = 0, x1 = 14,
+    yref = "paper",
+    x0 = ranges$x[1], x1 = ranges$x[2],
     y0 = 0, y1 = 0,
-    name = "rangeframe_l"
-  ),
-  list(
-    type = "line",
-    line = list(color = "pink"),
-    xref = "x",
-    yref = "y",
-    x0 = 0, x1 = 0,
-    y0 = -1, y1 = 1,
     name = "rangeframe_b"
   )
-)
+  if (grepl("l", sides)) shapes[[length(shapes) + 1L]] <- list(
+    type = "line",
+    line = list(color = color),
+    xref = "paper",
+    yref = "y",
+    x0 = 0, x1 = 0,
+    y0 = ranges$y[1], y1 = ranges$y[2],
+    name = "rangeframe_l"
+  )
+  return(shapes)
+}
 
-js_code <- "
+js_code_rangeframe <- "
 (function(el, x) {
 
   var gd = el;
@@ -141,17 +219,19 @@ js_code <- "
     // Get current shapes from the layout
     var currentShapes = gd.layout.shapes || [];
 
+    // TODO: the color should use currentShapes[0].line.color, but somehow that doesn't work?
+    // could also perhaps clone the currentShapes and only update the coordinates?
     var newShapes = [
       {
         type: 'line', xref: 'x', yref: 'paper',
         x0: x0, x1: x1, y0: 0, y1: 0,  // Horizontal line from min to max x-break, at bottom of visible y-range
-        line: { color: 'darkblue', width: 1.2},
+        line: { color: 'black', width: 1.2},
         name: 'rangeframe_b'
       },
       {
         type: 'line', xref: 'paper', yref: 'y',
         x0: 0, x1: 0, y0: y0, y1: y1,  // Vertical line from min to max y-break, at left of visible x-range
-        line: { color: 'darkblue', width: 1.2},
+        line: { color: 'black', width: 1.2},
         name: 'rangeframe_l'
       }
     ];
@@ -230,124 +310,4 @@ js_code <- "
   setTimeout(function() { updateRangeFrame(null, 'initial_update'); }, 500);
 });
 "
-
-xyax <- list(
-  zeroline = FALSE,
-  showline = FALSE
-)
-fig <- layout(fig, title = 'Highlighting with Lines', shapes = lines,
-              xaxis = xyax,
-              yaxis = xyax)
-fig$x$elementId <- "myPlotlyRangeFrame"
-
-fig2 <- htmlwidgets::onRender(fig, jsCode = js_code)
-# fig2
-options("viewer" = NULL)#  utils::browseURL)
-print(fig2)
-
-dd <- read.csv("~/github/jasp/jasp-desktop/Resources/Data Sets/debug.csv")
-p <- jaspGraphs::jaspHistogram(dd$contNormal)
-# debugonce(jaspGraphs::convertGgplotToPlotly)
-jaspGraphs::convertGgplotToPlotly(p, returnJSON = FALSE)
-p2 <- p
-p2@layers[[2]]$geom_params$color <- "red"
-jaspGraphs::convertGgplotToPlotly(p2, returnJSON = FALSE)
-
-
-xyax <- list(
-  zeroline = FALSE,
-  showline = FALSE
-)
-p2 <- ggplotly(p)
-
-
-
-
-
-ggplotObj <- p
-idx <- findRangeFrame(ggplotObj)
-if (length(idx) == 0L) return(ggplotObj)
-ggplotObjNoRangeFrame <- ggplotObj
-ggplotObjNoRangeFrame@layers <- ggplotObjNoRangeFrame@layers[-idx]
-shapes <- rangeFrameLayerToShapes(ggplotObj, ggplotObj@layers[[idx]])
-
-p@scales$scales[[1]]$aesthetics[[1]] == "x"
-p@scales$scales[[1]]$get_limits()
-p@scales$scales[[1]]$get_breaks()
-maybe_add_geom_rangeframe <- function(ggplot_obj) {
-  lines <- list(
-    list(
-      type = "line",
-      line = list(color = "blue"),
-      xref = "x",
-      yref = "paper",
-      x0 = -4, x1 = 4,
-      y0 = 0, y1 = 0,
-      name = "rangeframe_l"
-    ),
-    list(
-      type = "line",
-      line = list(color = "green"),
-      xref = "paper",
-      yref = "y",
-      x0 = 0, x1 = 0,
-      y0 = 0, y1 = 30,
-      name = "rangeframe_b"
-    )
-  )
-}
-
-# TODO: the size of the line should account for the width of the tick!
-p2 <- layout(p2, shapes = lines, xaxis = xyax, yaxis = xyax)
-p2$x$layout$shapes <- list()
-p2$x$layout$shapes <- p2$x$layoutAttrs[[1]]$shapes
-p2$x$layout$xaxis$tickmode <- "auto"
-p2$x$layout$yaxis$tickmode <- "auto"
-p2
-
-p2$x$layout$xaxis$range
-p2$x$layout$xaxis$ticks
-p2$x$layout$xaxis$
-p2
-
-p3 <- htmlwidgets::onRender(p2, jsCode = js_code)
-p3
-
-htmlwidgets:::addHook
-
-p3$jsHooks$render
-
-debugonce(plotly::plotly_build)
-plotlybuild <- plotly::plotly_build(p3)
-plotlybuild$x$data
-plotlybuild$x$layout
-plotlybuild
-plotlybuild$jsHooks$render
-#
-# info <- jaspGraphs:::plotEditingOptions(p)
-# p1 <- plotly::ggplotly(p)
-# lines <- list(
-#   list(
-#     type = "line",
-#     line = list(color = "pink"),
-#     xref = "x",
-#     yref = "y",
-#     x0 = info$xAxis$settings$limits[1], x1 = info$xAxis$settings$limits[1],
-#     y0 = info$yAxis$settings$breaks[1], y1 = info$yAxis$settings$breaks[length(info$yAxis$settings$breaks)],
-#     name = "rangeframe_l"
-#   ),
-#   list(
-#     type = "line",
-#     line = list(color = "pink"),
-#     xref = "x",
-#     yref = "y",
-#     x0 = info$xAxis$settings$breaks[1], x1 = info$xAxis$settings$breaks[length(info$xAxis$settings$breaks)],
-#     y0 = info$yAxis$settings$limits[1], y1 = info$yAxis$settings$limits[1],
-#     name = "rangeframe_b"
-#   )
-# )
-# p1b <- layout(p1, shapes = lines)
-# p1b$x$elementId <- "myPlotlyRangeFrame"
-# p2 <- htmlwidgets::onRender(p1b, jsCode = sprintf(js_code, p$x$elementId))
-# p2
 
