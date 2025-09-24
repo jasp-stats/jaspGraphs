@@ -1,7 +1,7 @@
 #' convert a ggplot object to a plotly object and store the json in the image list
-#' @param ggplot_obj a ggplot object
+#' @param ggplotObj a ggplot object
 #'@export
-convertGgplotToPlotly <- function(ggplot_obj, returnJSON = TRUE) {
+convertGgplotToPlotly <- function(ggplotObj, returnJSON = TRUE) {
   # see https://github.com/Rdatatable/data.table/issues/5375
   # we must set getOption("datatable.alloccol"), verbose = getOption("datatable.verbose")
   # options(datatable.alloccol = 1024L, datatable.verbose = FALSE) # default values
@@ -31,21 +31,19 @@ convertGgplotToPlotly <- function(ggplot_obj, returnJSON = TRUE) {
 
   e <- try({
 
-    # first we maybe need to remove the rangeframe laye
-    temp <- maybeRemoveRangeFrameLayer(ggplotObj = p)
+    # we need to remove the rangeframe layer, if there is one
+    temp <- maybeRemoveRangeFrameLayer(ggplotObj = ggplotObj)
 
     pNoRangeframe <- temp$ggplotObjNoRangeFrame
     plotlyplotje <- plotly::ggplotly(pNoRangeframe)
+    hasRangeFrame <- FALSE
 
     if (!is.null(temp$shapes)) {
       plotlyplotje <- plotly::layout(plotlyplotje, shapes = temp$shapes)
 
       sides <- temp$rangeFrameLayer$geom_rangeframe$geom_params$sides
-      if (grepl("b", sides) || grepl("l", sides)) {
+      if (grepl("b", sides) || grepl("l", sides))
         hasRangeFrame <- TRUE
-      } else {
-        hasRangeFrame <- FALSE
-      }
 
       if (grepl("b", sides))
         plotlyplotje$x$layout$xaxis$tickmode <- "auto"
@@ -59,7 +57,7 @@ convertGgplotToPlotly <- function(ggplot_obj, returnJSON = TRUE) {
 
     plotlybuild <- plotly::plotly_build(plotlyplotje)
 
-    # TODO: we should decode any column names in the data in plotlybuild$x
+    # TODO: we should decode any column names in the data in plotlybuild$x... maybe we can do this through ggplot2 though
     if (returnJSON) {
       json <- toJSON(list(data = plotlybuild$x$data, layout = plotlybuild$x$layout, hasRangeFrame = hasRangeFrame))
       json
@@ -99,7 +97,7 @@ rangeFrameLayerToShapes <- function(ggplotObj, rangeFrameLayer) {
 
   if (grepl("b", sides)) shapes[[length(shapes) + 1L]] <- list(
     type = "line",
-    line = list(color = color),
+    line = list(color = color, width = 1.2),
     xref = "x",
     yref = "paper",
     x0 = ranges$x[1], x1 = ranges$x[2],
@@ -108,7 +106,7 @@ rangeFrameLayerToShapes <- function(ggplotObj, rangeFrameLayer) {
   )
   if (grepl("l", sides)) shapes[[length(shapes) + 1L]] <- list(
     type = "line",
-    line = list(color = color),
+    line = list(color = color, width = 1.2),
     xref = "paper",
     yref = "y",
     x0 = 0, x1 = 0,
