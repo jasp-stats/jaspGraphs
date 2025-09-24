@@ -1,4 +1,6 @@
-#' convert a ggplot object to a plotly object and store the json in the image list
+#' @importFrom plotly ggplotly
+
+#' @title convert a ggplot object to a plotly object and store the json in the image list
 #' @param ggplotObj a ggplot object
 #'@export
 convertGgplotToPlotly <- function(ggplotObj, returnJSON = TRUE) {
@@ -35,7 +37,7 @@ convertGgplotToPlotly <- function(ggplotObj, returnJSON = TRUE) {
     temp <- maybeRemoveRangeFrameLayer(ggplotObj = ggplotObj)
 
     pNoRangeframe <- temp$ggplotObjNoRangeFrame
-    plotlyplotje <- plotly::ggplotly(pNoRangeframe)
+    plotlyplotje <- ggplotly(pNoRangeframe)
     hasRangeFrame <- FALSE
 
     if (!is.null(temp$shapes)) {
