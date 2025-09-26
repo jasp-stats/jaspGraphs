@@ -42,7 +42,21 @@ convertGgplotToPlotly <- function(ggplotObj, returnJSON = TRUE) {
     hasRangeFrame <- FALSE
 
     if (!is.null(temp$shapes)) {
-      plotlyplotje <- plotly::layout(plotlyplotje, shapes = temp$shapes)
+
+      plotlyplotje <- plotly::layout(plotlyplotje,
+        shapes = temp$shapes,
+        xaxis = list(zeroline = FALSE, showline = FALSE),
+        yaxis = list(zeroline = FALSE, showline = FALSE)
+      )
+
+      # remove any background transparent background rectangle which blocks
+      # the rangeframe lines
+      if (!is.null(plotlyplotje$x$layout$shapes) &&
+          plotlyplotje$x$layout$shapes[[1L]]$type == "rect" &&
+          plotlyplotje$x$layout$shapes[[1L]]$fillcolor == "transparent"
+          ) {
+        plotlyplotje$x$layout$shapes <- NULL
+      }
 
       sides <- temp$rangeFrameLayer$geom_rangeframe$geom_params$sides
       if (grepl("b", sides) || grepl("l", sides))
