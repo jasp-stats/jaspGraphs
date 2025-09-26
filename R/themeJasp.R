@@ -100,15 +100,17 @@ themeJaspRaw = function(legend.position = "none",
                         legend.title = element_text(family = family, size = fontsize, hjust = 0.5),
                         Xvjust = NULL, Yvjust = NULL) {
 
+    # TODO: shouldn't all element_rect(color = "transparent", fill = "transparent")
+    # just be element_blank?
     theme(
         # generics
         rect = getBackgroundRect(getGraphOption("debug")),
         text = element_text(family = family, size = fontsize),
         # axis
-        axis.line = element_line(color = "transparent", size = 0),
+        axis.line = element_line(color = "transparent", linewidth = 0),
         axis.ticks.length = axisTickLength, # tick length
         axis.title = element_text(size = axis.title.cex*fontsize),
-        axis.ticks = element_line(size = axisTickWidth, color = "black"), # tick width
+        axis.ticks = element_line(linewidth = axisTickWidth, color = "black"), # tick width
         axis.title.x = element_text(margin = margin(t = 15, b = 5)),
         axis.title.y = element_text(margin = margin(r = 10, l = 5)),
         axis.text.x = element_text(size = fontsize, colour = "black", margin = margin(t = 7), vjust = Xvjust),
@@ -125,7 +127,7 @@ themeJaspRaw = function(legend.position = "none",
         legend.position       = legend.position,
 
         # panel
-        panel.border = element_rect(color = "transparent", fill = "transparent", size = 0),
+        panel.border = element_rect(color = "transparent", fill = "transparent", linewidth = 0),
         panel.spacing = unit(2, "cm"),
         panel.grid = element_blank(),
         panel.background = element_rect(color = "transparent", fill = "transparent"),
@@ -135,8 +137,8 @@ themeJaspRaw = function(legend.position = "none",
         plot.margin = ggplot2::margin(),
         plot.title = ggplot2::element_text(family = family, size = fontsize, hjust = 0.5), # center title
 
-		# facet_wrap / facet_grid
-		strip.background = element_rect(fill = "transparent", color = "transparent")
+        # facet_wrap / facet_grid
+        strip.background = element_rect(fill = "transparent", color = "transparent")
 
     )
 }

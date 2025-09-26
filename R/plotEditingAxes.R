@@ -100,6 +100,9 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
 
   xory <- getXorY(x, ggbuild)
 
+  # TODO: for multiple panels, this would work to obtain the information
+  # but not to set it
+  # lapply(opts, function(o) o[[xory]][["get_labels"]]())
   opts2keep <- list(
     labels = opts[[1]][[xory]][["get_labels"]](),
     breaks = opts[[1]][[xory]][["get_breaks"]](),
