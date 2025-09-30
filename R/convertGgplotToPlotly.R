@@ -176,20 +176,18 @@ rangeFrameLayerToShapes <- function(ggplotObj, rangeFrameLayer) {
 }
 
 js_code_rangeframe <- r"{
-(function(el, x) {
+function(el, x) {
 
-  var gd = el;
-
-console.log(gd);
+console.log(el);
 
   var isUpdating = false;
   var lastUpdateTime = 0;
   var updateThrottle = 16; // ~60fps
 
-  function getAxisRange(gd, axisRef, eventdata) {
+  function getAxisRange(el, axisRef, eventdata) {
     // axisRef is "x", "x2", "y", "y3", etc.
     var axisKey = axisRef[0] + "axis" + axisRef.slice(1); // "x2" -> "xaxis2"
-    var axisObj = gd._fullLayout[axisKey];
+    var axisObj = el._fullLayout[axisKey];
 
     var tmin = axisObj._tmin;
     var tmax = axisObj._tmax;
@@ -205,7 +203,7 @@ console.log(gd);
       return;
     }
 
-    var shapes = gd.layout.shapes || [];
+    var shapes = el.layout.shapes || [];
     if (shapes.length === 0) return;
 
     // Loop over shapes that are rangeframes
@@ -217,11 +215,11 @@ console.log(gd);
 
       var axisRange;
       if (shape.xref !== "paper") {
-        axisRange = getAxisRange(gd, shape.xref, eventdata);
+        axisRange = getAxisRange(el, shape.xref, eventdata);
         shape.x0 = axisRange[0];
         shape.x1 = axisRange[1];
       } else {
-        axisRange = getAxisRange(gd, shape.yref, eventdata);
+        axisRange = getAxisRange(el, shape.yref, eventdata);
         shape.y0 = axisRange[0];
         shape.y1 = axisRange[1];
       }
@@ -230,18 +228,18 @@ console.log(gd);
     isUpdating = true;
     lastUpdateTime = now;
 
-    Plotly.relayout(gd, { shapes: shapes })
+    Plotly.relayout(el, { shapes: shapes })
     .then(() => { isUpdating = false; })
     .catch(err => { console.error("Error updating rangeframe:", err); isUpdating = false; });
   }
 
-  gd.on('plotly_relayouting',   e => updateRangeFrame(e, 'plotly_relayouting'));
-  gd.on('plotly_relayout',      e => updateRangeFrame(e, 'plotly_relayout'));
-  gd.on('plotly_framework',     e => updateRangeFrame(e, 'plotly_framework'));
+  el.on('plotly_relayouting',   e => updateRangeFrame(e, 'plotly_relayouting'));
+  el.on('plotly_relayout',      e => updateRangeFrame(e, 'plotly_relayout'));
+  el.on('plotly_framework',     e => updateRangeFrame(e, 'plotly_framework'));
 
   // Initial call
   setTimeout(() => updateRangeFrame(null, 'initial_update'), 500);
-})
+}
 }"
 
 
