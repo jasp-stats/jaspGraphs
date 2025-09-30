@@ -2,9 +2,18 @@
 % Please edit documentation in R/PlotPizza.R
 \name{drawBFpizza}
 \alias{drawBFpizza}
+\alias{drawBFpizzaNonPolar}
 \title{Make a pizza plot}
 \usage{
 drawBFpizza(
+  dat,
+  linewidth = 1,
+  scaleText = 0.3,
+  show.legend = FALSE,
+  labels = NULL
+)
+
+drawBFpizzaNonPolar(
   dat,
   linewidth = 1,
   scaleText = 0.3,
@@ -25,6 +34,8 @@ drawBFpizza(
 }
 \description{
 Make a pizza plot
+
+Make a pizza plot without coord_polar
 }
 \examples{
 jaspGraphs::drawBFpizza(c(1, 4))
