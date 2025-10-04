@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspGraphs 0.20.0\n"
 "POT-Creation-Date: 2025-04-26 03:23\n"
-"PO-Revision-Date: 2025-09-23 07:01+0000\n"
-"Last-Translator: Jose Ramon Rueda <joseramon.rueda@ehu.eus>\n"
+"PO-Revision-Date: 2025-10-01 11:01+0000\n"
+"Last-Translator: Ángel Prieto <angel.prieto.fi@gmail.com>\n"
 "Language-Team: Basque <https://hosted.weblate.org/projects/jasp/jaspgraphs/"
 "eu/>\n"
 "Language: eu\n"
@@ -47,9 +47,8 @@ msgid "Strong"
 msgstr "Indartsua"
 
 msgid "Very Strong"
-msgstr "Oso Indartsua"
+msgstr "Oso sendoa"
 
-#, fuzzy
 msgid "Extreme"
 msgstr "Muturrekoa"
 
