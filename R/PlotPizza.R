@@ -77,3 +77,82 @@ drawBFpizza <- function(dat, linewidth = 1, scaleText = 0.3, show.legend = FALSE
 
   return(g)
 }
+
+#' Make a pizza plot without coord_polar
+#' @rdname drawBFpizza
+#' @export
+drawBFpizzaNonPolar <- function(dat, linewidth = 1, scaleText = 0.3, show.legend = FALSE, labels = NULL) {
+
+  if (scaleText < 0)
+    stop2("scaleText should be positive!")
+  if (linewidth < 0)
+    stop2("linewidth should be positive!")
+
+  if (!is.data.frame(dat))
+    dat <- data.frame(y = dat)
+
+  errCheckPlotPriorAndPosterior(dat[["y"]], 2L)
+
+  dat[["group"]] <- factor(seq(dat[["y"]]))
+
+  yInfinite <- is.infinite(dat[["y"]])
+  if (all(yInfinite)) {
+    stop2("More than one group with infinite evidence")
+  } else if (any(yInfinite)) {
+    dat[["y"]] <- ifelse(yInfinite, 1, 0)
+  } else {
+    dat[["y"]] <- dat[["y"]] / sum(dat[["y"]])
+  }
+
+
+  cum <- unname(cumsum(dat$y))
+  fromPerc <- unname(cbind(c(0, cum[-length(cum)]), cum))
+  fromTheta <- 2 * pi * fromPerc
+  # the code below was in the original function, but it never actually rotated
+  # it just ensured that H0 is always on top and H1 on bottom
+  # uncommenting the code below will make the function rotate the pizza
+  # rotate the wheel so that smaller half is always facing up
+  # if (dat[["y"]][1L] <= dat[["y"]][2L]) {
+  idxBigger <- 1L
+  # } else {
+  # idxBigger <- 2L
+  # }
+  offset <- mean(fromTheta[idxBigger, ]) - pi / 2
+  fromTheta <- fromTheta - offset
+
+  groups <- factor(1:2)#if (!is.null(labels)) factor(labels) else factor(1:2)
+
+  n <- 256
+  r <- c(0, rep(1, n), 0) # radius
+  df <- do.call(rbind, lapply(1:nrow(fromTheta), function(i) {
+    t <- c(pi / 2, seq(fromTheta[i, 1], fromTheta[i, 2], length.out = n), fromTheta[i, 2])
+    x <- r * cos(t)
+    y <- r * sin(t)
+    data.frame(x = x, y = y, grp = groups[i])
+  }))
+  df
+
+  g <- ggplot(df, aes(x = .data$x, y = .data$y, fill = .data$grp, color = .data$grp)) +
+    ggplot2::geom_polygon(show.legend = FALSE) +
+    ggplot2::scale_fill_manual(values  = c("darkred", "white")) +
+    ggplot2::scale_color_manual(values = c("black", "black")) +
+    getEmptyTheme() +
+    ggplot2::coord_fixed()
+  g
+  if (!is.null(labels)) {
+    r <- 1.25
+    t <- c(3 / 2 * pi, pi / 2)
+    if (idxBigger == 2L)
+      t <- rev(t)
+    dfTxt <- data.frame(
+      x = r * cos(t),
+      y = r * sin(t),
+      l = labels
+    )
+    g <- g + ggplot2::geom_text(data = dfTxt, aes(x = .data$x, y = .data$y, label = .data$l),
+                                parse = needsParsing(labels),
+                                size = scaleText * getGraphOption("fontsize"), inherit.aes = FALSE)
+  }
+
+  return(g)
+}

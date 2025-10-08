@@ -77,17 +77,17 @@ jaspHistogram <- function(
       dataHistogram <- data.frame(x = x, g = groupingVariable)
       scaleFill <- scale_JASPfill_discrete(name = groupingVariableName)
       aesHistogram <- if (density) {
-        aes(x = .data$x, fill = .data$g, y =.data$..density..)
+        aes(x = .data$x, fill = .data$g, y = .data$..density..)
       } else {
-        aes(x = .data$x, fill = .data$g, y =.data$..count..)
+        aes(x = .data$x, fill = .data$g, y = .data$..count..)
       }
       histogramGeom <- ggplot2::geom_histogram(
-        data     = dataHistogram,
-        mapping  = aesHistogram,
-        breaks   = h[["breaks"]],
-        col      = "black",
-        size     = .7,
-        position = histogramPosition
+        data      = dataHistogram,
+        mapping   = aesHistogram,
+        breaks    = h[["breaks"]],
+        col       = "black",
+        linewidth = .7,
+        position  = histogramPosition
       )
 
       if (identical(histogramPosition, "stack") || inherits(histogramPosition, "PositionStack")) {
@@ -107,17 +107,17 @@ jaspHistogram <- function(
     } else {
       dataHistogram <- data.frame(x = x)
       aesHistogram <- if (density) {
-        aes(x = .data$x, y =.data$..density..)
+        aes(x = .data$x, y = .data$..density..)
       } else {
-        aes(x = .data$x, y =.data$..count..)
+        aes(x = .data$x, y = .data$..count..)
       }
       histogramGeom <- ggplot2::geom_histogram(
-        data    = dataHistogram,
-        mapping = aesHistogram,
-        breaks  = h[["breaks"]],
-        fill    = "grey",
-        col     = "black",
-        size    = .7
+        data      = dataHistogram,
+        mapping   = aesHistogram,
+        breaks    = h[["breaks"]],
+        fill      = "grey",
+        col       = "black",
+        linewidth = .7
       )
       scaleFill <-  NULL
 
