@@ -137,7 +137,7 @@ drawBFpizzaNonPolar <- function(dat, linewidth = 1, scaleText = 0.3, show.legend
     ggplot2::scale_fill_manual(values  = c("darkred", "white")) +
     ggplot2::scale_color_manual(values = c("black", "black")) +
     getEmptyTheme() +
-    coord_fixed()
+    ggplot2::coord_fixed()
   g
   if (!is.null(labels)) {
     r <- 1.25
