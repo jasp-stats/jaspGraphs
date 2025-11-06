@@ -104,6 +104,23 @@ plotEditing <- function(graph, newOptions) {
   graph <- graph + internalUpdateAxis(currentAxis[["x"]], newOptions[["xAxis"]][["settings"]])
   graph <- graph + internalUpdateAxis(currentAxis[["y"]], newOptions[["yAxis"]][["settings"]])
 
+  # we technically don't need to store previousReferences atm but it could be useful
+  previousReferences <- graph[["plot_env"]][[".____previousReferences____"]]
+  if (length(previousReferences) > 0L) {
+    currentNames <- vapply(graph$layers, \(l) {
+      # either the hash, or ""
+      hash <- attr(l, "hash") %||% ""
+    }, character(1L))
+    # newNames <- referencesToNames(newOptions[["references"]])
+    # keep <- (currentNames %in% newNames) | (!nzchar(currentNames))
+    keep <- !nzchar(currentNames)
+    graph$layers <- graph$layers[keep]
+  }
+  if (length(newOptions[["references"]]) > 0L)
+    graph <- graph + referencesToGeoms(newOptions[["references"]])
+
+  graph[["plot_env"]][[".____previousReferences____"]] <- newOptions[["references"]]
+
   # 'remember' if an edited plot had options set to automatic or manual
   newOptions[["resetPlot"]] <- FALSE
   env <- list2env(list(oldOptions = origNewOptions), parent = emptyenv())
