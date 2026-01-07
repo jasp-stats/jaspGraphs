@@ -2,9 +2,23 @@
 % Please edit documentation in R/PlotPieChart.R
 \name{plotPieChart}
 \alias{plotPieChart}
+\alias{plotPieChartNonPolar}
 \title{Make a Pie Chart}
 \usage{
 plotPieChart(
+  value,
+  group,
+  legendName = deparse(substitute(group)),
+  legendLabels = if (is.factor(group)) levels(group) else unique(group),
+  legendColors = NULL,
+  showAxisText = TRUE,
+  showAxisTicks = showAxisText,
+  asPercentages = TRUE,
+  palette = getGraphOption("palette"),
+  ...
+)
+
+plotPieChartNonPolar(
   value,
   group,
   legendName = deparse(substitute(group)),
@@ -43,6 +57,8 @@ a ggplot object.
 }
 \description{
 Make a Pie Chart
+
+Make a pie chart without coord_polar
 }
 \examples{
 library(ggplot2)
