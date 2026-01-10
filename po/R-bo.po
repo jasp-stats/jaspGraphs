@@ -2,92 +2,129 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspGraphs 0.20.0\n"
 "POT-Creation-Date: 2025-04-26 03:23\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-01-06 14:01+0000\n"
+"Last-Translator: Zev Oster <zevelijah@gmail.com>\n"
+"Language-Team: Tibetan <https://hosted.weblate.org/projects/jasp/jaspgraphs/"
+"bo/>\n"
 "Language: bo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.15.1\n"
 
+#, fuzzy
 msgid "data | H0"
-msgstr ""
+msgstr "གྲངས་གནས། | H0"
 
+#, fuzzy
 msgid "data | H1"
-msgstr ""
+msgstr "གྲངས་གནས། | H1"
 
+#, fuzzy
 msgid "data | H-"
-msgstr ""
+msgstr "གྲངས་གནས། | H-"
 
+#, fuzzy
 msgid "data | H+"
-msgstr ""
+msgstr "གྲངས་གནས། | H+"
 
+#, fuzzy
 msgid "BF%s"
-msgstr ""
+msgstr "BF%s"
 
+#, fuzzy
 msgid "log(BF%s)"
-msgstr ""
+msgstr "log(BF%s)"
 
+#, fuzzy
 msgid "Density"
-msgstr ""
+msgstr "སྟུག་ཚད།"
 
+#, fuzzy
 msgid "Median:"
-msgstr ""
+msgstr "དཀྱིལ་གྲངས།:"
 
+#, fuzzy
 msgid "Anecdotal"
-msgstr ""
+msgstr "ངག་རྒྱུས།"
 
+#, fuzzy
 msgid "Moderate"
-msgstr ""
+msgstr "འབྲིང་བ།"
 
+#, fuzzy
 msgid "Strong"
-msgstr ""
+msgstr "དྲག་པོ།"
 
+#, fuzzy
 msgid "Very Strong"
-msgstr ""
+msgstr "ཧ་ཅང་དྲག་པོ།"
 
+#, fuzzy
 msgid "Extreme"
-msgstr ""
+msgstr "མཐར་ཐུག"
 
+#, fuzzy
 msgid "Evidence"
-msgstr ""
+msgstr "དཔང་རྟགས།"
 
+#, fuzzy
 msgid "Evidence for H%s:"
-msgstr ""
+msgstr "H%s གི་དཔང་རྟགས།:"
 
+#, fuzzy
 msgid "Evidence for H%s"
-msgstr ""
+msgstr "H%s གི་དཔང་རྟགས།"
 
+#, fuzzy
 msgid "Counts"
-msgstr ""
+msgstr "གྲངས་བཤེར།"
 
+#, fuzzy
 msgid "Computing plotEditingOptions gave an error: %s"
-msgstr ""
+msgstr "plotEditingOptions བརྩི་བར་ནོར་འཁྲུལ་བྱུང་།: %s"
 
+#, fuzzy
 msgid "This plot cannot be edited because it was created with qgraph instead of ggplot."
 msgstr ""
+"དཔེ་རིས་འདི་བཟོ་བཅོས་བྱེད་མི་ཐུབ། རྒྱུ་མཚན་ནི་འདི་ qgraph གིས་བཟོས་པ་ལས་ ggplot གིས་བཟོས་མེད།"
 
+#, fuzzy
 msgid "This plot cannot be edited because it consists of multiple smaller figures."
 msgstr ""
+"དཔེ་རིས་འདི་བཟོ་བཅོས་བྱེད་མི་ཐུབ། རྒྱུ་མཚན་ནི་འདི་རི་མོ་ཆུང་བ་མང་པོ་ལས་གྲུབ་ཡོད།"
 
+#, fuzzy
 msgid "This plot cannot be edited because it was created with base R instead of ggplot."
 msgstr ""
+"དཔེ་རིས་འདི་བཟོ་བཅོས་བྱེད་མི་ཐུབ། རྒྱུ་མཚན་ནི་འདི་ base R གིས་བཟོས་པ་ལས་ ggplot གིས་བཟོས་མེད།"
 
+#, fuzzy
 msgid "cannot create plotEditingOptions for object of class: %s."
-msgstr ""
+msgstr "class གི་ object ཆེད་དུ་ plotEditingOptions བཟོ་མི་ཐུབ།: %s"
 
+#, fuzzy
 msgid "Converting plotEditingOptions to JSON gave an error: %s."
-msgstr ""
+msgstr "plotEditingOptions དེ་ JSON ལ་བསྒྱུར་བར་ནོར་འཁྲུལ་བྱུང་།: %s"
 
+#, fuzzy
 msgid "Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s To receive assistance with this problem, please report the message above at: https://jasp-stats.org/bug-reports"
 msgstr ""
+"དཔེ་རིས་བཟོ་བཅོས་བྱེད་པ་རེ་བ་མ་བྱས་པར་མཇུག་བསྒྲིལ། plotEditingOptions ནང་ནོར་འཁྲུལ་ཚབས་ཆེན་བྱུང"
+"་།: %s གནད་དོན་འདི་ལ་རོགས་རམ་ཐོབ་པར་གོང་གི་གནས་ཚུལ་འདི་ལ་སྙན་ཞུ་བྱེད་རོགས། https://jasp-"
+"stats.org/bug-reports"
 
+#, fuzzy
 msgid "This plot cannot be edited because it uses polar coordinates (e.g., pie chart)."
 msgstr ""
+"དཔེ་རིས་འདི་བཟོ་བཅོས་བྱེད་མི་ཐུབ། རྒྱུ་མཚན་ནི་འདིས་སྣེ་གནས་གྲངས་ (དཔེར་ན། སྒོར་དབྱིབས་དཔེ་རིས།) བེད་སྤྱོད"
+"་བྱེད་ཀྱི་ཡོད།"
 
+#, fuzzy
 msgid "Theoretical quantiles"
-msgstr ""
+msgstr "རིགས་པའི་གཞུང་ལུགས་ཀྱི་གྲངས་ཚད།"
 
+#, fuzzy
 msgid "Observed quantiles"
-msgstr ""
+msgstr "ལྟ་ཞིབ་བྱས་པའི་གྲངས་ཚད།"
