@@ -86,8 +86,8 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
 
   g <- g +
     geom_point() +
-    scale_x_continuous(name = xName, breaks = xBreaks) +
-    scale_y_continuous(name = yName, breaks = yBreaks)
+    scale_x_continuous(name = xName, breaks = xBreaks, limits = range(xBreaks)) +
+    scale_y_continuous(name = yName, breaks = yBreaks, limits = range(yBreaks))
 
   return(jaspGraphs::themeJasp(g))
 
