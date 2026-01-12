@@ -1,8 +1,8 @@
 getBackgroundRect <- function(debug) {
   if (debug) {
-    element_rect(colour = "red", fill = "transparent", size = 5, linetype = 1)
+    element_rect(colour = "red", fill = "transparent", linewidth = 5, linetype = 1)
   } else {
-    element_rect(colour = "transparent", fill = "transparent", size = 1, linetype = 1)
+    element_rect(colour = "transparent", fill = "transparent", linewidth = 1, linetype = 1)
   }
 }
 
@@ -133,9 +133,9 @@ makeLegendPlot <- function(groupingVariable, colors = NULL, fill = NULL, linetyp
       parse <- needsParsing(label1) || needsParsing(label2)
 
       if (is.null(sizes)) {
-        gp <- geom_point(show.legend = FALSE, size = 1.15 * formals(jaspGraphs::geom_point)$size)
+        gp <- ggplot2::geom_point(show.legend = FALSE, size = 1.15 * formals(jaspGraphs::geom_point)$size, shape = 21)
       } else {
-        gp <- geom_point(show.legend = FALSE)
+        gp <- ggplot2::geom_point(show.legend = FALSE, shape = 21)
       }
 
       legendPlot <- ggplot(data = dfLegendPlot, aes(x = .data$x, y = .data$y, fill = .data$y,

@@ -57,7 +57,7 @@ drawBFpizza <- function(dat, linewidth = 1, scaleText = 0.3, show.legend = FALSE
   start <- 0 + area * pi
 
   g <- ggplot(data = dat, mapping = mapping) +
-    ggplot2::geom_bar(width = 1, stat = "identity", show.legend = show.legend, size = linewidth) +
+    ggplot2::geom_bar(width = 1, stat = "identity", show.legend = show.legend, linewidth = linewidth) +
     ggplot2::scale_x_discrete(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0)) +
     ggplot2::coord_polar(theta = "y", start = start) +
     ggplot2::scale_fill_manual(values  = c("darkred", "white")) +
@@ -137,7 +137,7 @@ drawBFpizzaNonPolar <- function(dat, linewidth = 1, scaleText = 0.3, show.legend
     ggplot2::scale_fill_manual(values  = c("darkred", "white")) +
     ggplot2::scale_color_manual(values = c("black", "black")) +
     getEmptyTheme() +
-    ggplot2::coord_fixed()
+    coord_fixed()
   g
   if (!is.null(labels)) {
     r <- 1.25
