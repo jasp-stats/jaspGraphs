@@ -247,7 +247,7 @@ PlotRobustnessSequential <- function(
   legendPlot <- list()
   if (!is.null(dfPoints)) {
     mapping <- if (ncol(dfPoints) == 2L) aes(x = .data$x, y = .data$y) else aes(x = .data$x, y = .data$y, fill = .data$g)
-    g <- g + geom_point(data = dfPoints, mapping = mapping) +
+    g <- g + ggplot2::geom_point(data = dfPoints, mapping = mapping, shape = 21, size = 3) +
       ggplot2::scale_fill_manual(values = pointColors[order(factor(dfPoints$g))])
 
     if (pointLegend) {
@@ -364,10 +364,10 @@ PlotRobustnessSequential <- function(
       dfArrowTxt[["label"]] <- rev(dfArrowTxt[["label"]])
 
     g <- g + ggplot2::geom_segment(
-      data    = dfArrow, aes(x = .data$x, y = .data$y, xend = .data$xend, yend = .data$yend),
-      lineend = "round", linejoin = "bevel",
-      arrow   = grid::arrow(length = grid::unit(0.4, "cm")),
-      size    = 1,
+      data        = dfArrow, aes(x = .data$x, y = .data$y, xend = .data$xend, yend = .data$yend),
+      lineend     = "round", linejoin = "bevel",
+      arrow       = grid::arrow(length = grid::unit(0.4, "cm")),
+      linewidth   = 1,
       inherit.aes = FALSE
     ) +
       ggplot2::geom_text(
@@ -487,7 +487,7 @@ fixTranslationForExpression <- function(text) {
 # @param y height of gridline.
 # @param ... Further arguments to \code{\link[ggplot2:geom_segment]{geom_segment}}, e.g., colour.
 # @param linetypes solid, dashed, dotted, etc.
-# @param size size of the line.
+# @param linewidth linewidth of the line.
 #
 # @details This function exists only when gridlines need to exist at specific locations, for example from x1 to x2 but
 # don't extend further than x2. Otherwise, use the build in functionality inside \code{\link[ggplot2:theme]{theme}}.
@@ -495,14 +495,14 @@ fixTranslationForExpression <- function(text) {
 # @return a ggproto object.
 #
 # @export
-makeGridLines <- function(x, xend, y, size = 0.85, ...) {
+makeGridLines <- function(x, xend, y, linewidth = 0.85, ...) {
 
   return(
     ggplot2::geom_segment(
       data        = data.frame(x = x, y = y, xend = xend),
       mapping     =        aes(x = x, y = y, xend = xend, yend = y),
       inherit.aes = FALSE,
-      size        = size,
+      linewidth   = linewidth,
       ...,
     )
   )
