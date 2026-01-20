@@ -188,10 +188,6 @@ PlotRobustnessSequential(
   dfPoints     = dfPoints
 )
 
-debugonce(jaspGraphs:::makeLegendPlot)
-jaspGraphs:::makeLegendPlot(dfPoints$g, fill = c("red", "grey", "black", "white"), type = "point",
-               label1 = dfPoints$label1, label2 = dfPoints$label2)
-
 # convenience function for showing plots side by side. You may need to click zoom in Rstudio
 # to properly view the plots.
 showSideBySide <- function(..., nrow = 1L, ncol = ...length()) {
