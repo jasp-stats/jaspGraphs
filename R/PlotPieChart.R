@@ -9,6 +9,7 @@
 #' @param asPercentages Logical, should value be transformed to percentages? Recommended to be true.
 #' @param showAxisTicks Logical, should the ticks on the polar coordinates be shown?
 #' @param palette Character vector with palette name. If this option is set then legendColors is ignored. If palette is NULL then legendColors are used.
+#' @param polarAxis Logical, should the pie chart be drawn in polar coordinates? Deprecated, use \code{plotPieChartNonPolar} instead, because polar coordinates are incompatible with interactive graphs.
 #' @param ... Arguments to be passed to \code{\link{themeJasp}}.
 #'
 #' @return a ggplot object.
@@ -23,6 +24,7 @@ plotPieChart <- function(value, group,
                          legendColors = NULL,
                          showAxisText = TRUE, showAxisTicks = showAxisText, asPercentages = TRUE,
                          palette = getGraphOption("palette"),
+                         polarAxis = FALSE,
                          ...) {
 
   if (!is.numeric(value))
@@ -32,12 +34,6 @@ plotPieChart <- function(value, group,
   if (length(value) != length(group))
     stop2("value and group should have the same length!")
 
-  # change the default arguments for themeJasp
-  dots <- list(...)
-  dots <- setDefaults(dots,
-                      legend.position = "right",
-                      bty = "o")
-
   if (asPercentages)
     value <- value / sum(value) * 100
 
@@ -46,6 +42,84 @@ plotPieChart <- function(value, group,
     legendColors <- jaspGraphs_data[[legendColors]][["colors"]]
     legendColors <- scales::gradient_n_pal(legendColors)(seq(0, 1, length.out = nUnique))
   }
+
+
+  if (polarAxis) {
+
+    lifecycle::deprecate_warn(
+      when = "0.20.0",
+      what = "plotPieChart(polarAxis = 'must be FALSE')",
+      with = "plotPieChartNonPolar()"
+    )
+
+    g <- plotPieChartPolar(
+      value = value,
+      group = group,
+      legendName = legendName,
+      legendLabels = legendLabels,
+      legendColors = legendColors,
+      showAxisText = showAxisText,
+      showAxisTicks = showAxisTicks,
+      asPercentages = asPercentages,
+      palette = palette,
+      ...
+    )
+
+    extraTheme <- theme(
+      axis.text.x = if (showAxisText) element_text() else element_blank(),
+      axis.ticks  = element_blank(),
+    )
+
+    # change the default arguments for themeJasp
+    dots <- list(...)
+    dots <- setDefaults(dots, legend.position = "right", bty = "o")
+
+    g <- do.call(themeJasp, c(list(graph = g), dots)) + extraTheme
+
+  } else {
+
+    g <- plotPieChartCartesian(
+      value = value,
+      group = group,
+      legendName = legendName,
+      legendLabels = legendLabels,
+      legendColors = legendColors,
+      showAxisText = showAxisText,
+      showAxisTicks = showAxisTicks,
+      asPercentages = asPercentages,
+      palette = palette,
+      ...
+    )
+
+    extraTheme <- theme(
+      axis.text    = element_blank(),
+      axis.text.x  = element_blank(),
+      axis.text.y  = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.ticks   = element_blank(),
+    )
+
+    # change the default arguments for themeJaspRaw
+    dots <- list(...)
+    dots <- setDefaults(dots, legend.position = "right")
+
+    g <- g +
+      do.call(themeJaspRaw, dots) +
+      extraTheme
+  }
+
+  return(g)
+
+}
+
+plotPieChartPolar <- function(value, group,
+                         legendName = deparse(substitute(group)),
+                         legendLabels = if (is.factor(group)) levels(group) else unique(group),
+                         legendColors = NULL,
+                         showAxisText = TRUE, showAxisTicks = showAxisText, asPercentages = TRUE,
+                         palette = getGraphOption("palette"),
+                         ...) {
 
   df <- data.frame(
     y = value,
@@ -60,51 +134,23 @@ plotPieChart <- function(value, group,
     scale_fill <- scale_fill_manual(values = legendColors, name = legendName, breaks = legendLabels)
   }
 
-  graph <- ggplot(df, aes(x = "", y=value, fill=group)) +
+  g <- ggplot(df, aes(x = "", y = value, fill = group)) +
     geom_bar(width = 1, stat = "identity") +
     coord_polar("y", start = 0) +
     scale_fill +
     labs(x = "", y = "")
 
-  return(do.call(themeJasp, c(list(graph = graph), dots)) + theme(
-    axis.text.x = if (showAxisText) element_text() else element_blank(),
-    axis.ticks  = element_blank()
-  ))
+  return(g)
 
 }
 
-#' Make a pie chart without coord_polar
-#' @rdname plotPieChart
-#' @export
-plotPieChartNonPolar <- function(value, group,
+plotPieChartCartesian <- function(value, group,
                                  legendName = deparse(substitute(group)),
                                  legendLabels = if (is.factor(group)) levels(group) else unique(group),
                                  legendColors = NULL,
                                  showAxisText = TRUE, showAxisTicks = showAxisText, asPercentages = TRUE,
                                  palette = getGraphOption("palette"),
                                  ...) {
-
-  if (!is.numeric(value))
-    stop2("value should be numeric!")
-  if (!(is.character(group) || is.factor(group)))
-    stop2("group should be a character or factor!")
-  if (length(value) != length(group))
-    stop2("value and group should have the same length!")
-
-  # change the default arguments for themeJasp
-  dots <- list(...)
-  dots <- setDefaults(dots,
-                      legend.position = "right",
-                      bty = "o")
-
-  if (asPercentages)
-    value <- value / sum(value) * 100
-
-  nUnique <- length(unique(group))
-  if (length(legendColors) == 1L && legendColors %in% names(jaspGraphs_data)) {
-    legendColors <- jaspGraphs_data[[legendColors]][["colors"]]
-    legendColors <- scales::gradient_n_pal(legendColors)(seq(0, 1, length.out = nUnique))
-  }
 
   df <- data.frame(
     y = value,
