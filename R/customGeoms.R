@@ -27,23 +27,9 @@ GeomJaspLine <- ggplot2::ggproto(
   )
 )
 
-#' @title Custom geoms
-#' @param mapping see details
-#' @param data see details
-#' @param stat see details
-#' @param position see details
-#' @param size JASP default
-#' @param shape JASP default
-#' @param colour JASP default
-#' @param fill JASP default
-#' @param alpha JASP default
-#' @param stroke JASP default
-#' @param linewidth JASP default
-#' @param linetype JASP default
-#' @param ... see details
-#' @param na.rm see details
-#' @param show.legend see details
-#' @param inherit.aes see details
+#' @title Custom geoms for JASP
+#' @inheritParams ggplot2::geom_point
+#' @inheritParams ggplot2::geom_line
 #' @details These functions are virtually identical to \code{\link[ggplot2]{geom_point}} and \code{\link[ggplot2]{geom_line}}
 #' except that their underlying Geoms have different default values.
 #'
