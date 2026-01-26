@@ -10,12 +10,6 @@ geom_point(
   data = NULL,
   stat = "identity",
   position = "identity",
-  size = 3,
-  shape = 21,
-  colour = "black",
-  fill = "grey",
-  alpha = NA,
-  stroke = 0.5,
   ...,
   na.rm = FALSE,
   show.legend = NA,
@@ -27,11 +21,12 @@ geom_line(
   data = NULL,
   stat = "identity",
   position = "identity",
-  linewidth = 1,
-  colour = "black",
-  linetype = 1,
-  alpha = NA,
   ...,
+  arrow = NULL,
+  arrow.fill = NULL,
+  lineend = "butt",
+  linejoin = "round",
+  linemitre = 10,
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE
@@ -46,6 +41,14 @@ geom_line(
 
 \item{position}{see details}
 
+\item{...}{see details}
+
+\item{na.rm}{see details}
+
+\item{show.legend}{see details}
+
+\item{inherit.aes}{see details}
+
 \item{size}{JASP default}
 
 \item{shape}{JASP default}
@@ -57,14 +60,6 @@ geom_line(
 \item{alpha}{JASP default}
 
 \item{stroke}{JASP default}
-
-\item{...}{see details}
-
-\item{na.rm}{see details}
-
-\item{show.legend}{see details}
-
-\item{inherit.aes}{see details}
 
 \item{linewidth}{JASP default}
 
