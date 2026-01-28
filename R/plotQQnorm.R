@@ -9,6 +9,10 @@
 #' @param ablineColor String, color of the abline.
 #' @param identicalAxes Logical, should the axes have the same range?
 #' @param na.rm Logical, should NA's be removed from residuals?
+#' @param ciLevel Numeric in (0, 1), confidence level for confidence bands. If NULL, no confidence bands are drawn.
+#' @param fillColor String, color for the confidence bands.
+#' @param ciAlpha Numeric in \[0, 1\], transparency for the confidence bands
+#' @param ciLineColor String, color for the border of the confidence bands.
 #' @param xName String, name for the x-axis.
 #' @param yName String, name for the y-axis.
 #'

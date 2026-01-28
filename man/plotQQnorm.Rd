@@ -38,6 +38,14 @@ plotQQnorm(
 
 \item{na.rm}{Logical, should NA's be removed from residuals?}
 
+\item{ciLevel}{Numeric in (0, 1), confidence level for confidence bands. If NULL, no confidence bands are drawn.}
+
+\item{fillColor}{String, color for the confidence bands.}
+
+\item{ciAlpha}{Numeric in [0, 1], transparency for the confidence bands}
+
+\item{ciLineColor}{String, color for the border of the confidence bands.}
+
 \item{xName}{String, name for the x-axis.}
 
 \item{yName}{String, name for the y-axis.}
