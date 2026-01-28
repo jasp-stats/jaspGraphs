@@ -46,11 +46,11 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
     i     <- seq_len(n)
     alpha <- 1 - ciLevel
 
-    pLower <- qbeta(alpha/2, i, n - i + 1)
-    pUpper <- qbeta(1 - alpha/2, i, n - i + 1)
+    pLower <- stats::qbeta(alpha/2, i, n - i + 1)
+    pUpper <- stats::qbeta(1 - alpha/2, i, n - i + 1)
 
-    zLower <- qnorm(pLower)
-    zUpper <- qnorm(pUpper)
+    zLower <- stats::qnorm(pLower)
+    zUpper <- stats::qnorm(pUpper)
 
     df$ymin <- int + slope * zLower[order(order(residuals))]
     df$ymax <- int + slope * zUpper[order(order(residuals))]
