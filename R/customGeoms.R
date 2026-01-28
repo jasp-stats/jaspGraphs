@@ -8,7 +8,8 @@ setDefaults <- function(lst, ...) {
 
 }
 
-# NOTE: the name must be Geom<J>name<P>name because of ggplot2::make_constructor
+# NOTE: the geom objects must use CamelCase names starting with "Geom" (e.g., GeomJaspPoint, GeomJaspLine),
+# so that ggplot2::make_constructor() can create the corresponding layer functions (geom_point, geom_line).
 GeomJaspPoint <- ggplot2::ggproto(
   "GeomJaspPoint",
   ggplot2::GeomPoint,
