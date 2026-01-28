@@ -13,6 +13,10 @@ plotQQnorm(
   ablineColor = "red",
   identicalAxes = FALSE,
   na.rm = TRUE,
+  ciLevel = NULL,
+  fillColor = "steelblue",
+  ciAlpha = 0.25,
+  ciLineColor = "black",
   xName = gettext("Theoretical quantiles", domain = "R-jaspGraphs"),
   yName = gettext("Observed quantiles", domain = "R-jaspGraphs")
 )
@@ -33,6 +37,14 @@ plotQQnorm(
 \item{identicalAxes}{Logical, should the axes have the same range?}
 
 \item{na.rm}{Logical, should NA's be removed from residuals?}
+
+\item{ciLevel}{Numeric in (0, 1), confidence level for confidence bands. If NULL, no confidence bands are drawn.}
+
+\item{fillColor}{String, color for the confidence bands.}
+
+\item{ciAlpha}{Numeric in [0, 1], transparency for the confidence bands}
+
+\item{ciLineColor}{String, color for the border of the confidence bands.}
 
 \item{xName}{String, name for the x-axis.}
 

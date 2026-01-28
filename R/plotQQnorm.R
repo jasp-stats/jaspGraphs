@@ -9,6 +9,10 @@
 #' @param ablineColor String, color of the abline.
 #' @param identicalAxes Logical, should the axes have the same range?
 #' @param na.rm Logical, should NA's be removed from residuals?
+#' @param ciLevel Numeric in (0, 1), confidence level for confidence bands. If NULL, no confidence bands are drawn.
+#' @param fillColor String, color for the confidence bands.
+#' @param ciAlpha Numeric in \[0, 1\], transparency for the confidence bands
+#' @param ciLineColor String, color for the border of the confidence bands.
 #' @param xName String, name for the x-axis.
 #' @param yName String, name for the y-axis.
 #'
@@ -24,7 +28,7 @@
 #'
 #' @export
 plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineOrigin = FALSE, ablineColor = "red", identicalAxes = FALSE, na.rm = TRUE,
-                       xName = gettext("Theoretical quantiles",domain="R-jaspGraphs"), yName = gettext("Observed quantiles",domain="R-jaspGraphs")) {
+                       ciLevel = NULL, fillColor = "steelblue", ciAlpha = 0.25, ciLineColor = "black", xName = gettext("Theoretical quantiles",domain="R-jaspGraphs"), yName = gettext("Observed quantiles",domain="R-jaspGraphs")) {
 
   n <- length(residuals)
   hasErrorbars <- !is.null(lower) && !is.null(upper)
@@ -33,9 +37,34 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
     y = residuals,
     x = stats::qnorm(stats::ppoints(n))[order(order(residuals))]
   )
+
+  ciLayer <- NULL
+
   if (hasErrorbars) {
     df$ymin <- lower
     df$ymax <- upper
+  } else if (is.numeric(ciLevel)) {
+    # Computation from jaspDistributions, based on:
+    # Stirling, W. D. (1982). Enhancements to aid interpretation of probability plots. Journal of the Royal Statistical Society: Series D (The Statistician), 31(3), 211-220.
+    # Quesenberry, C. P., & Hales, C. (1980). Concentration bands for uniformity plots. Journal of Statistical Computation and Simulation, 11(1), 41-53.
+    i     <- seq_len(n)
+    alpha <- 1 - ciLevel
+
+    pLower <- stats::qbeta(alpha/2, i, n - i + 1)
+    pUpper <- stats::qbeta(1 - alpha/2, i, n - i + 1)
+
+    zLower <- stats::qnorm(pLower)
+    zUpper <- stats::qnorm(pUpper)
+
+    df$ymin <- int + slope * zLower[order(order(residuals))]
+    df$ymax <- int + slope * zUpper[order(order(residuals))]
+
+    ciLayer <- ggplot2::geom_ribbon(
+      data = df,
+      mapping = ggplot2::aes(x = x, ymin = ymin, ymax = ymax),
+      fill = fillColor, alpha = ciAlpha, color = ciLineColor,
+      inherit.aes = FALSE
+    )
   }
 
   if (isTRUE(na.rm)) {
@@ -49,7 +78,6 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
     xBreaks <- getPrettyAxisBreaks(df$x)
     yBreaks <- getPrettyAxisBreaks(c(df$y, df$ymin, df$ymax))
   }
-
 
   # from stats::qqline
   xvals <- stats::quantile(df$y, c(0.25, 0.75), names = FALSE)
@@ -85,6 +113,7 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
     g <- g + ggplot2::geom_errorbar(aes(ymin = .data$ymin, ymax = .data$ymax))
 
   g <- g +
+    ciLayer +
     geom_point() +
     scale_x_continuous(name = xName, breaks = xBreaks, limits = range(xBreaks)) +
     scale_y_continuous(name = yName, breaks = yBreaks, limits = range(yBreaks))
