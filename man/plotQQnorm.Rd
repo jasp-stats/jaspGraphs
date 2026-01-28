@@ -13,6 +13,10 @@ plotQQnorm(
   ablineColor = "red",
   identicalAxes = FALSE,
   na.rm = TRUE,
+  ciLevel = NULL,
+  fillColor = "steelblue",
+  ciAlpha = 0.25,
+  ciLineColor = "black",
   xName = gettext("Theoretical quantiles", domain = "R-jaspGraphs"),
   yName = gettext("Observed quantiles", domain = "R-jaspGraphs")
 )

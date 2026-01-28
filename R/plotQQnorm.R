@@ -24,7 +24,7 @@
 #'
 #' @export
 plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineOrigin = FALSE, ablineColor = "red", identicalAxes = FALSE, na.rm = TRUE,
-                       ciLevel = NULL, xName = gettext("Theoretical quantiles",domain="R-jaspGraphs"), yName = gettext("Observed quantiles",domain="R-jaspGraphs")) {
+                       ciLevel = NULL, fillColor = "steelblue", ciAlpha = 0.25, ciLineColor = "black", xName = gettext("Theoretical quantiles",domain="R-jaspGraphs"), yName = gettext("Observed quantiles",domain="R-jaspGraphs")) {
 
   n <- length(residuals)
   hasErrorbars <- !is.null(lower) && !is.null(upper)
@@ -58,7 +58,7 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
     ciLayer <- ggplot2::geom_ribbon(
       data = df,
       mapping = ggplot2::aes(x = x, ymin = ymin, ymax = ymax),
-      fill = "steelblue", alpha = 0.25, col = "black",
+      fill = fillColor, alpha = ciAlpha, color = ciLineColor,
       inherit.aes = FALSE
     )
   }
