@@ -38,6 +38,12 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
     x = stats::qnorm(stats::ppoints(n))[order(order(residuals))]
   )
 
+  # from stats::qqline
+  xvals <- stats::quantile(df$y, c(0.25, 0.75), names = FALSE)
+  yvals <- stats::qnorm(c(0.25, 0.75))
+  slope <- diff(xvals) / diff(yvals)
+  int <- xvals[1L] - slope * yvals[1L]
+
   ciLayer <- NULL
 
   if (hasErrorbars) {
@@ -78,12 +84,6 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
     xBreaks <- getPrettyAxisBreaks(df$x)
     yBreaks <- getPrettyAxisBreaks(c(df$y, df$ymin, df$ymax))
   }
-
-  # from stats::qqline
-  xvals <- stats::quantile(df$y, c(0.25, 0.75), names = FALSE)
-  yvals <- stats::qnorm(c(0.25, 0.75))
-  slope <- diff(xvals) / diff(yvals)
-  int <- xvals[1L] - slope * yvals[1L]
 
   # initial guess for line range
   xvals <- range(xBreaks)
