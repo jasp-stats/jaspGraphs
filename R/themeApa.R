@@ -91,7 +91,7 @@ themeApaRaw <- function(legend.pos       = getGraphOption("legend.position"),
       # additional options copied from themeJasp
       text                 = element_text(family = family, size = font.size),
       axis.ticks.length    = axisTickLength,
-      axis.ticks           = element_line(size = axisTickWidth, color = "black")
+      axis.ticks           = element_line(linewidth = axisTickWidth, color = "black")
     )
 
   if (is.character(legend.pos))
@@ -158,13 +158,13 @@ themeApaRaw <- function(legend.pos       = getGraphOption("legend.position"),
   if (y == TRUE) {
     plot <- plot + theme(panel.grid.major.y = ggplot2::element_line(colour = "grey92"))
     if (minor == TRUE) {
-      plot <- plot + theme(panel.grid.minor.y = ggplot2::element_line(colour = "grey92", size = 0.25))
+      plot <- plot + theme(panel.grid.minor.y = ggplot2::element_line(colour = "grey92", linewidth = 0.25))
     }
   }
   if (x == TRUE) {
     plot <- plot + theme(panel.grid.major.x = ggplot2::element_line(colour = "grey92"))
     if (minor == TRUE) {
-      plot <- plot + theme(panel.grid.minor.x = ggplot2::element_line(colour = "grey92", size = 0.25))
+      plot <- plot + theme(panel.grid.minor.x = ggplot2::element_line(colour = "grey92", linewidth = 0.25))
     }
   }
   return(plot)

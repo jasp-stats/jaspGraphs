@@ -2,7 +2,7 @@
 #' @export
 print.jaspGraphs <- function(x, ...) {
 
-  if (ggplot2::is.ggplot(x)) {
+  if (ggplot2::is_ggplot(x)) {
     # do not call ggplot2:::print.ggplot() to please R CMD check
     NextMethod()
   } else if (inherits(x, c("gtable", "gTree", "grob", "gDesc"))) {

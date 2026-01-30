@@ -39,11 +39,11 @@ themePubrRaw <- function(base_size = getGraphOption("fontsize"),
     xhjust <- 1
 
   if (border) {
-    panel.border <- element_rect(fill = NA, colour = "black", size = 0.7)
+    panel.border <- element_rect(fill = NA, colour = "black", linewidth = 0.7)
     axis.line    <- element_blank()
   } else {
     panel.border <- element_blank()
-    axis.line    <- element_line(colour = "black", size = 0.5)
+    axis.line    <- element_line(colour = "black", linewidth = 0.5)
   }
 
   plot.margin <- if (margin) margin(half_line, half_line, half_line, half_line) else unit(c(0.5, 0.3, 0.3, 0.3), "mm")
@@ -55,7 +55,7 @@ themePubrRaw <- function(base_size = getGraphOption("fontsize"),
           axis.line        = axis.line,
           axis.text        = element_text(color = "black"),
           legend.key       = element_blank(),
-          strip.background = element_rect(fill = "#F2F2F2", colour = "black", size = 0.7),
+          strip.background = element_rect(fill = "#F2F2F2", colour = "black", linewidth = 0.7),
           plot.margin      = plot.margin,
           legend.position  = legend,
           complete         = TRUE)

@@ -34,7 +34,7 @@ getEmptyTheme <- function() {
   #       plot.margin   = rep(grid::unit(0,"null"), 4)
   #     )
   # if (getGraphOption("debug"))
-  # t <- t + ggplot2::theme(rect = ggplot2::element_rect(colour = "red", size = 1, linetype = 1, fill = "transparent"))
+  # t <- t + ggplot2::theme(rect = ggplot2::element_rect(colour = "red", linewidth = 1, linetype = 1, fill = "transparent"))
   return(t)
 }
 
