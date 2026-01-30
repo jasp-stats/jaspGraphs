@@ -19,7 +19,7 @@
 
 
 
-#' @importFrom ggplot2 layer_scales is.ggplot ggplot_build
+#' @importFrom ggplot2 layer_scales is_ggplot ggplot_build
 
 `%|NW|%` <- function(a, b) if (!(is.null(a) || is.waive(a))) a else b
 `%|W|%`  <- function(a, b) if (                !is.waive(a)) a else b
@@ -70,7 +70,7 @@ optionsDiff <- function(new, old) {
 #' @export
 plotEditing <- function(graph, newOptions) {
 
-  if (!is.ggplot(graph))
+  if (!is_ggplot(graph))
     stop2("graph should be a ggplot2")
 
   if (isTRUE(newOptions[["resetPlot"]])) {

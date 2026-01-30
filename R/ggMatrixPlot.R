@@ -141,7 +141,7 @@ modifyAxesLabels <- function(removeXYlabels, plotList) {
 getAxesLabels <- function(g) {
 
   # NULL or list() for empty plots
-  if (!is.ggplot(g))
+  if (!is_ggplot(g))
     return(list(xtop = NULL, xbottom = NULL, yleft = NULL, yright = NULL))
 
   axesLabels <- try({

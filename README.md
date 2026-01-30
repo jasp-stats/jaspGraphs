@@ -1,8 +1,13 @@
-# jaspGraphs
-
+<div align="right">
 [![R build status](https://github.com/jasp-stats/jaspGraphs/workflows/R-CMD-check/badge.svg)](https://github.com/jasp-stats/jaspGraphs/actions)
-[![Documentation](https://img.shields.io/badge/doc-latest-blue.svg)](https://vandenman.github.io/jaspGraphs)
+[![Unit Tests](https://github.com/jasp-stats/jaspGraphs/actions/workflows/unittests.yml/badge.svg)](https://github.com/jasp-stats/jaspGraphs/actions/workflows/unittests.yml)
+[![codecov](https://codecov.io/gh/jasp-stats/jaspGraphs/branch/master/graph/badge.svg)](https://codecov.io/gh/jasp-stats/jaspGraphs)
+<br>
+<b>Maintainer:</b> <a href="https://github.com/vandenman/">Don van den Bergh</a>
 
+</div>
+
+# jaspGraphs
 
 ## Overview
 

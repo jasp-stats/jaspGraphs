@@ -6,24 +6,24 @@
 
 # geom2trace.abline2 <- function(data, params, p) {
 #   class(data) <- c("GeomHline", "GeomPath", class(data))
-#   plotly:::geom2trace(data, params, p)
+#   plotly::geom2trace(data, params, p)
 # }
 
 to_basic.abline2 <- function(data, prestats_data, layout, params, p, ...) {
   class(data) <- c("GeomAbline", class(data))
-  plotly:::to_basic(data, prestats_data, layout, params, p, ...)
+  plotly::to_basic(data, prestats_data, layout, params, p, ...)
 }
 
 
 # handled by geom2trace.alignedtext
 # geom2trace.alignedtext <- function(data, params, p) {
 #   class(data) <- c("GeomText", class(data))
-#   plotly:::geom2trace(data, params, p)
+#   plotly::geom2trace(data, params, p)
 # }
 
 to_basic.alignedtext <- function(data, prestats_data, layout, params, p, ...) {
   # if we "fix" the class here, could we avoid a custom geom2trace?
   class(data) <- c("GeomText", class(data))
   data$label <- paste(data$label1, data$label2)
-  return(data) # do not call plotly:::to_basic because GeomText has no specific s3 method
+  return(data) # do not call plotly::to_basic because GeomText has no specific s3 method
 }

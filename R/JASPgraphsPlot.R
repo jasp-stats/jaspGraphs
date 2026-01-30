@@ -1,4 +1,4 @@
-#' @importFrom ggplot2 is.ggplot
+#' @importFrom ggplot2 is_ggplot
 #' @importFrom R6 R6Class
 
 jaspGraphsPlot <- R6Class(
@@ -6,7 +6,7 @@ jaspGraphsPlot <- R6Class(
   public = list(
     initialize = function(subplots, plotFunction = reDrawJaspGraphsPlot, ...) {
 
-      if (!all(vapply(subplots, is.ggplot, TRUE)))
+      if (!all(vapply(subplots, is_ggplot, TRUE)))
         stop2("all subplots should be of class ggplot!")
       if (!is.function(plotFunction))
         stop2("plotFunction should be a function!")
