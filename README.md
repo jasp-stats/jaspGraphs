@@ -1,4 +1,5 @@
 <div align="right">
+
 [![R build status](https://github.com/jasp-stats/jaspGraphs/workflows/R-CMD-check/badge.svg)](https://github.com/jasp-stats/jaspGraphs/actions)
 [![Unit Tests](https://github.com/jasp-stats/jaspGraphs/actions/workflows/unittests.yml/badge.svg)](https://github.com/jasp-stats/jaspGraphs/actions/workflows/unittests.yml)
 [![codecov](https://codecov.io/gh/jasp-stats/jaspGraphs/branch/master/graph/badge.svg)](https://codecov.io/gh/jasp-stats/jaspGraphs)
