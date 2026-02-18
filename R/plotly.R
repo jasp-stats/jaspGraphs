@@ -27,3 +27,8 @@ to_basic.alignedtext <- function(data, prestats_data, layout, params, p, ...) {
   data$label <- paste(data$label1, data$label2)
   return(data) # do not call plotly::to_basic because GeomText has no specific s3 method
 }
+
+# plotly does not support geom_label (https://github.com/plotly/plotly.R/issues/2425).
+# geom_label layers are extracted before ggplotly() in convertGgplotToPlotly and
+# converted to plotly annotations (which support bgcolor, bordercolor, and textangle).
+# See maybeRemoveGeomLabelLayers() in convertGgplotToPlotly.R
