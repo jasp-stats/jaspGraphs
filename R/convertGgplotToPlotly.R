@@ -38,7 +38,12 @@ convertGgplotToPlotly <- function(ggplotObj, returnJSON = TRUE) {
     # we need to remove the rangeframe layer, if there is one
     temp <- maybeRemoveRangeFrameLayer(ggplotObj = ggplotObj)
 
-    pNoRangeframe <- temp$ggplotObjNoRangeFrame
+    # plotly does not support geom_label (https://github.com/plotly/plotly.R/issues/2425)
+    # we extract them before ggplotly() and convert them to plotly annotations,
+    # which support background color, border, and text angle.
+    temp2 <- maybeRemoveGeomLabelLayers(temp$ggplotObjNoRangeFrame)
+
+    pNoRangeframe <- temp2$ggplotObj
     plotlyplotje <- ggplotly(pNoRangeframe)
     hasRangeFrame <- FALSE
 
@@ -114,6 +119,10 @@ convertGgplotToPlotly <- function(ggplotObj, returnJSON = TRUE) {
 
     }
 
+    # add geom_label layers as plotly annotations (with background, border, angle)
+    if (length(temp2$annotations) > 0L)
+      plotlyplotje <- plotly::layout(plotlyplotje, annotations = temp2$annotations)
+
     plotlybuild <- plotly::plotly_build(plotlyplotje)
 
     # TODO: we should decode any column names in the data in plotlybuild$x... maybe we can do this through ggplot2 though
@@ -129,6 +138,85 @@ convertGgplotToPlotly <- function(ggplotObj, returnJSON = TRUE) {
 
 findRangeFrame <- function(ggplot_obj) {
   which(vapply(ggplot_obj@layers, FUN = \(layer) inherits(layer$geom, "GeomRangeFrame"), FUN.VALUE = logical(1L)))
+}
+
+# Extract geom_label layers from a ggplot object and convert them to plotly annotations.
+# Returns a list with the modified ggplot object (labels removed) and plotly annotations.
+maybeRemoveGeomLabelLayers <- function(ggplotObj) {
+  idx <- which(vapply(ggplotObj@layers, FUN = \(layer) inherits(layer$geom, "GeomLabel"), FUN.VALUE = logical(1L)))
+  if (length(idx) == 0L)
+    return(list(ggplotObj = ggplotObj, annotations = list()))
+
+  # build the plot to resolve data, scales, and panel ranges
+  built <- ggplot2::ggplot_build(ggplotObj)
+  panelParams <- built$layout$panel_params
+
+  annotations <- list()
+  for (i in idx) {
+    layerData    <- built$data[[i]]
+    layerGeom    <- ggplotObj@layers[[i]]$geom
+    aesParams    <- ggplotObj@layers[[i]]$aes_params
+    geomParams   <- ggplotObj@layers[[i]]$geom_params %||% list()
+
+    for (row in seq_len(nrow(layerData))) {
+      d <- layerData[row, , drop = FALSE]
+      panel <- as.integer(d$PANEL)
+      pp <- panelParams[[panel]]
+
+      # resolve I()/AsIs NPC coordinates to data coordinates
+      x_val <- d$x
+      y_val <- d$y
+      if (inherits(ggplotObj@layers[[i]]$data$x, "AsIs")) {
+        xrange <- pp$x.range %||% pp$x_range %||% pp$x.sec$range
+        x_val <- xrange[1L] + as.numeric(x_val) * diff(xrange)
+      }
+      if (inherits(ggplotObj@layers[[i]]$data$y, "AsIs")) {
+        yrange <- pp$y.range %||% pp$y_range %||% pp$y.sec$range
+        y_val <- yrange[1L] + as.numeric(y_val) * diff(yrange)
+      }
+
+      angle     <- aesParams$angle     %||% d$angle     %||% 0
+      colour    <- d$colour    %||% "black"
+      fill      <- d$fill      %||% "white"
+      alpha     <- d$alpha     %||% NA
+      labelText <- d$label     %||% ""
+      fontSize  <- (d$size %||% 3.88) * ggplot2::.pt  # ggplot2 size (mm) -> pt
+      hjust     <- d$hjust %||% aesParams$hjust %||% 0.5
+      vjust     <- d$vjust %||% aesParams$vjust %||% 0.5
+
+      # map ggplot2 hjust/vjust to plotly xanchor/yanchor
+      xanchor <- if (is.character(hjust)) {
+        switch(hjust, inward = "right", outward = "left", hjust)
+      } else if (hjust <= 0.25) "left" else if (hjust >= 0.75) "right" else "center"
+
+      yanchor <- if (is.character(vjust)) {
+        switch(vjust, inward = "top", outward = "bottom", vjust)
+      } else if (vjust <= 0.25) "bottom" else if (vjust >= 0.75) "top" else "middle"
+
+      fillRGB   <- plotly::toRGB(fill,   if (is.na(alpha)) 1 else alpha)
+      borderRGB <- plotly::toRGB(colour, if (is.na(alpha)) 1 else alpha)
+      textRGB   <- plotly::toRGB(colour, if (is.na(alpha)) 1 else alpha)
+
+      annotations[[length(annotations) + 1L]] <- list(
+        x         = x_val,
+        y         = y_val,
+        text      = labelText,
+        showarrow = FALSE,
+        font      = list(size = fontSize, color = textRGB),
+        bgcolor   = fillRGB,
+        bordercolor = borderRGB,
+        borderwidth = 1,
+        borderpad   = 4,
+        xanchor   = xanchor,
+        yanchor   = yanchor,
+        textangle = -angle  # ggplot2 angle is counter-clockwise, plotly is clockwise
+      )
+    }
+  }
+
+  # remove the label layers
+  ggplotObj@layers <- ggplotObj@layers[-idx]
+  return(list(ggplotObj = ggplotObj, annotations = annotations))
 }
 
 maybeRemoveRangeFrameLayer <- function(ggplotObj) {
