@@ -2,7 +2,6 @@
 % Please edit documentation in R/PlotPieChart.R
 \name{plotPieChart}
 \alias{plotPieChart}
-\alias{plotPieChartNonPolar}
 \title{Make a Pie Chart}
 \usage{
 plotPieChart(
@@ -15,19 +14,7 @@ plotPieChart(
   showAxisTicks = showAxisText,
   asPercentages = TRUE,
   palette = getGraphOption("palette"),
-  ...
-)
-
-plotPieChartNonPolar(
-  value,
-  group,
-  legendName = deparse(substitute(group)),
-  legendLabels = if (is.factor(group)) levels(group) else unique(group),
-  legendColors = NULL,
-  showAxisText = TRUE,
-  showAxisTicks = showAxisText,
-  asPercentages = TRUE,
-  palette = getGraphOption("palette"),
+  polarAxis = FALSE,
   ...
 )
 }
@@ -50,6 +37,8 @@ plotPieChartNonPolar(
 
 \item{palette}{Character vector with palette name. If this option is set then legendColors is ignored. If palette is NULL then legendColors are used.}
 
+\item{polarAxis}{Logical, should the pie chart be drawn in polar coordinates? Deprecated, use \code{plotPieChartNonPolar} instead, because polar coordinates are incompatible with interactive graphs.}
+
 \item{...}{Arguments to be passed to \code{\link{themeJasp}}.}
 }
 \value{
@@ -57,8 +46,6 @@ a ggplot object.
 }
 \description{
 Make a Pie Chart
-
-Make a pie chart without coord_polar
 }
 \examples{
 library(ggplot2)
@@ -69,8 +56,23 @@ ga <- letters[4:6]
 g <- plotPieChart(value, gg)
 print(g)
 plotPieChart(value, gg, ga)
-plotPieChart(value, gg, ga, showAxisTicks = FALSE)
-plotPieChart(value, gg, ga, showAxisTicks = FALSE, legend.position = "none") # hide the legend
+plotPieChart(value, gg, ga, showAxisText = FALSE)
+plotPieChart(value, gg, ga, showAxisText = FALSE, legend.position = "none") # hide the legend
+
+# something more extreme:
+value <- rpois(25, 10)
+g <- as.character(seq_len(25))
+plotPieChart(value, g)
+plotPieChart(value, g, showAxisText = FALSE)
+
+
+# deprecated version (for now)
+value <- c(25, 25, 50)
+g <- plotPieChart(value, gg, polarAxis = TRUE)
+print(g)
+plotPieChart(value, gg, ga, polarAxis = TRUE)
+plotPieChart(value, gg, ga, showAxisTicks = FALSE, polarAxis = TRUE)
+plotPieChart(value, gg, ga, showAxisTicks = FALSE, legend.position = "none", polarAxis = TRUE) # hide the legend
 
 # axis can still be modified
 print(g + scale_y_continuous(breaks = c(50, 75, 0)))
@@ -82,5 +84,5 @@ print(g + scale_y_continuous(breaks = breaks, labels = gg))
 # something more extreme:
 value <- rpois(25, 10)
 g <- as.character(seq_len(25))
-plotPieChart(value, g)
+plotPieChart(value, g, polarAxis = TRUE)
 }
