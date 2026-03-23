@@ -8,4 +8,6 @@
   registerS3method("to_basic",   "alignedtext", to_basic.alignedtext,   envir = plotlyNamespace)
   # registerS3method("geom2trace", "alignedtext", geom2trace.alignedtext, envir = plotlyNamespace)
 
+  registerS3method("geom2trace",   "GeomBoxplot", geom2trace.GeomBoxplotCustomOverride,   envir = plotlyNamespace)
+
 }
