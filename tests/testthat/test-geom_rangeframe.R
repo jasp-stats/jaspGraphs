@@ -20,7 +20,7 @@ test_that("geom_rangeframe: default, sides, coord_flip and sec axis/top position
   vdiffr::expect_doppelganger("geom_rangeframe-secaxis-all-sides", p_sec)
 
   # top position + panelInfo argument
-  p_top <- graph + ggplot2::scale_x_continuous(position = "top") + geom_rangeframe(sides = "tl", panelInfo = list(t = "x.major")) + themeJaspRaw()
+  p_top <- graph + scale_x_continuous(position = "top") + geom_rangeframe(sides = "tl", panelInfo = list(t = "x.major")) + themeJaspRaw()
   vdiffr::expect_doppelganger("geom_rangeframe-top-position", p_top)
 
 })
