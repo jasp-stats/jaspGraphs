@@ -193,23 +193,46 @@ get_ggplot_global <- function() {
 
 
 # Custom scale prototype for ggplot2 >= 4.0.0
+#
+# Improvements over the default ScaleContinuousPosition:
+# 1. get_limits: computes pretty breaks in original (untransformed) space and
+#    uses their span as limits. Handles order-reversing transforms (reverse,
+#    reciprocal) via sort().
+# 2. get_breaks: always derives breaks from the full data range rather than
+#    the view limits, so breaks remain stable under coord_cartesian zooming.
 ScaleContinuousPositionJASP <- ggplot2::ggproto(
   "ScaleContinuousPositionJASP",
   ggplot2::ScaleContinuousPosition,
 
   get_limits = function(self) {
-    if (self$is_empty()) {
-      return(c(0, 1))
-    }
+    if (self$is_empty()) return(c(0, 1))
 
-    if (identical(self$limits, "JASP")) {
-      # ensures that outer breakpoints are always included in plot
-      rng <- self$range$range
-      range(getPrettyAxisBreaks(rng))
-    } else if (!is.null(self$limits)) {
+    if (!is.null(self$limits)) {
+      # Explicit limits: standard ggplot2 behavior
       ifelse(!is.na(self$limits), self$limits, self$range$range)
     } else {
-      self$range$range
+      # JASP default: compute pretty breaks on the original (untransformed)
+      # data range and use their span as limits. sort() ensures correct
+      # ordering for order-reversing transforms (reverse, reciprocal).
+      transformation <- self$get_transformation()
+      dataRange      <- transformation$inverse(self$range$range)
+      prettyBreaks   <- getPrettyAxisBreaks(dataRange)
+      sort(transformation$transform(range(prettyBreaks)))
     }
+  },
+
+  get_breaks = function(self, limits = self$get_limits()) {
+    if (self$is_empty()) return(numeric())
+
+    # When breaks is a function, compute from the original data range
+    # (not the view limits from coord_cartesian). This keeps breaks
+    # stable when zooming.
+    if (is.function(self$breaks)) {
+      transformation <- self$get_transformation()
+      dataRange      <- transformation$inverse(self$range$range)
+      breaks         <- self$breaks(dataRange)
+      return(transformation$transform(breaks))
+    }
+    ggplot2::ggproto_parent(ggplot2::ScaleContinuousPosition, self)$get_breaks(limits)
   }
 )
