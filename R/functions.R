@@ -13,7 +13,9 @@ grid_arrange_shared_legend <- function(..., plotList = NULL, nrow = 1, ncol = le
     }
     position  <- match.arg(position)
     g         <- ggplot2::ggplotGrob(plots[[1]] + ggplot2::theme(legend.position = position))$grobs
-    legend    <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
+    # ggplot2 >= 3.5.0 uses "guide-box-{position}" instead of "guide-box"
+    guideBoxPattern <- paste0("guide-box(-", position, ")?$")
+    legend    <- g[[which(sapply(g, function(x) grepl(guideBoxPattern, x$name)))]]
     lheight   <- sum(legend$height)
     lwidth    <- sum(legend$width)
     gl        <- lapply(plots, function(x) x + ggplot2::theme(legend.position = "none"))

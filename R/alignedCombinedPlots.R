@@ -23,7 +23,8 @@ makeGrobAlignedPlots <- function(mainplot, abovePlot = NULL, rightPlot = NULL, s
 
   if (showLegend) {
     # extract the legend as grob
-    legendGrob <- gtable::gtable_filter(ggplotGrob(mainplot), "guide-box")
+    # ggplot2 >= 3.5.0 uses "guide-box-right" instead of "guide-box"
+    legendGrob <- gtable::gtable_filter(ggplotGrob(mainplot), "guide-box(-right)?$")
     # remove the legend from the main plot
     pGrob <- ggplotGrob(mainplot + theme(legend.position = "none"))
   } else {
