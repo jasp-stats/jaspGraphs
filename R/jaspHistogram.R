@@ -68,7 +68,6 @@ jaspHistogram <- function(
   binWidthType <- jaspHistogramBinWidth(x, binWidthType, numberOfBins)
 
   h <- graphics::hist(x, plot = FALSE, breaks = binWidthType)
-  xBreaks <- getPrettyAxisBreaks(c(x, h[["breaks"]]), min.n = 3)
 
   histogramGeom <- scaleFill <- maxCounts <- maxDensity <- NULL
   if (histogram) {
@@ -202,6 +201,11 @@ jaspHistogram <- function(
       rugGeom <- ggplot2::geom_rug(data = data.frame(x),                       mapping = ggplot2::aes(x = .data$x),                  sides = "b")
     }
   }
+
+  xBreaks <- getPrettyAxisBreaks(
+    if (density) {c(x, h[["breaks"]], densDf[["x"]])} else {c(x, h[["breaks"]])},
+    min.n = 3
+  )
 
   plot <-
     ggplot2::ggplot() +
