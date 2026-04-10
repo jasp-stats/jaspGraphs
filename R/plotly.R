@@ -14,6 +14,16 @@ to_basic.abline2 <- function(data, prestats_data, layout, params, p, ...) {
   plotly::to_basic(data, prestats_data, layout, params, p, ...)
 }
 
+to_basic.GeomJaspPoint <- function(data, prestats_data, layout, params, p, ...) {
+  class(data) <- c("GeomPoint", setdiff(class(data), "GeomJaspPoint"))
+  plotly::to_basic(data, prestats_data, layout, params, p, ...)
+}
+
+to_basic.GeomJaspLine <- function(data, prestats_data, layout, params, p, ...) {
+  class(data) <- c("GeomLine", setdiff(class(data), "GeomJaspLine"))
+  plotly::to_basic(data, prestats_data, layout, params, p, ...)
+}
+
 
 # handled by geom2trace.alignedtext
 # geom2trace.alignedtext <- function(data, params, p) {
