@@ -242,6 +242,8 @@ scaleAxesLabels <- function(scaleXYlabels, plotList) {
 #' @param layout a matrix that specifies the position of each plot, akin to the layout for base plots.
 #' @param nr number of rows
 #' @param nc number of columns
+#' @param shareX Whether plotly should share x-axes when converting a matrix plot. Defaults to FALSE.
+#' @param shareY Whether plotly should share y-axes when converting a matrix plot. Defaults to FALSE.
 #' @param ... ignored.
 #' @param leftLabels labels left of the plots in plotList.
 #' @param topLabels labels above the plots in plotList.
@@ -259,6 +261,8 @@ scaleAxesLabels <- function(scaleXYlabels, plotList) {
 #' @export
 ggMatrixPlot <- function(plotList = NULL, nr = NULL, nc = NULL,
                          ...,
+                         shareX         = FALSE,
+                         shareY         = FALSE,
                          leftLabels     = NULL,
                          topLabels      = NULL,
                          rightLabels    = NULL,
@@ -277,6 +281,8 @@ ggMatrixPlot <- function(plotList = NULL, nr = NULL, nc = NULL,
 ggMatrixPlot.matrix <- function(plotList = NULL, nr = NULL, nc = NULL,
                                 layout = NULL,
                                 ...,
+                                shareX         = FALSE,
+                                shareY         = FALSE,
                                 leftLabels     = NULL,
                                 topLabels      = NULL,
                                 rightLabels    = NULL,
@@ -307,7 +313,8 @@ ggMatrixPlot.matrix <- function(plotList = NULL, nr = NULL, nc = NULL,
     plotList = plotList,
     nr = nr,
     nc = nc,
-    ... = ...,
+    shareX = shareX,
+    shareY = shareY,
     leftLabels     = leftLabels,
     topLabels      = topLabels,
     rightLabels    = rightLabels,
@@ -325,6 +332,8 @@ ggMatrixPlot.matrix <- function(plotList = NULL, nr = NULL, nc = NULL,
 ggMatrixPlot.list <- function(plotList = NULL, nr = NULL, nc = NULL,
                               layout = NULL,
                               ...,
+                              shareX         = FALSE,
+                              shareY         = FALSE,
                               leftLabels     = NULL,
                               topLabels      = NULL,
                               rightLabels    = NULL,
@@ -359,7 +368,8 @@ ggMatrixPlot.list <- function(plotList = NULL, nr = NULL, nc = NULL,
     plotList = plotList,
     nr = nr,
     nc = nc,
-    ... = ...,
+    shareX = shareX,
+    shareY = shareY,
     leftLabels     = leftLabels,
     topLabels      = topLabels,
     rightLabels    = rightLabels,
@@ -377,6 +387,8 @@ ggMatrixPlot.list <- function(plotList = NULL, nr = NULL, nc = NULL,
 ggMatrixPlot.default <- function(plotList = NULL, nr = NULL, nc = NULL,
                                  layout = NULL,
                                  ...,
+                                 shareX         = FALSE,
+                                 shareY         = FALSE,
                                  leftLabels     = NULL,
                                  topLabels      = NULL,
                                  rightLabels    = NULL,
@@ -387,6 +399,8 @@ ggMatrixPlot.default <- function(plotList = NULL, nr = NULL, nc = NULL,
                                  scaleXYlabels  = c(.9,.9),
                                  debug          = FALSE) {
 
+  shareX <- validateMatrixPlotlyShareFlag(shareX, "shareX")
+  shareY <- validateMatrixPlotlyShareFlag(shareY, "shareY")
   removeXYlabels <- match.arg(removeXYlabels)
   if (is.null(plotList) && debug) {
 
@@ -500,9 +514,20 @@ ggMatrixPlot.default <- function(plotList = NULL, nr = NULL, nc = NULL,
       names        = c(gtNames[lengths(plotList) > 0]),
       layout       = layout,
       heights      = height,
-      widths       = width
+      widths       = width,
+      shareX       = shareX,
+      shareY       = shareY
     )
+
+  class(totalGraph) <- c("jaspMatrixPlot", "jaspMatrixplot", class(totalGraph))
 
   return(totalGraph)
 
+}
+
+validateMatrixPlotlyShareFlag <- function(flag, flagName) {
+  if (!is.logical(flag) || length(flag) != 1L || is.na(flag))
+    stop2(sprintf("%s should be either TRUE or FALSE.", flagName))
+
+  return(flag)
 }

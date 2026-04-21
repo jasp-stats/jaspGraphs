@@ -35,105 +35,316 @@ convertGgplotToPlotly <- function(ggplotObj, returnJSON = TRUE) {
 
   e <- try({
 
-    # we need to remove the rangeframe layer, if there is one
-    temp <- maybeRemoveRangeFrameLayer(ggplotObj = ggplotObj)
-
-    # plotly does not support geom_label (https://github.com/plotly/plotly.R/issues/2425)
-    # we extract them before ggplotly() and convert them to plotly annotations,
-    # which support background color, border, and text angle.
-    temp2 <- maybeRemoveGeomLabelLayers(temp$ggplotObjNoRangeFrame)
-
-    pNoRangeframe <- temp2$ggplotObj
-    plotlyplotje <- ggplotly(pNoRangeframe)
-    hasRangeFrame <- FALSE
-
-    if (!is.null(temp$shapes)) {
-
-      plotlyplotje <- plotly::layout(plotlyplotje,
-        shapes = temp$shapes,
-        xaxis = list(zeroline = FALSE, showline = FALSE),
-        yaxis = list(zeroline = FALSE, showline = FALSE)
-      )
-
-      # remove any background transparent background rectangle which blocks
-      # the rangeframe lines
-      # if (!is.null(plotlyplotje$x$layout$shapes) &&
-      #     plotlyplotje$x$layout$shapes[[1L]]$type == "rect" &&
-      #     plotlyplotje$x$layout$shapes[[1L]]$fillcolor == "transparent"
-      #     ) {
-      #   plotlyplotje$x$layout$shapes <- NULL
-      # }
-
-      # this might be too invasive, but it works for now
-      plotlyplotje$x$layout$shapes <- temp$shapes
-
-      sides <- temp$rangeFrameLayer$geom_rangeframe$geom_params$sides
-      if (grepl("b", sides) || grepl("l", sides))
-        hasRangeFrame <- TRUE
-
-      # Get all x-axes
-      xaxes <- grep("^xaxis", names(plotlyplotje$x$layout), value = TRUE)
-      # Get all y-axes
-      yaxes <- grep("^yaxis", names(plotlyplotje$x$layout), value = TRUE)
-      x_domains <- vapply(xaxes, function(ax) plotlyplotje$x$layout[[ax]]$domain, numeric(2L))
-      y_domains <- vapply(yaxes, function(ax) plotlyplotje$x$layout[[ax]]$domain, numeric(2L))
-
-      # axis names as plotly expects them
-      xnms <- sub("axis", "", xaxes)
-      ynms <- sub("axis", "", yaxes)
-
-      if (grepl("b", sides))
-        for (ax in xaxes)
-          plotlyplotje$x$layout[[ax]]$tickmode <- "auto"
-
-      if (grepl("l", sides))
-        for (ax in yaxes)
-          plotlyplotje$x$layout[[ax]]$tickmode <- "auto"
-
-      # repeat the rangeframe shape for all facets using the starting shape as a template
-      # and the domains from the axes.
-      shp <- plotlyplotje$x$layout$shapes
-      shp0 <- shp
-      for (i in seq_along(xaxes)) {
-        for (j in seq_along(yaxes)) {
-
-          if (i == 1L && j == 1L)
-            next
-
-          shp_new <- shp0
-          shp_new[[1L]]$xref <- xnms[i]
-          shp_new[[1L]]$y0 <- y_domains[1L, j]
-          shp_new[[1L]]$y1 <- y_domains[1L, j]
-
-          shp_new[[2L]]$yref <- ynms[j]
-          shp_new[[2L]]$x0 <- x_domains[1L, i]
-          shp_new[[2L]]$x1 <- x_domains[1L, i]
-
-          shp <- c(shp, shp_new)
-        }
-      }
-      plotlyplotje$x$layout$shapes <- shp
-
-
-      plotlyplotje <- htmlwidgets::onRender(plotlyplotje, jsCode = js_code_rangeframe)
-
-    }
-
-    # add geom_label layers as plotly annotations (with background, border, angle)
-    if (length(temp2$annotations) > 0L)
-      plotlyplotje <- plotly::layout(plotlyplotje, annotations = temp2$annotations)
-
-    plotlybuild <- plotly::plotly_build(plotlyplotje)
+    converted <- convertPlotObjectToPlotly(ggplotObj)
 
     # TODO: we should decode any column names in the data in plotlybuild$x... maybe we can do this through ggplot2 though
     if (returnJSON) {
-      json <- toJSON(list(data = plotlybuild$x$data, layout = plotlybuild$x$layout, hasRangeFrame = hasRangeFrame))
+      json <- toJSON(list(data = converted$plotly$x$data, layout = converted$plotly$x$layout, hasRangeFrame = converted$hasRangeFrame))
       json
     } else {
-      plotlybuild
+      converted$plotly
     }
   })
   return(e)
+}
+
+convertPlotObjectToPlotly <- function(plotObj) {
+  if (inherits(plotObj, c("jaspMatrixPlot", "jaspMatrixplot")))
+    return(convertJaspMatrixPlotToPlotly(plotObj))
+
+  if (!ggplot2::is_ggplot(plotObj))
+    stop2("convertGgplotToPlotly only supports ggplot objects and jaspMatrixPlot objects.")
+
+  return(convertSingleGgplotToPlotly(plotObj))
+}
+
+convertSingleGgplotToPlotly <- function(ggplotObj) {
+
+  # we need to remove the rangeframe layer, if there is one
+  temp <- maybeRemoveRangeFrameLayer(ggplotObj = ggplotObj)
+
+  # plotly does not support geom_label (https://github.com/plotly/plotly.R/issues/2425)
+  # we extract them before ggplotly() and convert them to plotly annotations,
+  # which support background color, border, and text angle.
+  temp2 <- maybeRemoveGeomLabelLayers(temp$ggplotObjNoRangeFrame)
+
+  pNoRangeframe <- temp2$ggplotObj
+  plotlyplotje <- ggplotly(pNoRangeframe)
+  hasRangeFrame <- FALSE
+
+  if (!is.null(temp$shapes)) {
+
+    plotlyplotje <- plotly::layout(plotlyplotje,
+      shapes = temp$shapes,
+      xaxis = list(zeroline = FALSE, showline = FALSE),
+      yaxis = list(zeroline = FALSE, showline = FALSE)
+    )
+
+    # remove any background transparent background rectangle which blocks
+    # the rangeframe lines
+    # if (!is.null(plotlyplotje$x$layout$shapes) &&
+    #     plotlyplotje$x$layout$shapes[[1L]]$type == "rect" &&
+    #     plotlyplotje$x$layout$shapes[[1L]]$fillcolor == "transparent"
+    #     ) {
+    #   plotlyplotje$x$layout$shapes <- NULL
+    # }
+
+    # this might be too invasive, but it works for now
+    plotlyplotje$x$layout$shapes <- temp$shapes
+
+    sides <- temp$rangeFrameLayer$geom_rangeframe$geom_params$sides
+    if (grepl("b", sides) || grepl("l", sides))
+      hasRangeFrame <- TRUE
+
+    # Get all x-axes
+    xaxes <- grep("^xaxis", names(plotlyplotje$x$layout), value = TRUE)
+    # Get all y-axes
+    yaxes <- grep("^yaxis", names(plotlyplotje$x$layout), value = TRUE)
+    x_domains <- vapply(xaxes, function(ax) plotlyplotje$x$layout[[ax]]$domain, numeric(2L))
+    y_domains <- vapply(yaxes, function(ax) plotlyplotje$x$layout[[ax]]$domain, numeric(2L))
+
+    # axis names as plotly expects them
+    xnms <- sub("axis", "", xaxes)
+    ynms <- sub("axis", "", yaxes)
+
+    if (grepl("b", sides))
+      for (ax in xaxes)
+        plotlyplotje$x$layout[[ax]]$tickmode <- "auto"
+
+    if (grepl("l", sides))
+      for (ax in yaxes)
+        plotlyplotje$x$layout[[ax]]$tickmode <- "auto"
+
+    # repeat the rangeframe shape for all facets using the starting shape as a template
+    # and the domains from the axes.
+    shp <- plotlyplotje$x$layout$shapes
+    shp0 <- shp
+    for (i in seq_along(xaxes)) {
+      for (j in seq_along(yaxes)) {
+
+        if (i == 1L && j == 1L)
+          next
+
+        shp_new <- shp0
+        shp_new[[1L]]$xref <- xnms[i]
+        shp_new[[1L]]$y0 <- y_domains[1L, j]
+        shp_new[[1L]]$y1 <- y_domains[1L, j]
+
+        shp_new[[2L]]$yref <- ynms[j]
+        shp_new[[2L]]$x0 <- x_domains[1L, i]
+        shp_new[[2L]]$x1 <- x_domains[1L, i]
+
+        shp <- c(shp, shp_new)
+      }
+    }
+    plotlyplotje$x$layout$shapes <- shp
+
+
+    plotlyplotje <- htmlwidgets::onRender(plotlyplotje, jsCode = js_code_rangeframe)
+
+  }
+
+  # add geom_label layers as plotly annotations (with background, border, angle)
+  if (length(temp2$annotations) > 0L)
+    plotlyplotje <- plotly::layout(plotlyplotje, annotations = temp2$annotations)
+
+  return(list(plotly = plotly::plotly_build(plotlyplotje), hasRangeFrame = hasRangeFrame))
+}
+
+convertJaspMatrixPlotToPlotly <- function(plotObj) {
+  layout <- plotObj$plotArgs[["layout"]]
+  widths <- plotObj$plotArgs[["widths"]]
+  heights <- plotObj$plotArgs[["heights"]]
+  subplotNames <- plotObj$plotArgs[["names"]]
+  shareX <- resolveMatrixPlotlyShareFlag(plotObj$plotArgs[["shareX"]], "shareX")
+  shareY <- resolveMatrixPlotlyShareFlag(plotObj$plotArgs[["shareY"]], "shareY")
+
+  if (!is.matrix(layout) || is.null(widths) || is.null(heights))
+    stop2("jaspMatrixPlot is missing layout information required for plotly conversion.")
+
+  subplotCount <- length(plotObj$subplots)
+  plotCells <- vector("list", length(layout))
+  hasRangeFrame <- FALSE
+
+  for (cellIndex in seq_along(layout)) {
+    subplotIndex <- layout[[cellIndex]]
+
+    if (!is.na(subplotIndex) && subplotIndex <= subplotCount) {
+      subplotName <- if (!is.null(subplotNames)) subplotNames[[subplotIndex]] else NULL
+      converted <- if (isMatrixLabelSubplotName(subplotName)) {
+        convertMatrixLabelSubplotToPlotly(plotObj$subplots[[subplotIndex]])
+      } else {
+        convertSingleGgplotToPlotly(plotObj$subplots[[subplotIndex]])
+      }
+      plotCells[[cellIndex]] <- stripPlotlyConfig(converted$plotly)
+      hasRangeFrame <- hasRangeFrame || converted$hasRangeFrame
+    } else {
+      plotCells[[cellIndex]] <- makeEmptyPlotlySubplot()
+    }
+  }
+
+  dim(plotCells) <- dim(layout)
+  widths <- normalizeSubplotSpans(widths)
+  heights <- normalizeSubplotSpans(heights)
+
+  rowPlots <- vector("list", nrow(layout))
+  for (rowIndex in seq_len(nrow(layout))) {
+    rowPlots[[rowIndex]] <- stripPlotlyConfig(do.call(
+      plotly::subplot,
+      c(
+        plotCells[rowIndex, ],
+        list(
+          nrows = 1,
+          widths = widths,
+          margin = 0,
+          shareX = shareX,
+          shareY = shareY,
+          titleX = FALSE,
+          titleY = FALSE
+        )
+      )
+    ))
+  }
+
+  matrixPlot <- stripPlotlyConfig(do.call(
+    plotly::subplot,
+    c(
+      rowPlots,
+      list(
+        nrows = length(rowPlots),
+        heights = heights,
+        margin = 0,
+        shareX = shareX,
+        shareY = shareY,
+        titleX = FALSE,
+        titleY = FALSE
+      )
+    )
+  ))
+
+  if (hasRangeFrame)
+    matrixPlot <- htmlwidgets::onRender(matrixPlot, jsCode = js_code_rangeframe)
+
+  return(list(plotly = plotly::plotly_build(matrixPlot), hasRangeFrame = hasRangeFrame))
+}
+
+resolveMatrixPlotlyShareFlag <- function(flag, flagName) {
+  if (is.null(flag))
+    return(FALSE)
+
+  if (!is.logical(flag) || length(flag) != 1L || is.na(flag))
+    stop2(sprintf("jaspMatrixPlot plotly %s should be either TRUE or FALSE.", flagName))
+
+  return(flag)
+}
+
+isMatrixLabelSubplotName <- function(subplotName) {
+  is.character(subplotName) && length(subplotName) == 1L && grepl("^(xlab-[tb]|ylab-[lr])-", subplotName)
+}
+
+convertMatrixLabelSubplotToPlotly <- function(ggplotObj) {
+  built <- ggplot2::ggplot_build(ggplotObj)
+  layerData <- built$data[[1L]]
+
+  if (is.null(layerData) || nrow(layerData) == 0L)
+    return(list(plotly = makeEmptyPlotlySubplot(), hasRangeFrame = FALSE))
+
+  fontFamily <- layerData$family[[1L]]
+  font <- list(
+    size = (layerData$size[[1L]] %||% 3.88) * ggplot2::.pt,
+    color = layerData$colour[[1L]] %||% "black"
+  )
+  if (!is.null(fontFamily) && !is.na(fontFamily) && nzchar(fontFamily))
+    font$family <- fontFamily
+
+  annotation <- list(
+    x = layerData$x[[1L]] %||% 0.5,
+    y = layerData$y[[1L]] %||% 0.5,
+    xref = "x",
+    yref = "y",
+    text = layerData$label[[1L]] %||% "",
+    showarrow = FALSE,
+    xanchor = ggplotHjustToPlotlyXAnchor(layerData$hjust[[1L]] %||% "center"),
+    yanchor = ggplotVjustToPlotlyYAnchor(layerData$vjust[[1L]] %||% "center"),
+    textangle = -(layerData$angle[[1L]] %||% 0),
+    font = font
+  )
+
+  plotlyplotje <- plotly::layout(
+    plotly::plot_ly(
+      x = c(0, 1),
+      y = c(0, 1),
+      type = "scatter",
+      mode = "markers",
+      hoverinfo = "skip",
+      marker = list(opacity = 0),
+      showlegend = FALSE
+    ),
+    annotations = list(annotation),
+    xaxis = list(range = c(0, 1), visible = FALSE, showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE, fixedrange = TRUE),
+    yaxis = list(range = c(0, 1), visible = FALSE, showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE, fixedrange = TRUE),
+    margin = list(l = 0, r = 0, b = 0, t = 0),
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor = "rgba(0,0,0,0)",
+    showlegend = FALSE
+  )
+
+  return(list(plotly = plotly::plotly_build(plotlyplotje), hasRangeFrame = FALSE))
+}
+
+ggplotHjustToPlotlyXAnchor <- function(hjust) {
+  if (is.character(hjust))
+    return(switch(hjust, inward = "right", outward = "left", hjust))
+
+  if (hjust <= 0.25)
+    return("left")
+  if (hjust >= 0.75)
+    return("right")
+  return("center")
+}
+
+ggplotVjustToPlotlyYAnchor <- function(vjust) {
+  if (is.character(vjust))
+    return(switch(vjust, inward = "top", outward = "bottom", vjust))
+
+  if (vjust <= 0.25)
+    return("bottom")
+  if (vjust >= 0.75)
+    return("top")
+  return("middle")
+}
+
+normalizeSubplotSpans <- function(spans) {
+  spans <- as.numeric(spans)
+
+  if (length(spans) == 0L || anyNA(spans) || any(spans <= 0))
+    stop2("Matrix plot widths and heights should be positive numeric vectors.")
+
+  return(spans / sum(spans))
+}
+
+makeEmptyPlotlySubplot <- function() {
+  plotly::layout(
+    plotly::plot_ly(
+      x = numeric(),
+      y = numeric(),
+      type = "scatter",
+      mode = "markers",
+      hoverinfo = "skip",
+      showlegend = FALSE
+    ),
+    xaxis = list(visible = FALSE, showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+    yaxis = list(visible = FALSE, showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+    margin = list(l = 0, r = 0, b = 0, t = 0),
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor = "rgba(0,0,0,0)",
+    showlegend = FALSE
+  )
+}
+
+stripPlotlyConfig <- function(plotlyObj) {
+  plotlyObj$x$config <- NULL
+  return(plotlyObj)
 }
 
 findRangeFrame <- function(ggplot_obj) {

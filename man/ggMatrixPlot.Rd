@@ -12,6 +12,8 @@ ggMatrixPlot(
   nr = NULL,
   nc = NULL,
   ...,
+  shareX = FALSE,
+  shareY = FALSE,
   leftLabels = NULL,
   topLabels = NULL,
   rightLabels = NULL,
@@ -29,6 +31,8 @@ ggMatrixPlot(
   nc = NULL,
   layout = NULL,
   ...,
+  shareX = FALSE,
+  shareY = FALSE,
   leftLabels = NULL,
   topLabels = NULL,
   rightLabels = NULL,
@@ -46,6 +50,8 @@ ggMatrixPlot(
   nc = NULL,
   layout = NULL,
   ...,
+  shareX = FALSE,
+  shareY = FALSE,
   leftLabels = NULL,
   topLabels = NULL,
   rightLabels = NULL,
@@ -63,6 +69,8 @@ ggMatrixPlot(
   nc = NULL,
   layout = NULL,
   ...,
+  shareX = FALSE,
+  shareY = FALSE,
   leftLabels = NULL,
   topLabels = NULL,
   rightLabels = NULL,
@@ -82,6 +90,10 @@ ggMatrixPlot(
 \item{nc}{number of columns}
 
 \item{...}{ignored.}
+
+\item{shareX}{Whether plotly should share x-axes when converting a matrix plot. Defaults to FALSE.}
+
+\item{shareY}{Whether plotly should share y-axes when converting a matrix plot. Defaults to FALSE.}
 
 \item{leftLabels}{labels left of the plots in plotList.}
 

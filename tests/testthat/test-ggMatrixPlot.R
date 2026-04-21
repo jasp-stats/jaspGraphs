@@ -18,9 +18,16 @@ test_that("ggMatrixPlot: 2x2 matrix, scaled labels, and debug variants", {
 
   p <- ggMatrixPlot(plotMatrix)
   testthat::expect_s3_class(p, "jaspGraphsPlot")
+  testthat::expect_true(inherits(p, "jaspMatrixPlot"))
+  testthat::expect_false(isTRUE(p$plotArgs$shareX))
+  testthat::expect_false(isTRUE(p$plotArgs$shareY))
   grob_p <- p$plotFunction(p$subplots, args = p$plotArgs, grob = TRUE)
   # TODO: fails
   # vdiffr::expect_doppelganger("ggMatrixPlot-2x2-matrix", grob_p)
+
+  p_shared <- ggMatrixPlot(plotMatrix, shareX = TRUE, shareY = TRUE)
+  testthat::expect_true(isTRUE(p_shared$plotArgs$shareX))
+  testthat::expect_true(isTRUE(p_shared$plotArgs$shareY))
 
   # scaled labels variant
   # TODO: @don needs to fix
@@ -31,6 +38,7 @@ test_that("ggMatrixPlot: 2x2 matrix, scaled labels, and debug variants", {
   # debug plot (constructed by the function itself)
   p_debug <- ggMatrixPlot(debug = TRUE, nr = 3, nc = 2)
   testthat::expect_s3_class(p_debug, "jaspGraphsPlot")
+  testthat::expect_true(inherits(p_debug, "jaspMatrixPlot"))
   grob_debug <- p_debug$plotFunction(p_debug$subplots, args = p_debug$plotArgs, grob = TRUE)
   # TODO: fails
   # vdiffr::expect_doppelganger("ggMatrixPlot-debug", grob_debug)
