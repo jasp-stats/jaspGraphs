@@ -99,16 +99,13 @@ JASPScatterPlot <- function(x, y, group = NULL, xName = NULL, yName = NULL,
   topPlot   <- JASPScatterSubPlot(x, group, plotAbove, x.range, colorAreaUnderDensity, alphaAreaUnderDensity)
   rightPlot <- JASPScatterSubPlot(y, group, plotRight, y.range, colorAreaUnderDensity, alphaAreaUnderDensity, flip = TRUE)
 
-  plotList <- list(mainPlot = mainPlot, topPlot = topPlot, rightPlot = rightPlot)
-  plotList <- plotList[lengths(plotList) > 0L]
-
-  plot <- jaspGraphsPlot$new(
-    subplots     = plotList,
-    plotFunction = reDrawAlignedPlot,
-    size         = 5,
-    showLegend   = showLegend
-  )
-  return(plot)
+  return(makeAlignedMatrixPlot(
+    mainPlot   = mainPlot,
+    topPlot    = topPlot,
+    rightPlot  = rightPlot,
+    size       = 5,
+    showLegend = showLegend
+  ))
 }
 
 JASPScatterSubPlot <- function(x, group = NULL, type = c("density", "histogram", "none"), range,
