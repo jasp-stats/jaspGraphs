@@ -253,6 +253,8 @@ scaleAxesLabels <- function(scaleXYlabels, plotList) {
 #' @param labelSize two scalars for the magnification of the the x and y labels respectively.
 #' @param labelPos relative position for the labels around the plots. The first column contains x-coordinates and the second y-coordinates. The first row is top, second right, third bottom, and fourth left (TRouBLe).
 #' @param scaleXYlabels two scalars for the magnification of the the x and y labels respectively.
+#' @param widths numeric vector of relative column widths with length equal to ncol(plotList). Defaults to equal widths.
+#' @param heights numeric vector of relative row heights with length equal to nrow(plotList). Defaults to equal heights.
 #' @param debug create an debug plot (see examples).
 #'
 #' @details This function is intended to be called with a matrix as first argument, although other input is also supported.
@@ -271,6 +273,8 @@ ggMatrixPlot <- function(plotList = NULL, nr = NULL, nc = NULL,
                          labelSize      = .4*graphOptions("fontsize"),
                          labelPos       = matrix(.5, 4, 2),
                          scaleXYlabels  = c(.9,.9),
+                         widths         = NULL,
+                         heights        = NULL,
                          debug          = FALSE) {
 
   UseMethod("ggMatrixPlot", plotList)
@@ -291,6 +295,8 @@ ggMatrixPlot.matrix <- function(plotList = NULL, nr = NULL, nc = NULL,
                                 labelSize      = .4*graphOptions("fontsize"),
                                 labelPos       = matrix(.5, 4, 2),
                                 scaleXYlabels  = c(.9,.9),
+                                widths         = NULL,
+                                heights        = NULL,
                                 debug          = FALSE) {
 
   # dim cannot be NULL since plotList is a matrix
@@ -322,6 +328,8 @@ ggMatrixPlot.matrix <- function(plotList = NULL, nr = NULL, nc = NULL,
     removeXYlabels = removeXYlabels,
     labelPos       = labelPos,
     scaleXYlabels  = scaleXYlabels,
+    widths         = widths,
+    heights        = heights,
     debug          = debug
   ))
 
@@ -342,6 +350,8 @@ ggMatrixPlot.list <- function(plotList = NULL, nr = NULL, nc = NULL,
                               labelSize      = .4*graphOptions("fontsize"),
                               labelPos       = matrix(.5, 4, 2),
                               scaleXYlabels  = c(.9,.9),
+                              widths         = NULL,
+                              heights        = NULL,
                               debug          = FALSE) {
   if (is.null(layout)) { # was layout supplied?
     stop2("Either supply plotList as a matrix or provide a layout argument")
@@ -377,6 +387,8 @@ ggMatrixPlot.list <- function(plotList = NULL, nr = NULL, nc = NULL,
     removeXYlabels = removeXYlabels,
     labelPos       = labelPos,
     scaleXYlabels  = scaleXYlabels,
+    widths         = widths,
+    heights        = heights,
     debug          = debug
   ))
 
@@ -397,6 +409,8 @@ ggMatrixPlot.default <- function(plotList = NULL, nr = NULL, nc = NULL,
                                  labelSize      = .4*graphOptions("fontsize"),
                                  labelPos       = matrix(.5, 4, 2),
                                  scaleXYlabels  = c(.9,.9),
+                                 widths         = NULL,
+                                 heights        = NULL,
                                  debug          = FALSE) {
 
   shareX <- validateMatrixPlotlyShareFlag(shareX, "shareX")
@@ -439,8 +453,20 @@ ggMatrixPlot.default <- function(plotList = NULL, nr = NULL, nc = NULL,
 
   w <- .25
   h <- .25
-  width <- rep(1, nc)
-  height <- rep(1, nr)
+  if (is.null(widths)) {
+    width <- rep(1, nc)
+  } else {
+    if (length(widths) != nc)
+      stop2(sprintf("length(widths) (%d) must equal ncol(plotList) (%d).", length(widths), nc))
+    width <- widths
+  }
+  if (is.null(heights)) {
+    height <- rep(1, nr)
+  } else {
+    if (length(heights) != nr)
+      stop2(sprintf("length(heights) (%d) must equal nrow(plotList) (%d).", length(heights), nr))
+    height <- heights
+  }
 
   # names for the gtable to ease further work
   gtNames <- matrix(paste0("graph-", rep(seq_len(nr), nc), "-", rep(seq_len(nc), each = nr)), nr, nc)
