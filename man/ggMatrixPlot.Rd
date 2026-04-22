@@ -12,6 +12,8 @@ ggMatrixPlot(
   nr = NULL,
   nc = NULL,
   ...,
+  shareX = FALSE,
+  shareY = FALSE,
   leftLabels = NULL,
   topLabels = NULL,
   rightLabels = NULL,
@@ -20,6 +22,10 @@ ggMatrixPlot(
   labelSize = 0.4 * graphOptions("fontsize"),
   labelPos = matrix(0.5, 4, 2),
   scaleXYlabels = c(0.9, 0.9),
+  widths = NULL,
+  heights = NULL,
+  labelBandWidth = 0.25,
+  labelBandHeight = 0.25,
   debug = FALSE
 )
 
@@ -29,6 +35,8 @@ ggMatrixPlot(
   nc = NULL,
   layout = NULL,
   ...,
+  shareX = FALSE,
+  shareY = FALSE,
   leftLabels = NULL,
   topLabels = NULL,
   rightLabels = NULL,
@@ -37,6 +45,10 @@ ggMatrixPlot(
   labelSize = 0.4 * graphOptions("fontsize"),
   labelPos = matrix(0.5, 4, 2),
   scaleXYlabels = c(0.9, 0.9),
+  widths = NULL,
+  heights = NULL,
+  labelBandWidth = 0.25,
+  labelBandHeight = 0.25,
   debug = FALSE
 )
 
@@ -46,6 +58,8 @@ ggMatrixPlot(
   nc = NULL,
   layout = NULL,
   ...,
+  shareX = FALSE,
+  shareY = FALSE,
   leftLabels = NULL,
   topLabels = NULL,
   rightLabels = NULL,
@@ -54,6 +68,10 @@ ggMatrixPlot(
   labelSize = 0.4 * graphOptions("fontsize"),
   labelPos = matrix(0.5, 4, 2),
   scaleXYlabels = c(0.9, 0.9),
+  widths = NULL,
+  heights = NULL,
+  labelBandWidth = 0.25,
+  labelBandHeight = 0.25,
   debug = FALSE
 )
 
@@ -63,6 +81,8 @@ ggMatrixPlot(
   nc = NULL,
   layout = NULL,
   ...,
+  shareX = FALSE,
+  shareY = FALSE,
   leftLabels = NULL,
   topLabels = NULL,
   rightLabels = NULL,
@@ -71,6 +91,10 @@ ggMatrixPlot(
   labelSize = 0.4 * graphOptions("fontsize"),
   labelPos = matrix(0.5, 4, 2),
   scaleXYlabels = c(0.9, 0.9),
+  widths = NULL,
+  heights = NULL,
+  labelBandWidth = 0.25,
+  labelBandHeight = 0.25,
   debug = FALSE
 )
 }
@@ -82,6 +106,10 @@ ggMatrixPlot(
 \item{nc}{number of columns}
 
 \item{...}{ignored.}
+
+\item{shareX}{Whether plotly should share x-axes when converting a matrix plot. Defaults to FALSE.}
+
+\item{shareY}{Whether plotly should share y-axes when converting a matrix plot. Defaults to FALSE.}
 
 \item{leftLabels}{labels left of the plots in plotList.}
 
@@ -98,6 +126,14 @@ ggMatrixPlot(
 \item{labelPos}{relative position for the labels around the plots. The first column contains x-coordinates and the second y-coordinates. The first row is top, second right, third bottom, and fourth left (TRouBLe).}
 
 \item{scaleXYlabels}{two scalars for the magnification of the the x and y labels respectively.}
+
+\item{widths}{numeric vector of relative column widths with length equal to ncol(plotList). Defaults to equal widths.}
+
+\item{heights}{numeric vector of relative row heights with length equal to nrow(plotList). Defaults to equal heights.}
+
+\item{labelBandWidth}{numeric width of the left/right label columns relative to a plot cell. Defaults to 0.25.}
+
+\item{labelBandHeight}{numeric height of the top/bottom label rows relative to a plot cell. Defaults to 0.25.}
 
 \item{debug}{create an debug plot (see examples).}
 
