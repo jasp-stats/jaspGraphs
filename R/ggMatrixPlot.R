@@ -255,6 +255,8 @@ scaleAxesLabels <- function(scaleXYlabels, plotList) {
 #' @param scaleXYlabels two scalars for the magnification of the the x and y labels respectively.
 #' @param widths numeric vector of relative column widths with length equal to ncol(plotList). Defaults to equal widths.
 #' @param heights numeric vector of relative row heights with length equal to nrow(plotList). Defaults to equal heights.
+#' @param labelBandWidth numeric width of the left/right label columns relative to a plot cell. Defaults to 0.25.
+#' @param labelBandHeight numeric height of the top/bottom label rows relative to a plot cell. Defaults to 0.25.
 #' @param debug create an debug plot (see examples).
 #'
 #' @details This function is intended to be called with a matrix as first argument, although other input is also supported.
@@ -263,19 +265,21 @@ scaleAxesLabels <- function(scaleXYlabels, plotList) {
 #' @export
 ggMatrixPlot <- function(plotList = NULL, nr = NULL, nc = NULL,
                          ...,
-                         shareX         = FALSE,
-                         shareY         = FALSE,
-                         leftLabels     = NULL,
-                         topLabels      = NULL,
-                         rightLabels    = NULL,
-                         bottomLabels   = NULL,
-                         removeXYlabels = c("xy", "x", "y", "none"),
-                         labelSize      = .4*graphOptions("fontsize"),
-                         labelPos       = matrix(.5, 4, 2),
-                         scaleXYlabels  = c(.9,.9),
-                         widths         = NULL,
-                         heights        = NULL,
-                         debug          = FALSE) {
+                         shareX          = FALSE,
+                         shareY          = FALSE,
+                         leftLabels      = NULL,
+                         topLabels       = NULL,
+                         rightLabels     = NULL,
+                         bottomLabels    = NULL,
+                         removeXYlabels  = c("xy", "x", "y", "none"),
+                         labelSize       = .4*graphOptions("fontsize"),
+                         labelPos        = matrix(.5, 4, 2),
+                         scaleXYlabels   = c(.9,.9),
+                         widths          = NULL,
+                         heights         = NULL,
+                         labelBandWidth  = .25,
+                         labelBandHeight = .25,
+                         debug           = FALSE) {
 
   UseMethod("ggMatrixPlot", plotList)
 }
@@ -285,19 +289,21 @@ ggMatrixPlot <- function(plotList = NULL, nr = NULL, nc = NULL,
 ggMatrixPlot.matrix <- function(plotList = NULL, nr = NULL, nc = NULL,
                                 layout = NULL,
                                 ...,
-                                shareX         = FALSE,
-                                shareY         = FALSE,
-                                leftLabels     = NULL,
-                                topLabels      = NULL,
-                                rightLabels    = NULL,
-                                bottomLabels   = NULL,
-                                removeXYlabels = c("xy", "x", "y", "none"),
-                                labelSize      = .4*graphOptions("fontsize"),
-                                labelPos       = matrix(.5, 4, 2),
-                                scaleXYlabels  = c(.9,.9),
-                                widths         = NULL,
-                                heights        = NULL,
-                                debug          = FALSE) {
+                                shareX          = FALSE,
+                                shareY          = FALSE,
+                                leftLabels      = NULL,
+                                topLabels       = NULL,
+                                rightLabels     = NULL,
+                                bottomLabels    = NULL,
+                                removeXYlabels  = c("xy", "x", "y", "none"),
+                                labelSize       = .4*graphOptions("fontsize"),
+                                labelPos        = matrix(.5, 4, 2),
+                                scaleXYlabels   = c(.9,.9),
+                                widths          = NULL,
+                                heights         = NULL,
+                                labelBandWidth  = .25,
+                                labelBandHeight = .25,
+                                debug           = FALSE) {
 
   # dim cannot be NULL since plotList is a matrix
   nr <- dim(plotList)[1L]
@@ -321,16 +327,18 @@ ggMatrixPlot.matrix <- function(plotList = NULL, nr = NULL, nc = NULL,
     nc = nc,
     shareX = shareX,
     shareY = shareY,
-    leftLabels     = leftLabels,
-    topLabels      = topLabels,
-    rightLabels    = rightLabels,
-    bottomLabels   = bottomLabels,
-    removeXYlabels = removeXYlabels,
-    labelPos       = labelPos,
-    scaleXYlabels  = scaleXYlabels,
-    widths         = widths,
-    heights        = heights,
-    debug          = debug
+    leftLabels      = leftLabels,
+    topLabels       = topLabels,
+    rightLabels     = rightLabels,
+    bottomLabels    = bottomLabels,
+    removeXYlabels  = removeXYlabels,
+    labelPos        = labelPos,
+    scaleXYlabels   = scaleXYlabels,
+    widths          = widths,
+    heights         = heights,
+    labelBandWidth  = labelBandWidth,
+    labelBandHeight = labelBandHeight,
+    debug           = debug
   ))
 
 }
@@ -340,19 +348,21 @@ ggMatrixPlot.matrix <- function(plotList = NULL, nr = NULL, nc = NULL,
 ggMatrixPlot.list <- function(plotList = NULL, nr = NULL, nc = NULL,
                               layout = NULL,
                               ...,
-                              shareX         = FALSE,
-                              shareY         = FALSE,
-                              leftLabels     = NULL,
-                              topLabels      = NULL,
-                              rightLabels    = NULL,
-                              bottomLabels   = NULL,
-                              removeXYlabels = c("xy", "x", "y", "none"),
-                              labelSize      = .4*graphOptions("fontsize"),
-                              labelPos       = matrix(.5, 4, 2),
-                              scaleXYlabels  = c(.9,.9),
-                              widths         = NULL,
-                              heights        = NULL,
-                              debug          = FALSE) {
+                              shareX          = FALSE,
+                              shareY          = FALSE,
+                              leftLabels      = NULL,
+                              topLabels       = NULL,
+                              rightLabels     = NULL,
+                              bottomLabels    = NULL,
+                              removeXYlabels  = c("xy", "x", "y", "none"),
+                              labelSize       = .4*graphOptions("fontsize"),
+                              labelPos        = matrix(.5, 4, 2),
+                              scaleXYlabels   = c(.9,.9),
+                              widths          = NULL,
+                              heights         = NULL,
+                              labelBandWidth  = .25,
+                              labelBandHeight = .25,
+                              debug           = FALSE) {
   if (is.null(layout)) { # was layout supplied?
     stop2("Either supply plotList as a matrix or provide a layout argument")
   } else if (!is.matrix(layout)) { # is layout layout a matrix?
@@ -380,16 +390,18 @@ ggMatrixPlot.list <- function(plotList = NULL, nr = NULL, nc = NULL,
     nc = nc,
     shareX = shareX,
     shareY = shareY,
-    leftLabels     = leftLabels,
-    topLabels      = topLabels,
-    rightLabels    = rightLabels,
-    bottomLabels   = bottomLabels,
-    removeXYlabels = removeXYlabels,
-    labelPos       = labelPos,
-    scaleXYlabels  = scaleXYlabels,
-    widths         = widths,
-    heights        = heights,
-    debug          = debug
+    leftLabels      = leftLabels,
+    topLabels       = topLabels,
+    rightLabels     = rightLabels,
+    bottomLabels    = bottomLabels,
+    removeXYlabels  = removeXYlabels,
+    labelPos        = labelPos,
+    scaleXYlabels   = scaleXYlabels,
+    widths          = widths,
+    heights         = heights,
+    labelBandWidth  = labelBandWidth,
+    labelBandHeight = labelBandHeight,
+    debug           = debug
   ))
 
 }
@@ -399,19 +411,21 @@ ggMatrixPlot.list <- function(plotList = NULL, nr = NULL, nc = NULL,
 ggMatrixPlot.default <- function(plotList = NULL, nr = NULL, nc = NULL,
                                  layout = NULL,
                                  ...,
-                                 shareX         = FALSE,
-                                 shareY         = FALSE,
-                                 leftLabels     = NULL,
-                                 topLabels      = NULL,
-                                 rightLabels    = NULL,
-                                 bottomLabels   = NULL,
-                                 removeXYlabels = c("xy", "x", "y", "none"),
-                                 labelSize      = .4*graphOptions("fontsize"),
-                                 labelPos       = matrix(.5, 4, 2),
-                                 scaleXYlabels  = c(.9,.9),
-                                 widths         = NULL,
-                                 heights        = NULL,
-                                 debug          = FALSE) {
+                                 shareX          = FALSE,
+                                 shareY          = FALSE,
+                                 leftLabels      = NULL,
+                                 topLabels       = NULL,
+                                 rightLabels     = NULL,
+                                 bottomLabels    = NULL,
+                                 removeXYlabels  = c("xy", "x", "y", "none"),
+                                 labelSize       = .4*graphOptions("fontsize"),
+                                 labelPos        = matrix(.5, 4, 2),
+                                 scaleXYlabels   = c(.9,.9),
+                                 widths          = NULL,
+                                 heights         = NULL,
+                                 labelBandWidth  = .25,
+                                 labelBandHeight = .25,
+                                 debug           = FALSE) {
 
   shareX <- validateMatrixPlotlyShareFlag(shareX, "shareX")
   shareY <- validateMatrixPlotlyShareFlag(shareY, "shareY")
@@ -451,8 +465,8 @@ ggMatrixPlot.default <- function(plotList = NULL, nr = NULL, nc = NULL,
     bottomLabels <- list(bottomLabels)
   }
 
-  w <- .25
-  h <- .25
+  w <- labelBandWidth
+  h <- labelBandHeight
   if (is.null(widths)) {
     width <- rep(1, nc)
   } else {
