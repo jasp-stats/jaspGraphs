@@ -559,7 +559,7 @@ ggMatrixPlot.default <- function(plotList = NULL, nr = NULL, nc = NULL,
       shareY       = shareY
     )
 
-  class(totalGraph) <- c("jaspMatrixPlot", "jaspMatrixplot", class(totalGraph))
+  class(totalGraph) <- c("jaspMatrixPlot", class(totalGraph))
 
   return(totalGraph)
 
