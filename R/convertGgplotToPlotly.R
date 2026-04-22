@@ -49,7 +49,7 @@ convertGgplotToPlotly <- function(ggplotObj, returnJSON = TRUE) {
 }
 
 convertPlotObjectToPlotly <- function(plotObj) {
-  if (inherits(plotObj, c("jaspMatrixPlot", "jaspMatrixplot")))
+  if (inherits(plotObj, "jaspMatrixPlot"))
     return(convertJaspMatrixPlotToPlotly(plotObj))
 
   if (!ggplot2::is_ggplot(plotObj))
