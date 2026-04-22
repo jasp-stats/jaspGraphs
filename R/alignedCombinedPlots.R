@@ -150,6 +150,6 @@ makeAlignedMatrixPlot <- function(mainPlot, topPlot = NULL, rightPlot = NULL, si
     heights      = heights,
     names        = names(subplots)
   )
-  class(plot) <- c("jaspMatrixPlot", "jaspMatrixplot", class(plot))
+  class(plot) <- c("jaspMatrixPlot", class(plot))
   return(plot)
 }
