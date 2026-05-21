@@ -70,6 +70,7 @@ convertSingleGgplotToPlotly <- function(ggplotObj) {
 
   pNoRangeframe <- temp2$ggplotObj
   plotlyplotje <- ggplotly(pNoRangeframe)
+  plotlyplotje <- fixPlotlyLegendTitle(pNoRangeframe, plotlyplotje)
   hasRangeFrame <- FALSE
 
   if (!is.null(temp$shapes)) {
@@ -472,6 +473,23 @@ rangeFrameLayerToShapes <- function(ggplotObj, rangeFrameLayer) {
     name = "rangeframe_l"
   )
   return(shapes)
+}
+
+fixPlotlyLegendTitle <- function(ggplotObj, plotlyObj) {
+  for (scale in ggplotObj$scales$scales) {
+    guide <- scale$guide
+    if (is.null(guide) || identical(guide, "none") || isFALSE(guide))
+      next
+    title <- tryCatch(guide$title, error = function(e) NULL)
+    if (is.null(title) || inherits(title, "waiver"))
+      next
+    title <- as.character(title)
+    if (!nzchar(title))
+      next
+    plotlyObj$x$layout$legend$title <- list(text = title)
+    return(plotlyObj)
+  }
+  return(plotlyObj)
 }
 
 js_code_rangeframe <- r"{
