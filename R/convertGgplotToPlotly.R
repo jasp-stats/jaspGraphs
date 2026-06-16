@@ -73,6 +73,16 @@ convertSingleGgplotToPlotly <- function(ggplotObj) {
   plotlyplotje <- fixPlotlyLegendTitle(pNoRangeframe, plotlyplotje)
   hasRangeFrame <- FALSE
 
+  # ensure plotly auto-sizes margins so axis titles don't overlap tick labels
+  allXaxes <- grep("^xaxis", names(plotlyplotje$x$layout), value = TRUE)
+  allYaxes <- grep("^yaxis", names(plotlyplotje$x$layout), value = TRUE)
+  for (ax in allXaxes)
+    plotlyplotje$x$layout[[ax]]$automargin <- TRUE
+  for (ax in allYaxes) {
+    plotlyplotje$x$layout[[ax]]$automargin <- TRUE
+    plotlyplotje$x$layout[[ax]]$title$standoff <- 15L
+  }
+
   if (!is.null(temp$shapes)) {
 
     plotlyplotje <- plotly::layout(plotlyplotje,
