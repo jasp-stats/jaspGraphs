@@ -159,6 +159,8 @@ convertJaspMatrixPlotToPlotly <- function(plotObj) {
   subplotNames <- plotObj$plotArgs[["names"]]
   shareX <- resolveMatrixPlotlyShareFlag(plotObj$plotArgs[["shareX"]], "shareX")
   shareY <- resolveMatrixPlotlyShareFlag(plotObj$plotArgs[["shareY"]], "shareY")
+  titleX <- plotObj$plotArgs[["titleX"]] %||% TRUE
+  titleY <- plotObj$plotArgs[["titleY"]] %||% TRUE
 
   if (!is.matrix(layout) || is.null(widths) || is.null(heights))
     stop2("jaspMatrixPlot is missing layout information required for plotly conversion.")
@@ -188,6 +190,10 @@ convertJaspMatrixPlotToPlotly <- function(plotObj) {
   widths <- normalizeSubplotSpans(widths)
   heights <- normalizeSubplotSpans(heights)
 
+  # need to add some extra space between the panels if there are axis titles  # any
+  marginX <- if (titleX) 0.04 else 0
+  marginY <- if (titleY) 0.04 else 0
+
   rowPlots <- vector("list", nrow(layout))
   for (rowIndex in seq_len(nrow(layout))) {
     rowPlots[[rowIndex]] <- stripPlotlyConfig(do.call(
@@ -197,11 +203,11 @@ convertJaspMatrixPlotToPlotly <- function(plotObj) {
         list(
           nrows = 1,
           widths = widths,
-          margin = 0,
+          margin = marginY,
           shareX = shareX,
           shareY = shareY,
-          titleX = FALSE,
-          titleY = FALSE
+          titleX = titleX,
+          titleY = titleY
         )
       )
     ))
@@ -214,11 +220,11 @@ convertJaspMatrixPlotToPlotly <- function(plotObj) {
       list(
         nrows = length(rowPlots),
         heights = heights,
-        margin = 0,
+        margin = marginX,
         shareX = shareX,
         shareY = shareY,
-        titleX = FALSE,
-        titleY = FALSE
+        titleX = titleX,
+        titleY = titleY
       )
     )
   ))
@@ -558,5 +564,4 @@ console.log(el);
   setTimeout(() => updateRangeFrame(null, 'initial_update'), 500);
 }
 }"
-
 

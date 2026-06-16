@@ -14,6 +14,8 @@ ggMatrixPlot(
   ...,
   shareX = FALSE,
   shareY = FALSE,
+  titleX = TRUE,
+  titleY = TRUE,
   leftLabels = NULL,
   topLabels = NULL,
   rightLabels = NULL,
@@ -37,6 +39,8 @@ ggMatrixPlot(
   ...,
   shareX = FALSE,
   shareY = FALSE,
+  titleX = TRUE,
+  titleY = TRUE,
   leftLabels = NULL,
   topLabels = NULL,
   rightLabels = NULL,
@@ -60,6 +64,8 @@ ggMatrixPlot(
   ...,
   shareX = FALSE,
   shareY = FALSE,
+  titleX = TRUE,
+  titleY = TRUE,
   leftLabels = NULL,
   topLabels = NULL,
   rightLabels = NULL,
@@ -83,6 +89,8 @@ ggMatrixPlot(
   ...,
   shareX = FALSE,
   shareY = FALSE,
+  titleX = TRUE,
+  titleY = TRUE,
   leftLabels = NULL,
   topLabels = NULL,
   rightLabels = NULL,
@@ -110,6 +118,10 @@ ggMatrixPlot(
 \item{shareX}{Whether plotly should share x-axes when converting a matrix plot. Defaults to FALSE.}
 
 \item{shareY}{Whether plotly should share y-axes when converting a matrix plot. Defaults to FALSE.}
+
+\item{titleX}{Whether plotly should show x-axis titles when converting a matrix plot. Defaults to TRUE.}
+
+\item{titleY}{Whether plotly should show y-axis titles when converting a matrix plot. Defaults to TRUE.}
 
 \item{leftLabels}{labels left of the plots in plotList.}
 
