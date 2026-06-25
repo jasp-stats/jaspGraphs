@@ -21,8 +21,10 @@ test_that("plotPieChart: polar, non-polar, axis ticks and large group variants",
   vdiffr::expect_doppelganger("plotPieChart-nonpolar-default", p3)
 
   # Case D: many small slices
-  set.seed(1)
-  value_many <- rpois(25, 10)
+  # set.seed(1)
+  # value_many <- rpois(25, 10)
+  # hardcoded output of rpois above after test failures on macos only
+  value_many <- c(8L, 10L, 7L, 11L, 14L, 12L, 11L, 9L, 14L, 11L, 8L, 2L, 8L, 10L, 7L, 12L, 11L, 12L, 12L, 10L, 3L, 11L, 13L, 7L, 8L)
   groups_many <- as.character(seq_len(25))
   p4 <- plotPieChart(value_many, groups_many)
   testthat::expect_true(ggplot2::is_ggplot(p4))
