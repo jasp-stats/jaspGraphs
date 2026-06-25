@@ -118,13 +118,11 @@ convertSingleGgplotToPlotly <- function(ggplotObj) {
     xnms <- sub("axis", "", xaxes)
     ynms <- sub("axis", "", yaxes)
 
-    if (grepl("b", sides))
-      for (ax in xaxes)
-        plotlyplotje$x$layout[[ax]]$tickmode <- "auto"
+    for (ax in xaxes)
+      plotlyplotje <- adaptive_ggplotly_ticks(plotlyplotje, ax)
 
-    if (grepl("l", sides))
-      for (ax in yaxes)
-        plotlyplotje$x$layout[[ax]]$tickmode <- "auto"
+    for (ax in yaxes)
+      plotlyplotje <- adaptive_ggplotly_ticks(plotlyplotje, ax)
 
     # repeat the rangeframe shape for all facets using the starting shape as a template
     # and the domains from the axes.
@@ -508,70 +506,502 @@ fixPlotlyLegendTitle <- function(ggplotObj, plotlyObj) {
   return(plotlyObj)
 }
 
-js_code_rangeframe <- r"{
-function(el, x) {
+adaptive_ggplotly_ticks <- function(p, axis = "yaxis", nticks = NULL) {
+  stopifnot(inherits(p, "plotly"))
 
-console.log(el);
-
-  var isUpdating = false;
-  var lastUpdateTime = 0;
-  var updateThrottle = 16; // ~60fps
-
-  function getAxisRange(el, axisRef, eventdata) {
-    // axisRef is "x", "x2", "y", "y3", etc.
-    var axisKey = axisRef[0] + "axis" + axisRef.slice(1); // "x2" -> "xaxis2"
-    var axisObj = el._fullLayout[axisKey];
-
-    var tmin = axisObj._tmin;
-    var tmax = axisObj._tmax;
-
-    // console.log("Axis", axisRef, "range:", tmin, tmax);
-    return [tmin, tmax];
+  if (!is.null(nticks)) {
+    p$x$layout[[axis]]$nticks <- as.integer(nticks)
   }
 
-  function updateRangeFrame(eventdata, eventType) {
+  axis_json <- jsonlite::toJSON(axis, auto_unbox = TRUE)
 
-    var now = Date.now();
-    if (isUpdating || (now - lastUpdateTime < updateThrottle)) {
+  js <- sprintf(
+    r"{
+function(el, x) {
+  const axisName = %s;
+  const inputAxis = x.layout[axisName] || {};
+
+  // Save the original ggplotly tick specification.
+  const originalTicks = {
+    tickmode: inputAxis.tickmode,
+    tick0: inputAxis.tick0,
+    dtick: inputAxis.dtick,
+    tickvals: inputAxis.tickvals,
+    ticktext: inputAxis.ticktext
+  };
+
+  // Use the range Plotly actually rendered initially.
+  const initialRange = el._fullLayout[axisName].range.slice();
+
+  let updating = false;
+  let usingAutoTicks = false;
+
+  function approximatelyEqual(a, b) {
+    const scale = Math.max(1, Math.abs(a), Math.abs(b));
+    return Math.abs(a - b) <= 1e-9 * scale;
+  }
+
+  el.on('plotly_relayout', function(event) {
+    if (updating) return;
+
+    const key0 = axisName + '.range[0]';
+    const key1 = axisName + '.range[1]';
+    const autoKey = axisName + '.autorange';
+
+    const hasRange =
+      Object.prototype.hasOwnProperty.call(event, key0) &&
+      Object.prototype.hasOwnProperty.call(event, key1);
+
+    const hasAutorange =
+      Object.prototype.hasOwnProperty.call(event, autoKey) &&
+      event[autoKey] === true;
+
+    if (!hasRange && !hasAutorange) return;
+
+    // Reset Axes normally restores the original explicit range.
+    const returnedToInitial =
+      hasRange &&
+      approximatelyEqual(event[key0], initialRange[0]) &&
+      approximatelyEqual(event[key1], initialRange[1]);
+
+    if (returnedToInitial || hasAutorange) {
+      const update = {};
+
+      update[axisName + '.tickmode'] =
+        originalTicks.tickmode == null ? 'array' : originalTicks.tickmode;
+
+      update[axisName + '.tick0'] =
+        originalTicks.tick0 == null ? null : originalTicks.tick0;
+
+      update[axisName + '.dtick'] =
+        originalTicks.dtick == null ? null : originalTicks.dtick;
+
+      update[axisName + '.tickvals'] =
+        originalTicks.tickvals == null ? null : originalTicks.tickvals;
+
+      update[axisName + '.ticktext'] =
+        originalTicks.ticktext == null ? null : originalTicks.ticktext;
+
+      usingAutoTicks = false;
+      updating = true;
+
+      Plotly.relayout(el, update).finally(function() {
+        updating = false;
+      });
+
       return;
     }
 
-    var shapes = el.layout.shapes || [];
-    if (shapes.length === 0) return;
+    if (!usingAutoTicks) {
+      const update = {};
 
-    // Loop over shapes that are rangeframes
+      update[axisName + '.tickmode'] = 'auto';
+      update[axisName + '.tick0'] = null;
+      update[axisName + '.dtick'] = null;
+      update[axisName + '.tickvals'] = null;
+      update[axisName + '.ticktext'] = null;
+
+      usingAutoTicks = true;
+      updating = true;
+
+      Plotly.relayout(el, update).finally(function() {
+        updating = false;
+      });
+    }
+  });
+}
+}", axis_json
+  )
+
+  htmlwidgets::onRender(p, js)
+}
+
+js_code_rangeframe <- r"{
+function(el, x) {
+
+  var isUpdating = false;
+  var lastUpdateTime = 0;
+  var updateThrottle = 16;
+
+  var finalUpdateTimer = null;
+  var finalUpdateDelay = 60;
+
+  function axisRefToKey(axisRef) {
+    // "x"  -> "xaxis"
+    // "x2" -> "xaxis2"
+    // "y"  -> "yaxis"
+    // "y3" -> "yaxis3"
+    return axisRef.charAt(0) + "axis" + axisRef.slice(1);
+  }
+
+  function getAxisTickExtent(axisRef) {
+
+    var axisKey = axisRefToKey(axisRef);
+    var axisObj = el._fullLayout[axisKey];
+
+    if (!axisObj) {
+      return null;
+    }
+
+    /*
+     * axisObj._vals contains the ticks produced by
+     * Plotly's most recent axis drawing pass.
+     *
+     * Unlike _tmin and _tmax, this is also refreshed
+     * when tickmode is "array", as happens after reset
+     * when the original ggplot ticks are restored.
+     */
+    var vals = axisObj._vals || [];
+
+    var majorTicks = vals
+      .filter(function(tick) {
+        return (
+          tick &&
+          !tick.minor &&
+          !tick.noTick &&
+          tick.x !== undefined &&
+          tick.x !== null &&
+          isFinite(Number(tick.x))
+        );
+      })
+      .map(function(tick) {
+        return Number(tick.x);
+      });
+
+    if (majorTicks.length > 0) {
+      return [
+        Math.min.apply(null, majorTicks),
+        Math.max.apply(null, majorTicks)
+      ];
+    }
+
+    /*
+     * Fallback for an axis where _vals is temporarily
+     * unavailable. This is not used for the usual
+     * array-tick reset path.
+     */
+    if (
+      axisObj._tmin !== undefined &&
+      axisObj._tmax !== undefined &&
+      isFinite(Number(axisObj._tmin)) &&
+      isFinite(Number(axisObj._tmax))
+    ) {
+      return [
+        Number(axisObj._tmin),
+        Number(axisObj._tmax)
+      ];
+    }
+
+    return null;
+  }
+
+  function approximatelyEqual(a, b) {
+
+    if (a === b) {
+      return true;
+    }
+
+    if (
+      typeof a !== "number" ||
+      typeof b !== "number" ||
+      !isFinite(a) ||
+      !isFinite(b)
+    ) {
+      return false;
+    }
+
+    var scale = Math.max(
+      1,
+      Math.abs(a),
+      Math.abs(b)
+    );
+
+    return Math.abs(a - b) <= 1e-10 * scale;
+  }
+
+  function scheduleRangeFrameUpdate(eventType, delay) {
+
+    delay = delay === undefined
+      ? finalUpdateDelay
+      : delay;
+
+    if (finalUpdateTimer !== null) {
+      clearTimeout(finalUpdateTimer);
+    }
+
+    finalUpdateTimer = setTimeout(
+      function runFinalUpdate() {
+
+        finalUpdateTimer = null;
+
+        /*
+         * A previous shape update may still be running.
+         * Reschedule rather than losing the reset update.
+         */
+        if (isUpdating) {
+          finalUpdateTimer = setTimeout(
+            runFinalUpdate,
+            finalUpdateDelay
+          );
+
+          return;
+        }
+
+        updateRangeFrame(
+          null,
+          eventType,
+          true
+        );
+      },
+      delay
+    );
+  }
+
+  function updateRangeFrame(eventdata, eventType, force) {
+
+    force = force || false;
+
+    var now = Date.now();
+
+    if (
+      isUpdating ||
+      (
+        !force &&
+        now - lastUpdateTime < updateThrottle
+      )
+    ) {
+      return;
+    }
+
+    var currentShapes = el.layout.shapes || [];
+
+    if (currentShapes.length === 0) {
+      return;
+    }
+
+    var shapes = currentShapes.map(function(shape) {
+      return Object.assign({}, shape);
+    });
+
+    var changed = false;
+
+    function updateValue(object, property, value) {
+
+      if (
+        !approximatelyEqual(
+          Number(object[property]),
+          Number(value)
+        )
+      ) {
+        object[property] = value;
+        changed = true;
+      }
+    }
+
     shapes.forEach(function(shape) {
 
-      // console.log("Processing shape:", shape);
-      // Update only rangeframe shapes
-      if (!(shape.name && shape.name.startsWith("rangeframe"))) return;
+      if (
+        !shape.name ||
+        !shape.name.startsWith("rangeframe")
+      ) {
+        return;
+      }
 
-      var axisRange;
-      if (shape.xref !== "paper") {
-        axisRange = getAxisRange(el, shape.xref, eventdata);
-        shape.x0 = axisRange[0];
-        shape.x1 = axisRange[1];
-      } else {
-        axisRange = getAxisRange(el, shape.yref, eventdata);
-        shape.y0 = axisRange[0];
-        shape.y1 = axisRange[1];
+      var tickExtent;
+
+      /*
+       * Horizontal rangeframe:
+       * use the first and last rendered x-axis ticks.
+       */
+      if (
+        shape.xref &&
+        shape.xref !== "paper"
+      ) {
+        tickExtent = getAxisTickExtent(shape.xref);
+
+        if (tickExtent === null) {
+          return;
+        }
+
+        updateValue(
+          shape,
+          "x0",
+          tickExtent[0]
+        );
+
+        updateValue(
+          shape,
+          "x1",
+          tickExtent[1]
+        );
+
+      /*
+       * Vertical rangeframe:
+       * use the first and last rendered y-axis ticks.
+       */
+      } else if (
+        shape.yref &&
+        shape.yref !== "paper"
+      ) {
+        tickExtent = getAxisTickExtent(shape.yref);
+
+        if (tickExtent === null) {
+          return;
+        }
+
+        updateValue(
+          shape,
+          "y0",
+          tickExtent[0]
+        );
+
+        updateValue(
+          shape,
+          "y1",
+          tickExtent[1]
+        );
       }
     });
+
+    /*
+     * Avoid an infinite:
+     *
+     * afterplot
+     * -> shape relayout
+     * -> afterplot
+     *
+     * cycle.
+     */
+    if (!changed) {
+      return;
+    }
 
     isUpdating = true;
     lastUpdateTime = now;
 
-    Plotly.relayout(el, { shapes: shapes })
-    .then(() => { isUpdating = false; })
-    .catch(err => { console.error("Error updating rangeframe:", err); isUpdating = false; });
+    Plotly.relayout(
+      el,
+      { shapes: shapes }
+    )
+    .then(function() {
+      isUpdating = false;
+
+      /*
+       * Make one final check after Plotly has applied
+       * the shape update.
+       */
+      scheduleRangeFrameUpdate(
+        "rangeframe_relayout_complete",
+        finalUpdateDelay
+      );
+    })
+    .catch(function(err) {
+      isUpdating = false;
+
+      console.error(
+        "Error updating rangeframe:",
+        eventType,
+        err
+      );
+    });
   }
 
-  el.on('plotly_relayouting',   e => updateRangeFrame(e, 'plotly_relayouting'));
-  el.on('plotly_relayout',      e => updateRangeFrame(e, 'plotly_relayout'));
-  el.on('plotly_framework',     e => updateRangeFrame(e, 'plotly_framework'));
+  /*
+   * Continuous update while zooming or panning.
+   */
+  el.on(
+    "plotly_relayouting",
+    function(eventdata) {
+      updateRangeFrame(
+        eventdata,
+        "plotly_relayouting",
+        false
+      );
+    }
+  );
 
-  // Initial call
-  setTimeout(() => updateRangeFrame(null, 'initial_update'), 500);
+  /*
+   * Final update after zoom, pan, Reset Axes,
+   * Autoscale, or adaptive-tick relayout.
+   */
+  el.on(
+    "plotly_relayout",
+    function(eventdata) {
+
+      updateRangeFrame(
+        eventdata,
+        "plotly_relayout",
+        false
+      );
+
+      scheduleRangeFrameUpdate(
+        "plotly_relayout_final",
+        finalUpdateDelay
+      );
+    }
+  );
+
+  /*
+   * At this point Plotly has redrawn the axes and
+   * axisObj._vals contains the newly rendered ticks.
+   */
+  el.on(
+    "plotly_afterplot",
+    function() {
+      scheduleRangeFrameUpdate(
+        "plotly_afterplot",
+        0
+      );
+    }
+  );
+
+  /*
+   * Double-click occurs near the beginning of the
+   * reset. The afterplot handler performs the actual
+   * post-reset update.
+   */
+  el.on(
+    "plotly_doubleclick",
+    function() {
+      scheduleRangeFrameUpdate(
+        "plotly_doubleclick",
+        finalUpdateDelay
+      );
+    }
+  );
+
+  /*
+   * Retain the custom/nonstandard event from the
+   * original implementation.
+   */
+  el.on(
+    "plotly_framework",
+    function(eventdata) {
+
+      updateRangeFrame(
+        eventdata,
+        "plotly_framework",
+        false
+      );
+
+      scheduleRangeFrameUpdate(
+        "plotly_framework_final",
+        finalUpdateDelay
+      );
+    }
+  );
+
+  /*
+   * Initial alignment after the widget has rendered.
+   */
+  setTimeout(
+    function() {
+      scheduleRangeFrameUpdate(
+        "initial_update",
+        0
+      );
+    },
+    100
+  );
 }
 }"
-
