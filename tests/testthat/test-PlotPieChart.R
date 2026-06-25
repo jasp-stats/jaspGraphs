@@ -16,7 +16,7 @@ test_that("plotPieChart: polar, non-polar, axis ticks and large group variants",
   vdiffr::expect_doppelganger("plotPieChart-polar-no-ticks-no-legend", p2)
 
   # Case C: non-polar variant
-  p3 <- plotPieChartNonPolar(value, ggroups)
+  p3 <- plotPieChartCartesian(value, ggroups)
   testthat::expect_true(ggplot2::is_ggplot(p3))
   vdiffr::expect_doppelganger("plotPieChart-nonpolar-default", p3)
 
