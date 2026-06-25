@@ -20,6 +20,8 @@ test_that("plotPieChart: polar, non-polar, axis ticks and large group variants",
   testthat::expect_true(ggplot2::is_ggplot(p3))
   vdiffr::expect_doppelganger("plotPieChart-nonpolar-default", p3)
 
+  # the test below does not replicate on macos
+  testthat::skip_on_os("mac")
   # Case D: many small slices
   # set.seed(1)
   # value_many <- rpois(25, 10)
