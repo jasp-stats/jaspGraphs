@@ -9,7 +9,7 @@
 #' @param asPercentages Logical, should value be transformed to percentages? Recommended to be true.
 #' @param showAxisTicks Logical, should the ticks on the polar coordinates be shown?
 #' @param palette Character vector with palette name. If this option is set then legendColors is ignored. If palette is NULL then legendColors are used.
-#' @param polarAxis Logical, should the pie chart be drawn in polar coordinates? Deprecated, use \code{plotPieChartNonPolar} instead, because polar coordinates are incompatible with interactive graphs.
+#' @param polarAxis Logical, should the pie chart be drawn in polar coordinates? Setting this to TRUE is deprecated because polar coordinates are incompatible with interactive graphs.
 #' @param ... Arguments to be passed to \code{\link{themeJasp}}.
 #'
 #' @return a ggplot object.
@@ -48,8 +48,7 @@ plotPieChart <- function(value, group,
 
     lifecycle::deprecate_warn(
       when = "0.20.0",
-      what = "plotPieChart(polarAxis = 'must be FALSE')",
-      with = "plotPieChartNonPolar()"
+      what = "plotPieChart(polarAxis = 'must be FALSE')"
     )
 
     g <- plotPieChartPolar(
