@@ -70,6 +70,16 @@ optionsDiff <- function(new, old) {
 #' @export
 plotEditing <- function(graph, newOptions) {
 
+  if (isJaspPlotRecipe(graph)) {
+    if (isTRUE(newOptions[["resetPlot"]]))
+      return(setJaspPlotRecipeEditOptions(graph, newOptions))
+
+    # Validate against the materialized plot, but keep the serialized state as
+    # a recipe plus edit options rather than storing the edited ggplot object.
+    plotEditing(materializeJaspPlotRecipe(graph, applyEdits = FALSE), newOptions)
+    return(setJaspPlotRecipeEditOptions(graph, newOptions))
+  }
+
   if (!is_ggplot(graph))
     stop2("graph should be a ggplot2")
 
