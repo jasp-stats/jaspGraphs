@@ -66,9 +66,12 @@ optionsDiff <- function(new, old) {
 #' @title Edit a plot
 #' @param graph a ggplot2 object
 #' @param newOptions an options list
+#' @param ggbuild optionally a pre-computed ggplot_built object (avoids a
+#'   second call to \code{ggplot_build()} when the caller already built the
+#'   plot).
 #'
 #' @export
-plotEditing <- function(graph, newOptions) {
+plotEditing <- function(graph, newOptions, ggbuild = NULL) {
 
   if (!is_ggplot(graph))
     stop2("graph should be a ggplot2")
@@ -81,7 +84,8 @@ plotEditing <- function(graph, newOptions) {
     }
   }
 
-  ggbuild     <- ggplot_build(graph)
+  if (is.null(ggbuild))
+    ggbuild     <- ggplot_build(graph)
   # TODO: first check if plot was previously edited, if so use those options
   oldOptions  <- plotEditingOptions(ggbuild)
   validateOptions(newOptions, oldOptions)
