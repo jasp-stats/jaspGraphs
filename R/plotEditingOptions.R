@@ -82,7 +82,7 @@ getPlotEditingOptions.qgraph <- function(graph) {
 
 #' @exportS3Method
 getPlotEditingOptions.jaspGraphsPlot <- function(graph) {
-  if (length(graph) > 1L)
+  if (length(graph) != 1L)
     return(plotEditingOptionsError(gettext("This plot cannot be edited because it consists of multiple smaller figures.")))
   return(getPlotEditingOptions(graph[[1L]]))
 }
