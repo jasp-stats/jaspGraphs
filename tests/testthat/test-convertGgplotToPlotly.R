@@ -4,13 +4,14 @@ test_that("convertGgplotToPlotly: structural conversion to plotly object", {
 
   p <- ggplot2::qplot(1:10, rnorm(10)) + themeJaspRaw()
 
-  # confirm it converts and returns a plotly-like object
+  # confirm it converts and returns the structured plotly conversion
   res <- convertGgplotToPlotly(p, returnJSON = FALSE)
-  testthat::expect_true(inherits(res, "plotly"))
+  testthat::expect_true(inherits(res$plotly, "plotly"))
 
   # basic structural checks: traces should be present and layout exists
-  expect_true(length(res$x$data) >= 1)
-  expect_true(!is.null(res$x$layout))
+  expect_true(length(res$plotly$x$data) >= 1)
+  expect_true(!is.null(res$plotly$x$layout))
+  expect_false(is.null(res$hasRangeFrame))
 
   # also ensure ggplotly yields similar structure (non-image test)
   res2 <- plotly::ggplotly(p)
@@ -35,27 +36,27 @@ test_that("convertGgplotToPlotly: jaspMatrixPlot conversion preserves matrix lay
   p <- ggMatrixPlot(plotMatrix)
   res <- convertGgplotToPlotly(p, returnJSON = FALSE)
 
-  testthat::expect_true(inherits(res, "plotly"))
+  testthat::expect_true(inherits(res$plotly, "plotly"))
 
-  xaxes <- grep("^xaxis", names(res$x$layout), value = TRUE)
-  yaxes <- grep("^yaxis", names(res$x$layout), value = TRUE)
+  xaxes <- grep("^xaxis", names(res$plotly$x$layout), value = TRUE)
+  yaxes <- grep("^yaxis", names(res$plotly$x$layout), value = TRUE)
   testthat::expect_equal(length(xaxes), prod(dim(p$plotArgs$layout)))
   testthat::expect_equal(length(yaxes), prod(dim(p$plotArgs$layout)))
 
-  xWidths <- unique(round(vapply(xaxes, function(ax) diff(res$x$layout[[ax]]$domain), numeric(1L)), 2L))
-  yHeights <- unique(round(vapply(yaxes, function(ax) diff(res$x$layout[[ax]]$domain), numeric(1L)), 2L))
+  xWidths <- unique(round(vapply(xaxes, function(ax) diff(res$plotly$x$layout[[ax]]$domain), numeric(1L)), 2L))
+  yHeights <- unique(round(vapply(yaxes, function(ax) diff(res$plotly$x$layout[[ax]]$domain), numeric(1L)), 2L))
   testthat::expect_gt(length(xWidths), 1L)
   testthat::expect_gt(length(yHeights), 1L)
-  testthat::expect_true(length(res$x$layout$shapes) > 0L)
+  testthat::expect_true(length(res$plotly$x$layout$shapes) > 0L)
 
-  annotations <- res$x$layout$annotations
+  annotations <- res$plotly$x$layout$annotations
   testthat::expect_false(is.null(annotations))
   testthat::expect_true(any(vapply(annotations, function(annotation) identical(annotation$textangle, -90), logical(1L))))
 
   p_shared <- ggMatrixPlot(plotMatrix, shareX = TRUE, shareY = TRUE)
   res_shared <- convertGgplotToPlotly(p_shared, returnJSON = FALSE)
-  xaxes_shared <- grep("^xaxis", names(res_shared$x$layout), value = TRUE)
-  yaxes_shared <- grep("^yaxis", names(res_shared$x$layout), value = TRUE)
+  xaxes_shared <- grep("^xaxis", names(res_shared$plotly$x$layout), value = TRUE)
+  yaxes_shared <- grep("^yaxis", names(res_shared$plotly$x$layout), value = TRUE)
   testthat::expect_lt(length(xaxes_shared), length(xaxes))
   testthat::expect_lt(length(yaxes_shared), length(yaxes))
 })
