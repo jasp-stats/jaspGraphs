@@ -7,7 +7,7 @@
 plotEditing(graph, newOptions)
 }
 \arguments{
-\item{graph}{a ggplot2 object}
+\item{graph}{a ggplot2 object or a jaspGraphsPlot object}
 
 \item{newOptions}{an options list}
 }

@@ -8,7 +8,6 @@ Description: Graph making functions and wrappers for JASP.
 License: GPL
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.3
 Imports: 
     cli,
     ggplot2 (>= 3.0.0),
@@ -25,3 +24,4 @@ Suggests:
     testthat,
     vdiffr
 Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.0.0

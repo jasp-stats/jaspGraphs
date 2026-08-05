@@ -37,7 +37,7 @@ plotPieChart(
 
 \item{palette}{Character vector with palette name. If this option is set then legendColors is ignored. If palette is NULL then legendColors are used.}
 
-\item{polarAxis}{Logical, should the pie chart be drawn in polar coordinates? Deprecated, use \code{plotPieChartNonPolar} instead, because polar coordinates are incompatible with interactive graphs.}
+\item{polarAxis}{Logical, should the pie chart be drawn in polar coordinates? Setting this to TRUE is deprecated because polar coordinates are incompatible with interactive graphs.}
 
 \item{...}{Arguments to be passed to \code{\link{themeJasp}}.}
 }

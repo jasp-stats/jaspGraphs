@@ -244,6 +244,8 @@ scaleAxesLabels <- function(scaleXYlabels, plotList) {
 #' @param nc number of columns
 #' @param shareX Whether plotly should share x-axes when converting a matrix plot. Defaults to FALSE.
 #' @param shareY Whether plotly should share y-axes when converting a matrix plot. Defaults to FALSE.
+#' @param titleX Whether plotly should show x-axis titles when converting a matrix plot. Defaults to TRUE.
+#' @param titleY Whether plotly should show y-axis titles when converting a matrix plot. Defaults to TRUE.
 #' @param ... ignored.
 #' @param leftLabels labels left of the plots in plotList.
 #' @param topLabels labels above the plots in plotList.
@@ -267,6 +269,8 @@ ggMatrixPlot <- function(plotList = NULL, nr = NULL, nc = NULL,
                          ...,
                          shareX          = FALSE,
                          shareY          = FALSE,
+                         titleX          = TRUE,
+                         titleY          = TRUE,
                          leftLabels      = NULL,
                          topLabels       = NULL,
                          rightLabels     = NULL,
@@ -291,6 +295,8 @@ ggMatrixPlot.matrix <- function(plotList = NULL, nr = NULL, nc = NULL,
                                 ...,
                                 shareX          = FALSE,
                                 shareY          = FALSE,
+                                titleX          = TRUE,
+                                titleY          = TRUE,
                                 leftLabels      = NULL,
                                 topLabels       = NULL,
                                 rightLabels     = NULL,
@@ -327,6 +333,8 @@ ggMatrixPlot.matrix <- function(plotList = NULL, nr = NULL, nc = NULL,
     nc = nc,
     shareX = shareX,
     shareY = shareY,
+    titleX = titleX,
+    titleY = titleY,
     leftLabels      = leftLabels,
     topLabels       = topLabels,
     rightLabels     = rightLabels,
@@ -350,6 +358,8 @@ ggMatrixPlot.list <- function(plotList = NULL, nr = NULL, nc = NULL,
                               ...,
                               shareX          = FALSE,
                               shareY          = FALSE,
+                              titleX          = TRUE,
+                              titleY          = TRUE,
                               leftLabels      = NULL,
                               topLabels       = NULL,
                               rightLabels     = NULL,
@@ -390,6 +400,8 @@ ggMatrixPlot.list <- function(plotList = NULL, nr = NULL, nc = NULL,
     nc = nc,
     shareX = shareX,
     shareY = shareY,
+    titleX = titleX,
+    titleY = titleY,
     leftLabels      = leftLabels,
     topLabels       = topLabels,
     rightLabels     = rightLabels,
@@ -413,6 +425,8 @@ ggMatrixPlot.default <- function(plotList = NULL, nr = NULL, nc = NULL,
                                  ...,
                                  shareX          = FALSE,
                                  shareY          = FALSE,
+                                 titleX          = TRUE,
+                                 titleY          = TRUE,
                                  leftLabels      = NULL,
                                  topLabels       = NULL,
                                  rightLabels     = NULL,
@@ -429,6 +443,8 @@ ggMatrixPlot.default <- function(plotList = NULL, nr = NULL, nc = NULL,
 
   shareX <- validateMatrixPlotlyShareFlag(shareX, "shareX")
   shareY <- validateMatrixPlotlyShareFlag(shareY, "shareY")
+  titleX <- validateMatrixPlotlyShareFlag(titleX, "titleX")
+  titleY <- validateMatrixPlotlyShareFlag(titleY, "titleY")
   removeXYlabels <- match.arg(removeXYlabels)
   if (is.null(plotList) && debug) {
 
@@ -556,7 +572,9 @@ ggMatrixPlot.default <- function(plotList = NULL, nr = NULL, nc = NULL,
       heights      = height,
       widths       = width,
       shareX       = shareX,
-      shareY       = shareY
+      shareY       = shareY,
+      titleX       = titleX,
+      titleY       = titleY
     )
 
   class(totalGraph) <- c("jaspMatrixPlot", class(totalGraph))

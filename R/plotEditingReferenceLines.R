@@ -41,10 +41,10 @@ referenceToHLine <- function(reference) {
   lty      <- linetypeFromInt(reference$linetype %||% 0L)
   df <- data.frame(x = I(.985), y = reference$y, text = reference$text)
   if (reference$text == "")
-    return(ggplot2::geom_hline(data = df, mapping = aes(yintercept = y), colour = color, linewidth = lwd, linetype = lty))
+    return(ggplot2::geom_hline(data = df, mapping = aes(yintercept = y), colour = color, linewidth = lwd, linetype = lty, inherit.aes = FALSE))
   else return(list(
-    ggplot2::geom_hline(data = df, mapping = aes(yintercept = y), colour = color, linewidth = lwd, linetype = lty),
-    ggplot2::geom_label(data = df, mapping = aes(x = x, y = y, label = text), hjust = "inward")
+    ggplot2::geom_hline(data = df, mapping = aes(yintercept = y), colour = color, linewidth = lwd, linetype = lty, inherit.aes = FALSE),
+    ggplot2::geom_label(data = df, mapping = aes(x = x, y = y, label = text), hjust = "inward", inherit.aes = FALSE)
   ))
 }
 
@@ -54,10 +54,10 @@ referenceToVLine <- function(reference) {
   lty      <- linetypeFromInt(reference$linetype %||% 0L)
   df <- data.frame(x = reference$x, y = I(.985), text = reference$text)
   if (reference$text == "")
-    return(ggplot2::geom_vline(data = df, mapping = aes(xintercept = x), colour = color, linewidth = lwd, linetype = lty))
+    return(ggplot2::geom_vline(data = df, mapping = aes(xintercept = x), colour = color, linewidth = lwd, linetype = lty, inherit.aes = FALSE))
   else return(list(
-    ggplot2::geom_vline(data = df, mapping = aes(xintercept = x), colour = color, linewidth = lwd, linetype = lty),
-    ggplot2::geom_label(data = df, mapping = aes(x = x, y = y, label = text), hjust = "inward")
+    ggplot2::geom_vline(data = df, mapping = aes(xintercept = x), colour = color, linewidth = lwd, linetype = lty, inherit.aes = FALSE),
+    ggplot2::geom_label(data = df, mapping = aes(x = x, y = y, label = text), hjust = "inward", inherit.aes = FALSE)
   ))
 }
 
@@ -67,10 +67,10 @@ referenceToPoint <- function(reference) {
   shp   <- shapeFromInt(reference$linetype %||% 0L)
   df <- data.frame(x = reference$x, y = reference$y, text = reference$text)
   if (reference$text == "")
-    return(ggplot2::geom_point(data = df, mapping = aes(x = x, y = y), colour = color, size = sz, shape = shp))
+    return(ggplot2::geom_point(data = df, mapping = aes(x = x, y = y), colour = color, size = sz, shape = shp, inherit.aes = FALSE))
   else return(list(
-    ggplot2::geom_point(data = df, mapping = aes(x = x, y = y), colour = color, size = sz, shape = shp),
-    ggplot2::geom_text(data = df, mapping = aes(x = x, y = y, label = text), hjust = 0, nudge_x = 0.05)
+    ggplot2::geom_point(data = df, mapping = aes(x = x, y = y), colour = color, size = sz, shape = shp, inherit.aes = FALSE),
+    ggplot2::geom_text(data = df, mapping = aes(x = x, y = y, label = text), hjust = 0, nudge_x = 0.05, inherit.aes = FALSE)
   ))
 }
 

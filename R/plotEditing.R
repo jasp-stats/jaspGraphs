@@ -64,11 +64,23 @@ optionsDiff <- function(new, old) {
 }
 
 #' @title Edit a plot
-#' @param graph a ggplot2 object
+#' @param graph a ggplot2 object or a jaspGraphsPlot object
 #' @param newOptions an options list
 #'
 #' @export
 plotEditing <- function(graph, newOptions) {
+  UseMethod("plotEditing", graph)
+}
+
+#' @export
+plotEditing.default <- function(graph, newOptions) {
+   stop2("graph should be a ggplot or a jaspGraphsPlot")
+}
+
+#' @export
+plotEditing.jaspGraphsPlot <- function(graph, newOptions) {
+  if (length(graph) != 1L)
+    stop2("This plot cannot be edited because it consists of multiple smaller figures.")
 
   if (isJaspPlotRecipe(graph)) {
     if (isTRUE(newOptions[["resetPlot"]]))
@@ -82,6 +94,14 @@ plotEditing <- function(graph, newOptions) {
 
   if (!is_ggplot(graph))
     stop2("graph should be a ggplot2")
+
+  graph[[1L]] <- plotEditing(graph[[1L]], newOptions)
+  return(graph)
+}
+
+#' @export
+plotEditing.ggplot <- function(graph, newOptions) {
+
 
   if (isTRUE(newOptions[["resetPlot"]])) {
     if (hasOriginalEditingOptions(graph)) {
