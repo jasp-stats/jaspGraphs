@@ -116,7 +116,12 @@ getAxisInfo.ScaleContinuousPosition <- function(x, opts, ggbuild) {
   if (is.character(opts2keep[["breaks"]]) && !is.null(attr(opts2keep[["breaks"]], "pos")))
     opts2keep[["breaks"]] <- attr(opts2keep[["breaks"]], "pos")
 
-  if (is.null(opts2keep[["breaks"]])) {
+  # A scale created with breaks = NULL has no breaks at all. Depending on where the
+  # scale is read from this shows up as NULL (Scale) or as numeric(0) (ViewScale, which
+  # is what panel_params holds), so length 0 must be treated the same as NULL. Otherwise
+  # the branch below produces breaks = numeric(0), drops labels entirely and yields a
+  # range of c(NA, 0), which breaks the plot editor for such an axis.
+  if (length(opts2keep[["breaks"]]) == 0L) {
 
     opts2keep[["breaksType"]] <- BreaksType$Null
     opts2keep[["range"]]      <- "NULL" # TODO: fix this!
@@ -222,10 +227,19 @@ internalUpdateAxis.ScaleContinuousPosition <- function(currentAxis, newSettings)
     # zapsmall avoids floating point artefacts (e.g., try as.character(seq(-0.6, 0.2, 0.2)))
     currentAxis[["breaks"]] <- zapsmall(seq(tmp[1L], tmp[2L], tmp[3L]))
     currentAxis[["labels"]] <- as.character(currentAxis[["breaks"]])
+  } else if (length(newSettings[["breaks"]]) == 0L) {
+    # no breaks to set: identical to BreaksType$Null. Assigning an empty list here
+    # (an empty json array arrives as list()) makes ggplot2 fail while drawing.
+    currentAxis[["breaks"]] <- NULL
+    currentAxis[["labels"]] <- NULL
+    if (newSettings[["limitsType"]] == LimitsType$Breaks)
+      newSettings[["limitsType"]] <- LimitsType$Manual
+
   } else {
     # currentAxis[["breaks"]] <- sort(newSettings[["breaks"]])
-    currentAxis[["breaks"]] <- newSettings[["breaks"]]
-    currentAxis[["labels"]] <- newSettings[["labels"]]
+    # breaks/labels can arrive as lists (from json), the scale needs atomic vectors
+    currentAxis[["breaks"]] <- as.numeric(newSettings[["breaks"]])
+    currentAxis[["labels"]] <- if (is.null(newSettings[["labels"]])) NULL else as.character(newSettings[["labels"]])
   }
 
   currentAxis[["limits"]] <- switchEnum(newSettings[["limitsType"]], LimitsType,
