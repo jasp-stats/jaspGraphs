@@ -188,21 +188,38 @@ plotPieChartCartesian <- function(value, group,
 
   if (showAxisText) {
 
-    r <- 1.25
-    t <- fromTheta[, 1] #- 2 * offset
+    r <- 1.05
+    t <- fromTheta[, 1]
 
-    # labels <- cum * 100
-    labels <- cumsum(rev(df$y))
-    labels <- c("0 / 100", rev(labels[-length(labels)]))
+    # cumulative percentage at the start of each slice, running in the same (counterclockwise) direction as the slices
+    cumPerc <- 100 * fromPerc[, 1]
+
+    # drop labels that would overlap with the previous label or with "0 / 100"
+    minGap <- 5
+    keep     <- logical(length(cumPerc))
+    keep[1L] <- TRUE
+    lastKept <- 0
+    for (i in seq_along(cumPerc)[-1L]) {
+      if (cumPerc[i] - lastKept >= minGap && 100 - cumPerc[i] >= minGap) {
+        keep[i]  <- TRUE
+        lastKept <- cumPerc[i]
+      }
+    }
+
+    labels <- c("0 / 100", as.character(round(cumPerc[-1L], 1)))[keep]
 
     dfTxt <- data.frame(
-      x = r * cos(t),
-      y = r * sin(t),
-      l = labels
+      x = r * cos(t[keep]),
+      y = r * sin(t[keep]),
+      l = labels,
+      # anchor the text on the side facing the pie so labels grow outwards
+      h = (1 - cos(t[keep])) / 2,
+      v = (1 - sin(t[keep])) / 2
     )
-    g <- g + ggplot2::geom_text(data = dfTxt, aes(x = .data$x, y = .data$y, label = .data$l),
+    g <- g + ggplot2::geom_text(data = dfTxt, aes(x = .data$x, y = .data$y, label = .data$l, hjust = .data$h, vjust = .data$v),
                            parse = needsParsing(labels),
-                           size = getGraphOption("fontsize"), inherit.aes = FALSE)
+                           size = getGraphOption("fontsize") / ggplot2::.pt, inherit.aes = FALSE) +
+      ggplot2::expand_limits(x = c(-1.35, 1.35), y = c(-1.2, 1.2))
 
   }
 
