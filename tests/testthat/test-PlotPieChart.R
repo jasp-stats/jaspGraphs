@@ -33,3 +33,19 @@ test_that("plotPieChart: polar, non-polar, axis ticks and large group variants",
   vdiffr::expect_doppelganger("plotPieChart-many-slices", p4)
 
 })
+
+test_that("plotPieChartCartesian: labels match slice boundaries, are rounded, and do not overlap", {
+  skip_on_cran()
+
+  # Case A: label at the end of the first (counterclockwise) slice reads 145 / 224 = 64.7
+  p1 <- plotPieChartCartesian(c(145, 79) / 224 * 100, c("1", "2"))
+  labs1 <- ggplot2::layer_data(p1, 2L)
+  testthat::expect_equal(labs1$label, c("0 / 100", "64.7"))
+  testthat::expect_equal(atan2(labs1$y[2L], labs1$x[2L]) %% (2 * pi), (pi / 2 + 2 * pi * 145 / 224) %% (2 * pi))
+
+  # Case B: boundaries closer than 5 percentage points to the previous label (or to 0 / 100) are dropped
+  value <- c(3, 1, 4, 5, 8, 10, 11, 6)
+  p2 <- plotPieChartCartesian(value / sum(value) * 100, as.character(seq_along(value)))
+  testthat::expect_equal(ggplot2::layer_data(p2, 2L)$label, c("0 / 100", "6.2", "16.7", "27.1", "43.8", "64.6", "87.5"))
+
+})
