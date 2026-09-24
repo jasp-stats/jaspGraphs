@@ -49,6 +49,9 @@ convertGgplotToPlotly <- function(ggplotObj, returnJSON = TRUE) {
 }
 
 convertPlotObjectToPlotly <- function(plotObj) {
+  if (isJaspPlotRecipe(plotObj))
+    plotObj <- materializeJaspPlotRecipe(plotObj)
+
   if (inherits(plotObj, "jaspMatrixPlot"))
     return(convertJaspMatrixPlotToPlotly(plotObj))
 
