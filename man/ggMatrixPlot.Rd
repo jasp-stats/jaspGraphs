@@ -5,7 +5,7 @@
 \alias{ggMatrixPlot.matrix}
 \alias{ggMatrixPlot.list}
 \alias{ggMatrixPlot.default}
-\title{ggMatrixPlot}
+\title{DEPRECATED, use \link{jaspMatrixPlot} instead. ggMatrixPlot}
 \usage{
 ggMatrixPlot(
   plotList = NULL,
@@ -152,7 +152,7 @@ ggMatrixPlot(
 \item{layout}{a matrix that specifies the position of each plot, akin to the layout for base plots.}
 }
 \description{
-ggMatrixPlot
+DEPRECATED, use \link{jaspMatrixPlot} instead. ggMatrixPlot
 }
 \details{
 This function is intended to be called with a matrix as first argument, although other input is also supported.
