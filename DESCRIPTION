@@ -16,6 +16,7 @@ Imports:
     htmlwidgets,
     jsonlite,
     lifecycle,
+    patchwork,
     plotly,
     R6,
     rlang,

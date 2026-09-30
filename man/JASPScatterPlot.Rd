@@ -2,7 +2,7 @@
 % Please edit documentation in R/JASPScatterPlot.R
 \name{JASPScatterPlot}
 \alias{JASPScatterPlot}
-\title{Create a scatter plot with density}
+\title{DEPRECATED, use \link{jaspBivariateWithMargins} instead. Create a scatter plot with density}
 \usage{
 JASPScatterPlot(
   x,
@@ -60,7 +60,7 @@ JASPScatterPlot(
 \item{...}{passed to \code{\link{themeJaspRaw}}.}
 }
 \description{
-Create a scatter plot with density
+DEPRECATED, use \link{jaspBivariateWithMargins} instead. Create a scatter plot with density
 }
 \details{
 The only change added when \code{emulateGgMarginal = TRUE} is that \code{ggplot2::theme(plot.margin = unit(c(0, 0, 0.25, 0.25), "cm"))}

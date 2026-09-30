@@ -237,7 +237,7 @@ scaleAxesLabels <- function(scaleXYlabels, plotList) {
   return(plotList)
 }
 
-#' @title ggMatrixPlot
+#' @title DEPRECATED, use [jaspMatrixPlot] instead. ggMatrixPlot
 #' @param plotList a list of ggplot2 objects
 #' @param layout a matrix that specifies the position of each plot, akin to the layout for base plots.
 #' @param nr number of rows
@@ -284,6 +284,13 @@ ggMatrixPlot <- function(plotList = NULL, nr = NULL, nc = NULL,
                          labelBandWidth  = .25,
                          labelBandHeight = .25,
                          debug           = FALSE) {
+
+  lifecycle::deprecate_soft(
+    "0.21.0",
+    "ggMatrixPlot()",
+    "jaspMatrixPlot()",
+    details = "jaspMatrixPlot supersedes ggMatrixPlot."
+  )
 
   UseMethod("ggMatrixPlot", plotList)
 }
