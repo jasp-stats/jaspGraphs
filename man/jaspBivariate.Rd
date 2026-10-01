@@ -2,7 +2,7 @@
 % Please edit documentation in R/jaspBivariate.R
 \name{jaspBivariate}
 \alias{jaspBivariate}
-\title{Bivariate plots with optional confidence and prediction intervals.}
+\title{Bivariate plots with optional confidence and prediction intervals}
 \usage{
 jaspBivariate(
   x,
@@ -20,8 +20,8 @@ jaspBivariate(
   predict = c("none", "lm", "ellipse"),
   predictLevel = 0.95,
   predictArgs = .predictArgs(),
-  xBreaks = NULL,
-  yBreaks = NULL,
+  xAxis = NULL,
+  yAxis = NULL,
   legendPosition = "none"
 )
 }
@@ -44,10 +44,11 @@ jaspBivariate(
 \item{"hex"}{Using \link[ggplot2:geom_hex]{ggplot2::geom_hex}.}
 \item{"bin"}{Using \link[ggplot2:geom_bin2d]{ggplot2::geom_bin2d}.}
 \item{"contour"}{Using \link[ggplot2:geom_density2d]{ggplot2::geom_density2d}.}
-\item{"density"}{Using \link[ggplot2:geom_density2d_filled]{ggplot2::geom_density2d_filled}.}
+\item{"density"}{Using \link[ggplot2:geom_density2d_filled]{ggplot2::geom_density2d_filled}. By default, regions below 10\% of the maximum density are not filled.}
 }}
 
-\item{args}{A list of additional arguments passed to the geom function determined by \code{type} argument.}
+\item{args}{A list of additional arguments passed to the geom function determined by \code{type} argument.
+Contour lines are black unless a color is specified.}
 
 \item{smooth}{Character; passed as \code{method} argument to \link[ggplot2:geom_smooth]{ggplot2::geom_smooth},
 unless \code{smooth == "none"}, in which case the layer is not plotted.}
@@ -58,7 +59,8 @@ Passed as \code{se} argument to \link[ggplot2:geom_smooth]{ggplot2::geom_smooth}
 \item{smoothCiLevel}{Numeric; Confidence level of the confidence interval around the smooth line.
 Passed as \code{level} argument to \link[ggplot2:geom_smooth]{ggplot2::geom_smooth}.}
 
-\item{smoothArgs}{A list of additional arguments passed to \link[ggplot2:geom_smooth]{ggplot2::geom_smooth}.}
+\item{smoothArgs}{A list of additional arguments passed to \link[ggplot2:geom_smooth]{ggplot2::geom_smooth}.
+Without a grouping variable, the smooth line is black unless a color is specified.}
 
 \item{predict}{Character; Method for drawing the prediction interval:
 \describe{
@@ -71,9 +73,10 @@ Passed as \code{level} argument to \link[ggplot2:geom_smooth]{ggplot2::geom_smoo
 
 \item{predictArgs}{A list of additional arguments passed to the function that draws the prediction interval.}
 
-\item{xBreaks}{Optional numeric vector that specifies the breaks along the x-axis.}
-
-\item{yBreaks}{Optional numeric vector that specifies the breaks along the y-axis.}
+\item{xAxis, yAxis}{Optional shared axes, lists with elements \code{breaks} (axis breaks) and \code{limits} (axis limits).
+Used by \link{jaspMatrixPlot} and \link{jaspBivariateWithMargins} so that all panels showing the same variable share the axis.
+If \code{NULL}, the axis spans the pretty breaks of all layers, including smooth lines and prediction intervals.
+If supplied, the axis is used as is; the parts of the layers outside the axis limits are clipped.}
 
 \item{legendPosition}{Character; passed as \code{legend.position} to \link{themeJaspRaw}.}
 }

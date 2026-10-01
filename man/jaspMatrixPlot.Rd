@@ -23,12 +23,12 @@ jaspMatrixPlot(
 \item{data}{Data frame of data to plot.}
 
 \item{diagonalPlotFunction}{A function that draws the plots on the diagonal.
-Must accept arguments \code{x} (numeric), \code{xName} (character), and \code{xBreaks} (numeric, the shared bin breaks of \code{x}).}
+Must accept arguments \code{x} (numeric), \code{xName} (character), and \code{xAxis} (the shared axis of \code{x}, see Details).}
 
 \item{diagonalPlotArgs}{A list of additional arguments to pass to \code{diagonalPlotFunction}.}
 
 \item{topRightPlotFunction}{A function that draws the plots in the upper triangle.
-Must accept arguments \code{x}, \code{y} (numeric), \code{xName}, \code{yName} (character), and \code{xBreaks}, \code{yBreaks} (numeric, the shared bin breaks of \code{x} and \code{y}).}
+Must accept arguments \code{x}, \code{y} (numeric), \code{xName}, \code{yName} (character), and \code{xAxis}, \code{yAxis} (the shared axes of \code{x} and \code{y}, see Details).}
 
 \item{topRightPlotArgs}{A list of additional arguments to pass to \code{topRightPlotFunction}.}
 
@@ -43,10 +43,9 @@ Must accept arguments \code{x}, \code{y} (numeric), \code{xName}, \code{yName} (
 \item{\code{"x"}}{Only the x-axis title is removed.}
 \item{\code{"y"}}{Only the y-axis title is removed.}
 }
-Common axes across a row or column are obtained by passing the same \code{xBreaks} and \code{yBreaks} to every panel.}
+Common axes across a row or column are obtained by passing the same \code{xAxis} and \code{yAxis} to every panel.}
 
-\item{breaks}{Method for computing the bin breaks of each variable, see \code{breaks} in \link{jaspMarginal}.
-The resulting breaks are passed as \code{xBreaks} and \code{yBreaks} to every panel, so that all panels showing the same variable share an axis.}
+\item{breaks}{Method for computing the bin breaks of each variable, see \code{breaks} in \link{jaspMarginal}.}
 
 \item{axesLabels}{Optional character vector; provide column/row names of the matrix.}
 }
@@ -59,4 +58,13 @@ The plot can display three different types of plots:
 \item{\code{topRight}}{Where \code{i < j}.}
 \item{\code{bottomLeft}}{Where \code{i > j}.}
 }
+}
+\details{
+The axis of each variable is computed once and passed as \code{xAxis} and \code{yAxis} to every panel,
+so that all panels showing the same variable share an axis. An axis is a list with elements
+\code{binBreaks} (the histogram bin breaks computed with \code{breaks}), \code{breaks} (the axis breaks),
+and \code{limits} (the axis limits, which span the axis breaks).
+The axes cover all layers of all panels: if a panel extends beyond the axes of its variables, e.g., because of a prediction interval,
+these axes are extended and every panel showing these variables is drawn again with the extended axes.
+With three or more variables, fewer axis breaks are used so that the tick labels of the narrow panels do not overlap.
 }

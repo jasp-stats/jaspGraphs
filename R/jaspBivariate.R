@@ -1,4 +1,4 @@
-#' @title Bivariate plots with optional confidence and prediction intervals.
+#' @title Bivariate plots with optional confidence and prediction intervals
 # #' @encoding UTF-8
 #' @description This plot consists of three layers:
 #' \enumerate{
@@ -18,9 +18,10 @@
 #'    \item{"hex"}{Using [ggplot2::geom_hex].}
 #'    \item{"bin"}{Using [ggplot2::geom_bin2d].}
 #'    \item{"contour"}{Using [ggplot2::geom_density2d].}
-#'    \item{"density"}{Using [ggplot2::geom_density2d_filled].}
+#'    \item{"density"}{Using [ggplot2::geom_density2d_filled]. By default, regions below 10% of the maximum density are not filled.}
 #' }
 #' @param args A list of additional arguments passed to the geom function determined by \code{type} argument.
+#' Contour lines are black unless a color is specified.
 #' @param smooth Character; passed as \code{method} argument to [ggplot2::geom_smooth],
 #' unless \code{smooth == "none"}, in which case the layer is not plotted.
 #' @param smoothCi Logical; Should confidence interval around the smooth line be plotted?
@@ -28,6 +29,7 @@
 #' @param smoothCiLevel Numeric; Confidence level of the confidence interval around the smooth line.
 #' Passed as \code{level} argument to [ggplot2::geom_smooth].
 #' @param smoothArgs A list of additional arguments passed to [ggplot2::geom_smooth].
+#' Without a grouping variable, the smooth line is black unless a color is specified.
 #' @param predict Character; Method for drawing the prediction interval:
 #' \describe{
 #'   \item{"none"}{Prediction interval is not displayed.}
@@ -36,23 +38,25 @@
 #' }
 #' @param predictLevel Numeric; Confidence level of the prediction interval.
 #' @param predictArgs A list of additional arguments passed to the function that draws the prediction interval.
-#' @param xBreaks Optional numeric vector that specifies the breaks along the x-axis.
-#' @param yBreaks Optional numeric vector that specifies the breaks along the y-axis.
+#' @param xAxis,yAxis Optional shared axes, lists with elements \code{breaks} (axis breaks) and \code{limits} (axis limits).
+#' Used by [jaspMatrixPlot] and [jaspBivariateWithMargins] so that all panels showing the same variable share the axis.
+#' If \code{NULL}, the axis spans the pretty breaks of all layers, including smooth lines and prediction intervals.
+#' If supplied, the axis is used as is; the parts of the layers outside the axis limits are clipped.
 #' @param legendPosition Character; passed as \code{legend.position} to [themeJaspRaw].
 #' @export
 jaspBivariate <- function(
     x, y, group = NULL, xName, yName, groupName,
     type               = c("point", "hex", "bin", "contour", "density", "none"),
-    args               = list(),#color = "black"),
+    args               = list(),
     smooth             = c("none", "lm", "glm", "gam", "loess"),
     smoothCi           = FALSE,
     smoothCiLevel      = 0.95,
-    smoothArgs         = list(),#color = "black"),
+    smoothArgs         = list(),
     predict            = c("none", "lm", "ellipse"),
     predictLevel       = 0.95,
     predictArgs        = .predictArgs(),
-    xBreaks            = NULL,
-    yBreaks            = NULL,
+    xAxis              = NULL,
+    yAxis              = NULL,
     legendPosition     = "none"
 ) {
 
@@ -95,6 +99,14 @@ jaspBivariate <- function(
     density = ggplot2::geom_density2d_filled,
     none    = function(...) { return(NULL) }
   )
+  if (type == "contour" && !.hasColorArg(args))
+    args[["color"]] <- "black"
+
+  # the lowest level of a filled density covers the whole panel, so it is not filled
+  if (type == "density" && !any(c("breaks", "bins", "binwidth") %in% names(args))) {
+    args[["contour_var"]] <- "ndensity"
+    args[["breaks"]]      <- seq(0.1, 1, by = 0.1)
+  }
   baseLayer <- do.call(baseGeom, args)
 
 
@@ -109,6 +121,9 @@ jaspBivariate <- function(
     smoothArgs$se      <- smoothCi
     smoothArgs$level   <- smoothCiLevel
     smoothArgs$formula <- formula
+    # with a grouping variable, the smooth lines are colored by group
+    if (is.null(group) && !.hasColorArg(smoothArgs))
+      smoothArgs$color <- "black"
     smoothLayer <- do.call(ggplot2::geom_smooth, smoothArgs)
   } else {
     smoothLayer <- NULL
@@ -132,21 +147,10 @@ jaspBivariate <- function(
     predictLayer <- NULL
   }
 
-  if (missing(xBreaks) || is.null(xBreaks)) {
-    xBreaks <- getPrettyAxisBreaks(x)
-  } else {
-    xBreaks <- getPrettyAxisBreaks(xBreaks)
-  }
-  xRange <- range(c(x, xBreaks))
-  xScale <- scale_x_continuous(breaks = xBreaks)
-
-  if (missing(yBreaks) || is.null(yBreaks)) {
-    yBreaks <- getPrettyAxisBreaks(y)
-  } else {
-    yBreaks <- getPrettyAxisBreaks(yBreaks)
-  }
-  yRange <- range(c(y, yBreaks))
-  yScale <- scale_y_continuous(breaks = yBreaks)
+  # without a shared axis, the JASP scales span all layers. A shared axis is used as is, and
+  # oob_keep ensures that layers beyond it are clipped at the panel border instead of being dropped.
+  xScale <- if (is.null(xAxis)) scale_x_continuous() else scale_x_continuous(breaks = xAxis[["breaks"]], limits = xAxis[["limits"]], oob = scales::oob_keep)
+  yScale <- if (is.null(yAxis)) scale_y_continuous() else scale_y_continuous(breaks = yAxis[["breaks"]], limits = yAxis[["limits"]], oob = scales::oob_keep)
 
 
   if (type == "point" && !is.null(group)) {
@@ -172,12 +176,13 @@ jaspBivariate <- function(
     ggplot2::ylab(yName) +
     xScale +
     yScale +
-    # this ensures that the axes do not get stretched outside of the data range
-    # in case that the bounds of smoothLayer or predictLayer are outside of the region
-    ggplot2::coord_cartesian(xlim = xRange, ylim = yRange) +
     scales
 
   return(plot)
+}
+
+.hasColorArg <- function(args) {
+  any(c("color", "colour", "col") %in% names(args))
 }
 
 .predictArgs <- function(color = "black", linetype = 2, linewidth = 1, fill = NA, ...) {
@@ -190,17 +195,7 @@ jaspBivariate <- function(
   return(args)
 }
 
-.smoothArgs <- function(method = "lm", se = FALSE, level = 0.95, formula = y~x, ...) {
-  args <- list(...)
-  args[["method"]]  <- method
-  args[["se"]]      <- se
-  args[["level"]]   <- level
-  args[["formula"]] <- formula
-
-  return(args)
-}
-
-#' @title Bivariate plots with marginal distributions along the axes.
+#' @title Bivariate plots with marginal distributions along the axes
 #'
 #' @description This plot consists of four elements:
 #' \enumerate{
@@ -265,17 +260,30 @@ jaspBivariateWithMargins <- function(
   df <- stats::na.omit(df)
   dfGroup <- if (is.null(group)) list(NULL) else list(df[["group"]])
 
-  xBreaks <- getJaspMarginalBreaks(x = df[["x"]], breaks = xMarginalArgs[["breaks"]])
-  yBreaks <- getJaspMarginalBreaks(x = df[["y"]], breaks = yMarginalArgs[["breaks"]])
+  xAxis <- jaspSharedAxis(x = df[["x"]], breaks = xMarginalArgs[["breaks"]] %||% "sturges")
+  yAxis <- jaspSharedAxis(x = df[["y"]], breaks = yMarginalArgs[["breaks"]] %||% "sturges")
 
-  bottomLeft <- jaspBivariate(x = df[["x"]], y = df[["y"]], group = dfGroup[[1L]], xName = xName, yName = yName, groupName = groupName, xBreaks = xBreaks, yBreaks = yBreaks, ...)
+  makeBottomLeft <- function(xAxis, yAxis) {
+    jaspBivariate(x = df[["x"]], y = df[["y"]], group = dfGroup[[1L]], xName = xName, yName = yName, groupName = groupName, xAxis = xAxis, yAxis = yAxis, ...)
+  }
+  bottomLeft <- makeBottomLeft(xAxis, yAxis)
+
+  # the axes also cover the smooth lines and prediction intervals, and the marginals follow
+  ranges   <- jaspPanelRanges(bottomLeft)
+  newXAxis <- jaspExtendAxis(xAxis, ranges[["x"]])
+  newYAxis <- jaspExtendAxis(yAxis, ranges[["y"]])
+  if (!identical(newXAxis, xAxis) || !identical(newYAxis, yAxis)) {
+    xAxis      <- newXAxis
+    yAxis      <- newYAxis
+    bottomLeft <- makeBottomLeft(xAxis, yAxis)
+  }
 
   xMarginalArgs[["x"]]          <- df[["x"]]
   xMarginalArgs["group"]        <- dfGroup
   xMarginalArgs["xName"]        <- list(NULL)
   xMarginalArgs["yName"]        <- list(NULL)
   xMarginalArgs["groupName"]    <- list(groupName)
-  xMarginalArgs[["xBreaks"]]    <- xBreaks
+  xMarginalArgs[["xAxis"]]      <- xAxis
   xMarginalArgs[["axisLabels"]] <- "none"
   xMarginalArgs[["sides"]]      <- ""
 
@@ -287,7 +295,8 @@ jaspBivariateWithMargins <- function(
   yMarginalArgs["xName"]        <- list(NULL)
   yMarginalArgs["yName"]        <- list(NULL)
   yMarginalArgs["groupName"]    <- list(groupName)
-  yMarginalArgs[["xBreaks"]]    <- yBreaks
+  # the scale of the flipped marginal still belongs to x, so it gets the shared axis of y
+  yMarginalArgs[["xAxis"]]      <- yAxis
   yMarginalArgs[["axisLabels"]] <- "none"
   yMarginalArgs[["sides"]]      <- ""
 

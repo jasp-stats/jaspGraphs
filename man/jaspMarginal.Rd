@@ -16,7 +16,7 @@ jaspMarginal(
   yName,
   type = c("auto", "count", "density"),
   breaks = "sturges",
-  xBreaks = NULL,
+  xAxis = NULL,
   histogram = TRUE,
   histogramArgs = .histogramArgs(),
   rug = FALSE,
@@ -37,7 +37,7 @@ jaspMarginal(
   yName,
   type = c("auto", "count", "density"),
   breaks = "sturges",
-  xBreaks = NULL,
+  xAxis = NULL,
   histogram = TRUE,
   histogramArgs = .histogramArgs(),
   rug = FALSE,
@@ -71,7 +71,8 @@ jaspMarginal(
 
 \item{breaks, }{see \code{breaks} from \code{graphics::hist}. Additionally allows \code{"doane"} method.}
 
-\item{xBreaks, }{numeric, optional histogram bin breaks that cover the range of \code{x}. Overrides \code{breaks}.
+\item{xAxis, }{list, optional shared axis of \code{x} with elements \code{binBreaks} (histogram bin breaks),
+\code{breaks} (axis breaks), and \code{limits} (axis limits). If \code{binBreaks} is \code{NULL}, the bins are computed from \code{breaks}.
 Used by \link{jaspMatrixPlot} and \link{jaspBivariateWithMargins} so that all panels showing the same variable share the x-axis.}
 
 \item{histogram, }{logical, should a histogram be shown?}

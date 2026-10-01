@@ -27,7 +27,8 @@
 #' @param yName, string, the title on the y-axis. Use \code{NULL} to hide the axis title. If `base::missing`, "Density" or "Count" is used depending on the value of \code{type}.
 #' @param type, string, should count or density be displayed on the y-axis? If \code{"auto"}, \code{"density"} is used if \code{density} or \code{densityOverlay} is used, otherwise \code{"count"} is used. \code{"count"} preserves marginal densities if split by group, \code{"density"} re-normalizes each subgroup.
 #' @param breaks, see \code{breaks} from `graphics::hist`. Additionally allows \code{"doane"} method.
-#' @param xBreaks, numeric, optional histogram bin breaks that cover the range of \code{x}. Overrides \code{breaks}.
+#' @param xAxis, list, optional shared axis of \code{x} with elements \code{binBreaks} (histogram bin breaks),
+#' \code{breaks} (axis breaks), and \code{limits} (axis limits). If \code{binBreaks} is \code{NULL}, the bins are computed from \code{breaks}.
 #' Used by [jaspMatrixPlot] and [jaspBivariateWithMargins] so that all panels showing the same variable share the x-axis.
 #' @param histogram, logical, should a histogram be shown?
 #' @param histogramArgs, list, additional arguments passed to \code{\link[ggplot2]{geom_histogram}}. Use `.histogramArgs` to set the options.
@@ -50,7 +51,7 @@ jaspMarginal <- function(
     yName,
     type               = c("auto", "count", "density"),
     breaks             = "sturges",
-    xBreaks            = NULL,
+    xAxis              = NULL,
     histogram          = TRUE,
     histogramArgs      = .histogramArgs(),
     rug                = FALSE,
@@ -104,8 +105,9 @@ jaspMarginal <- function(
   }
   data <- stats::na.omit(data)
 
-  binBreaks <- if (is.null(xBreaks)) getJaspMarginalBreaks(x = data[["x"]], breaks = breaks) else xBreaks
-  xBreaks <- getPrettyAxisBreaks(c(data[["x"]], binBreaks), min.n = 3)
+  if (is.null(xAxis))
+    xAxis <- jaspSharedAxis(x = data[["x"]], breaks = breaks)
+  binBreaks <- xAxis[["binBreaks"]] %||% getJaspMarginalBreaks(x = data[["x"]], breaks = breaks)
 
   histogramLayer <- densityLayer <- densityOverlayLayer <- rugLayer <- NULL
   if (histogram) {
@@ -125,22 +127,24 @@ jaspMarginal <- function(
     histogramLayer <- do.call(ggplot2::geom_histogram, histogramArgs)
   }
 
-  if (density) {
-    bw <- diff(binBreaks)[1]
-    yy <- as.symbol(type)
-    yy <- if (type == "density") {
-      substitute(ggplot2::after_stat(yy))
+  if (density || densityOverlay) {
+    # counts of a density are scaled by the bin width, so that the area matches the histogram
+    yy <- rlang::sym(type)
+    binWidth <- diff(binBreaks)[1]
+    densityY <- if (type == "density") {
+      rlang::expr(ggplot2::after_stat(!!yy))
     } else {
-      substitute(bw * ggplot2::after_stat(yy))
+      rlang::expr(ggplot2::after_stat(!!yy * !!binWidth))
     }
+  }
 
+  if (density) {
     densityAes <-
       if (hasGroupingVariable) {
-        ggplot2::aes(x = x, y = {{yy}}, color = group, fill = group, group = group)
+        ggplot2::aes(x = x, y = !!densityY, color = group, fill = group, group = group)
       } else {
-        ggplot2::aes(x = x, y = {{yy}})
+        ggplot2::aes(x = x, y = !!densityY)
       }
-    environment(densityAes$y) <- environment(densityAes$x)
 
     densityArgs[["mapping"]] <- densityAes
     densityLayer <- do.call(ggplot2::geom_density, densityArgs)
@@ -148,16 +152,7 @@ jaspMarginal <- function(
   }
 
   if (densityOverlay) {
-    bw <- diff(binBreaks)[1]
-    yy <- as.symbol(type)
-    yy <- if (type == "density") {
-      substitute(ggplot2::after_stat(yy))
-    } else {
-      substitute(bw * ggplot2::after_stat(yy))
-    }
-
-    densityOverlayAes <- ggplot2::aes(x = x, y = {{yy}})
-    environment(densityOverlayAes$y) <- environment(densityOverlayAes$x)
+    densityOverlayAes <- ggplot2::aes(x = x, y = !!densityY)
 
     densityOverlayArgs[["mapping"]] <- densityOverlayAes
     densityOverlayLayer <- do.call(ggplot2::geom_density, densityOverlayArgs)
@@ -186,7 +181,7 @@ jaspMarginal <- function(
     rugLayer +
     geom_rangeframe(sides = sides) +
     themeJaspRaw(legend.position = "right") +
-    scale_x_continuous(breaks = xBreaks, limits = range(xBreaks)) +
+    scale_x_continuous(breaks = xAxis[["breaks"]], limits = xAxis[["limits"]]) +
     scale_y_continuous() +
     ggplot2::xlab(xName) +
     ggplot2::ylab(yName)
@@ -235,6 +230,39 @@ getJaspMarginalData <- function(x, breaks) {
 getJaspMarginalBreaks <- function(x, breaks) {
   h <- getJaspMarginalData(x, breaks)
   return(h[["breaks"]])
+}
+
+# The axis that every panel showing the variable x shares in the multipanel plots.
+# binBreaks are the histogram bin breaks (NULL if breaks is NULL), the axis breaks
+# cover both the data and the bins, and the limits span the axis breaks. For n = 5,
+# these are the limits that the JASP scales choose by default for the data.
+jaspSharedAxis <- function(x, breaks = "sturges", n = 5) {
+  x <- x[is.finite(x)]
+  binBreaks  <- if (is.null(breaks)) NULL else getJaspMarginalBreaks(x = x, breaks = breaks)
+  axisBreaks <- getPrettyAxisBreaks(c(x, binBreaks), n = n)
+  return(list(binBreaks = binBreaks, breaks = axisBreaks, limits = range(axisBreaks)))
+}
+
+# Extends a shared axis so that it also covers range, e.g., the range of the smooth lines
+# and prediction intervals of a panel. The axis is unchanged if it already covers range.
+jaspExtendAxis <- function(axis, range, n = 5) {
+  range <- range[is.finite(range)]
+  tol   <- 1e-8 * diff(axis[["limits"]])
+  if (length(range) == 0L || (min(range) >= axis[["limits"]][1L] - tol && max(range) <= axis[["limits"]][2L] + tol))
+    return(axis)
+
+  axis[["breaks"]] <- getPrettyAxisBreaks(c(axis[["limits"]], range), n = n)
+  axis[["limits"]] <- range(axis[["breaks"]])
+  return(axis)
+}
+
+# The ranges of all layers of a panel, including the parts outside the limits of the scales.
+jaspPanelRanges <- function(plot) {
+  built <- ggplot2::ggplot_build(plot)
+  return(list(
+    x = built$layout$panel_scales_x[[1L]]$range$range,
+    y = built$layout$panel_scales_y[[1L]]$range$range
+  ))
 }
 
 #' @rdname jaspMarginal
