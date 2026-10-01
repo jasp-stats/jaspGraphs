@@ -2,7 +2,7 @@
 % Please edit documentation in R/jaspBivariate.R
 \name{jaspBivariateWithMargins}
 \alias{jaspBivariateWithMargins}
-\title{Bivariate plots with marginal distributions along the axes.}
+\title{Bivariate plots with marginal distributions along the axes}
 \usage{
 jaspBivariateWithMargins(
   x,
