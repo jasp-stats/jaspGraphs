@@ -193,23 +193,85 @@ get_ggplot_global <- function() {
 
 
 # Custom scale prototype for ggplot2 >= 4.0.0
+#
+# Improvements over the default ScaleContinuousPosition:
+# 1. get_limits: by default, the limits span the pretty breaks of the data, so
+#    the outer breaks (and the axis line drawn by geom_rangeframe) are never cut off.
+#    The same holds for the missing side of one-sided limits, e.g., c(NA, 10).
+# 2. get_breaks: ggplot2 computes breaks from the expanded view range, which can
+#    yield a coarser step whose outer breaks fall outside the limits. Instead,
+#    breaks are derived from the data and the explicit limits, so they coincide
+#    with the limits. When the coord sets the view range, e.g.,
+#    coord_cartesian(xlim = ...), the standard ggplot2 behavior is used.
 ScaleContinuousPositionJASP <- ggplot2::ggproto(
   "ScaleContinuousPositionJASP",
   ggplot2::ScaleContinuousPosition,
 
   get_limits = function(self) {
-    if (self$is_empty()) {
-      return(c(0, 1))
-    }
+    if (self$is_empty()) return(c(0, 1))
 
-    if (identical(self$limits, "JASP")) {
-      # ensures that outer breakpoints are always included in plot
-      rng <- self$range$range
-      range(getPrettyAxisBreaks(rng))
-    } else if (!is.null(self$limits)) {
-      ifelse(!is.na(self$limits), self$limits, self$range$range)
+    if (!is.null(self$limits)) {
+      # Explicit limits, a missing side (e.g., limits = c(NA, 10)) spans the breaks
+      ifelse(!is.na(self$limits), self$limits, range(jaspDataBreaks(self)))
     } else {
-      self$range$range
+      # JASP default: span the breaks of the data. range() also sorts the
+      # limits for order-reversing transforms (reverse, reciprocal).
+      range(jaspDataBreaks(self))
     }
+  },
+
+  get_breaks = function(self, limits = self$get_limits()) {
+    if (self$is_empty()) return(numeric())
+
+    # Fixed breaks, or a view range set by the coord: standard ggplot2 behavior
+    if (!is.function(self$breaks) || !jaspIsDefaultViewRange(self, limits))
+      return(ggplot2::ggproto_parent(ggplot2::ScaleContinuousPosition, self)$get_breaks(limits))
+
+    # Breaks of the data and explicit limits rather than of the expanded view range
+    jaspDataBreaks(self, self$breaks)
   }
 )
+
+# Breaks of the trained data range, where the explicit sides of the limits replace
+# those of the data range, on the transformed scale. These are computed on the
+# original scale, unless that yields breaks outside the domain of the
+# transformation (e.g., 0 for a log transformation). In that case, the breaks of
+# the transformation are used instead (e.g., 1, 10, 100 for a log transformation),
+# and if these do not cover the range either, breaks computed on the transformed scale.
+jaspDataBreaks <- function(self, breaks = getPrettyAxisBreaks) {
+  transformation <- self$get_transformation()
+  range          <- self$range$range
+  if (!is.null(self$limits))
+    range <- sort(ifelse(!is.na(self$limits), self$limits, range))
+  originalRange  <- transformation$inverse(range)
+
+  # the breaks must be finite and cover the range, otherwise the axis is cut off
+  tol     <- 1e-8 * max(1, abs(range))
+  isValid <- function(x) length(x) > 0L && all(is.finite(x)) && min(x) <= range[1L] + tol && max(x) >= range[2L] - tol
+
+  result <- suppressWarnings(transformation$transform(breaks(originalRange)))
+  if (!isValid(result))
+    result <- suppressWarnings(transformation$transform(transformation$breaks(originalRange)))
+  if (!isValid(result))
+    result <- breaks(range)
+  result
+}
+
+# TRUE if viewRange consists of the limits of the scale plus at most the expansion
+# of the scale, FALSE if the coord sets the view range (e.g., coord_cartesian(xlim = ...)).
+jaspIsDefaultViewRange <- function(self, viewRange) {
+  limits    <- sort(self$get_limits())
+  viewRange <- sort(viewRange)
+
+  expand <- if (ggplot2::is_waiver(self$expand)) ggplot2::expansion(mult = 0.05) else self$expand
+  if (length(expand) == 2L)
+    expand <- rep(expand, 2L)
+
+  width    <- diff(limits)
+  maxRange <- c(limits[1L] - width * expand[1L] - expand[2L],
+                limits[2L] + width * expand[3L] + expand[4L])
+  tol      <- 1e-8 * max(1, abs(maxRange))
+
+  viewRange[1L] <= limits[1L]   + tol && viewRange[2L] >= limits[2L]   - tol &&
+  viewRange[1L] >= maxRange[1L] - tol && viewRange[2L] <= maxRange[2L] + tol
+}

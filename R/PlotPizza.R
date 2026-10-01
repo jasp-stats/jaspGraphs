@@ -136,6 +136,8 @@ drawBFpizzaNonPolar <- function(dat, linewidth = 1, scaleText = 0.3, show.legend
     ggplot2::geom_polygon(show.legend = FALSE) +
     ggplot2::scale_fill_manual(values  = c("darkred", "white")) +
     ggplot2::scale_color_manual(values = c("black", "black")) +
+    # the axes are hidden, so the jaspGraphs position scales would only add padding around the pizza
+    ggplot2::scale_x_continuous() + ggplot2::scale_y_continuous() +
     getEmptyTheme() +
     ggplot2::coord_fixed()
   g

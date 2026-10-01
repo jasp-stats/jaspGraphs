@@ -79,10 +79,9 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
 
   # determine axes breaks
   if (identicalAxes) {
-    xBreaks <- yBreaks <- getPrettyAxisBreaks(unlist(df))
+    xBreaks <- getPrettyAxisBreaks(unlist(df))
   } else {
     xBreaks <- getPrettyAxisBreaks(df$x)
-    yBreaks <- getPrettyAxisBreaks(c(df$y, df$ymin, df$ymax))
   }
 
   # initial guess for line range
@@ -116,7 +115,9 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
     ciLayer +
     geom_point() +
     scale_x_continuous(name = xName, breaks = xBreaks, limits = range(xBreaks)) +
-    scale_y_continuous(name = yName, breaks = yBreaks, limits = range(yBreaks))
+    scale_y_continuous(name = yName,
+                       breaks = if (identicalAxes) xBreaks else getPrettyAxisBreaks,
+                       limits = if (identicalAxes) range(xBreaks) else "JASP")
 
   return(jaspGraphs::themeJasp(g))
 
