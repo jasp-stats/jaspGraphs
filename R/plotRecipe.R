@@ -6,6 +6,10 @@
 #'   a package qualifier. Local functions and primitive functions are not supported.
 #' @param args Named list of arguments passed to \code{fun}.
 #' @param editOptions Optional plot editing options to apply after materializing.
+#' @return An object of class \code{jaspPlotRecipe} containing the function
+#'   reference, arguments, and optional editing options.
+#' @seealso \code{\link{materializeJaspPlotRecipe}}, \code{\link{isJaspPlotRecipe}},
+#'   \code{\link{setJaspPlotRecipeEditOptions}}
 #' @export
 createJaspPlotRecipe <- function(fun, args = list(), editOptions = NULL) {
 
@@ -41,7 +45,7 @@ createJaspPlotRecipe <- function(fun, args = list(), editOptions = NULL) {
     stop("`fun` was a function, but is not defined in a package namespace.", domain = NA)
   }
 
-  pkgName <- packageName(ns)
+  pkgName <- utils::packageName(ns)
   if (!nzchar(pkgName)) {
     stop("Could not determine the package namespace for `fun`.", domain = NA)
   }
@@ -86,6 +90,12 @@ createJaspPlotRecipe <- function(fun, args = list(), editOptions = NULL) {
   )
 }
 
+#' Test whether an object is a plot recipe
+#'
+#' @param x An object to test.
+#' @return \code{TRUE} if \code{x} inherits from \code{jaspPlotRecipe}, otherwise
+#'   \code{FALSE}.
+#' @seealso \code{\link{createJaspPlotRecipe}}
 #' @export
 isJaspPlotRecipe <- function(x) {
   inherits(x, "jaspPlotRecipe")
@@ -130,6 +140,16 @@ resolveJaspPlotRecipeFunction <- function(fun) {
   obj
 }
 
+#' Materialize a plot recipe
+#'
+#' Resolve the stored function reference and call it with the recipe's arguments.
+#' Optionally apply the stored plot editing options to the resulting plot.
+#'
+#' @param recipe A \code{jaspPlotRecipe} object, or an object to return unchanged.
+#' @param applyEdits Logical, whether to apply the recipe's stored editing options.
+#' @return The object returned by the stored function, with edits applied when
+#'   requested. Objects that are not plot recipes are returned unchanged.
+#' @seealso \code{\link{createJaspPlotRecipe}}, \code{\link{plotEditing}}
 #' @export
 materializeJaspPlotRecipe <- function(recipe, applyEdits = TRUE) {
   if (!isJaspPlotRecipe(recipe))
@@ -159,6 +179,17 @@ normalizeJaspPlotRecipeEditOptions <- function(editOptions) {
   editOptions
 }
 
+#' Set plot recipe editing options
+#'
+#' Store editing options in a recipe for use when the plot is materialized.
+#' This function does not materialize the plot or validate the options against it.
+#'
+#' @param recipe A \code{jaspPlotRecipe} object.
+#' @param editOptions A list of plot editing options, or \code{NULL} to clear them.
+#'   A list containing \code{resetPlot = TRUE} also clears the stored options.
+#' @return The recipe with its stored editing options updated.
+#' @seealso \code{\link{createJaspPlotRecipe}}, \code{\link{materializeJaspPlotRecipe}},
+#'   \code{\link{plotEditing}}
 #' @export
 setJaspPlotRecipeEditOptions <- function(recipe, editOptions) {
   if (!isJaspPlotRecipe(recipe))

@@ -17,6 +17,14 @@ a package qualifier. Local functions and primitive functions are not supported.}
 
 \item{editOptions}{Optional plot editing options to apply after materializing.}
 }
+\value{
+An object of class \code{jaspPlotRecipe} containing the function
+reference, arguments, and optional editing options.
+}
 \description{
 Create a serializable plot recipe
+}
+\seealso{
+\code{\link{materializeJaspPlotRecipe}}, \code{\link{isJaspPlotRecipe}},
+\code{\link{setJaspPlotRecipeEditOptions}}
 }
