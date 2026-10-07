@@ -7,9 +7,11 @@
 createJaspPlotRecipe(fun, args = list(), editOptions = NULL)
 }
 \arguments{
-\item{fun}{Function reference. Prefer a string such as
-\code{"pkg:::functionName"} or \code{"pkg::functionName"} so the closure
-environment is not serialized with the recipe.}
+\item{fun}{A function defined and bound in a package namespace, or a string
+such as \code{"pkg:::functionName"} or \code{"pkg::functionName"}.
+Functions are stored as namespace references so their closure environments
+are not serialized. Same-package functions can be passed directly without
+a package qualifier. Local functions and primitive functions are not supported.}
 
 \item{args}{Named list of arguments passed to \code{fun}.}
 
