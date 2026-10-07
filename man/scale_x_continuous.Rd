@@ -40,39 +40,92 @@ scale_y_continuous(
 )
 }
 \arguments{
-\item{name}{see details}
+\item{name}{The name of the scale, used as the axis title. See \code{\link[ggplot2:continuous_scale]{ggplot2::continuous_scale()}}.}
 
-\item{breaks}{see details}
+\item{breaks}{One of \code{NULL} for no breaks, a numeric vector of positions, or a function
+that takes the limits as input and returns breaks as output. Defaults to
+\code{\link[=getPrettyAxisBreaks]{getPrettyAxisBreaks()}}. See details for how the breaks are computed when a function is supplied.}
 
-\item{minor_breaks}{see details}
+\item{minor_breaks}{One of \code{NULL} for no minor breaks, \code{waiver()} for the default, a numeric
+vector of positions, or a function. See \code{\link[ggplot2:continuous_scale]{ggplot2::continuous_scale()}}.}
 
-\item{n.breaks}{see details}
+\item{n.breaks}{An integer guiding the number of major breaks, only used when \code{breaks} is
+\code{waiver()}. See \code{\link[ggplot2:continuous_scale]{ggplot2::continuous_scale()}}.}
 
-\item{labels}{see details}
+\item{labels}{One of \code{NULL} for no labels, \code{waiver()} for the default, a character vector,
+or a function that takes the breaks as input and returns labels as output. Defaults to
+\code{\link[=axesLabeller]{axesLabeller()}}.}
 
-\item{limits}{see details}
+\item{limits}{Either \code{"JASP"} (the default), \code{NULL}, or a numeric vector of length two.
+See details.}
 
-\item{expand}{see details}
+\item{expand}{A vector of range expansion constants, e.g., created with
+\code{\link[ggplot2:expansion]{ggplot2::expansion()}}. See \code{\link[ggplot2:continuous_scale]{ggplot2::continuous_scale()}}.}
 
-\item{oob}{see details}
+\item{oob}{A function that handles values outside the limits. Defaults to \code{\link[scales:censor]{scales::censor()}}.}
 
-\item{na.value}{see details}
+\item{na.value}{The value that missing values are replaced with.}
 
-\item{trans}{see details}
+\item{trans}{Deprecated in favor of \code{transform}. Only used with ggplot2 < 4.0.0.}
 
-\item{transform}{see details}
+\item{transform}{A transformation object (e.g., \code{\link[scales:transform_log10]{scales::transform_log10()}}) or its name
+(e.g., \code{"log10"}). Only used with ggplot2 >= 4.0.0.}
 
-\item{guide}{see details}
+\item{guide}{A function used to create a guide or its name. See \code{\link[ggplot2:guides]{ggplot2::guides()}}.}
 
-\item{position}{see details}
+\item{position}{For position scales, the position of the axis: \code{"bottom"} or \code{"top"}
+for the x-axis, \code{"left"} or \code{"right"} for the y-axis.}
 
-\item{sec.axis}{see details}
+\item{sec.axis}{A secondary axis created with \code{\link[ggplot2:sec_axis]{ggplot2::sec_axis()}} or \code{\link[ggplot2:dup_axis]{ggplot2::dup_axis()}}.}
 }
 \description{
-Continuous axis scales
+Drop-in replacements for \code{\link[ggplot2:scale_x_continuous]{ggplot2::scale_x_continuous()}} and
+\code{\link[ggplot2:scale_y_continuous]{ggplot2::scale_y_continuous()}} that by default choose the axis limits and breaks such
+that the outer breaks coincide with the limits. As a result, the axis line drawn by
+\code{\link[=geom_rangeframe]{geom_rangeframe()}} always starts and ends at a labelled break.
 }
 \details{
-These functions are virtually identical to \code{\link[ggplot2]{scale_x_continuous}} and \code{\link[ggplot2]{scale_y_continuous}}
-except that default values are different, these use a different function to determine the default
-axis breaks.
+Apart from different default values, these functions differ from their ggplot2
+counterparts in how the limits and breaks are determined (with ggplot2 >= 4.0.0):
+\itemize{
+\item \strong{Limits}: with \code{limits = "JASP"} or \code{limits = NULL}, the limits span the breaks of the data,
+rather than the range of the data, so the outer breaks are never cut off. When the limits
+are only partially specified, e.g., \code{limits = c(NA, 10)}, the missing side likewise spans the
+breaks of the data.
+\item \strong{Breaks}: ggplot2 computes the breaks from the expanded view range, which can yield a
+coarser step whose outer breaks fall outside the limits. Instead, when \code{breaks} is a function,
+it is applied to the range of the data, where explicitly specified limits replace the
+corresponding side of the data range. The breaks then coincide with the limits.
+\item \strong{Transformations}: for transformed scales, the breaks are computed on the original scale.
+If that yields breaks outside the domain of the transformation (e.g., 0 for a log
+transformation), the breaks of the transformation itself are used (e.g., 1, 10, 100). If
+these do not cover the range either, the breaks are computed on the transformed scale.
+}
+
+When \code{breaks} is not a function (e.g., a numeric vector or \code{waiver()}), or when the coord sets the view range, e.g.,
+\code{coord_cartesian(xlim = ...)}, the standard ggplot2 behavior is used for the breaks.
+
+With ggplot2 < 4.0.0, only \code{limits = "JASP"} changes the limits (to span the breaks of the
+data) and the breaks are computed by ggplot2 as usual.
+}
+\examples{
+library(ggplot2)
+df <- data.frame(x = c(0.3, 9.6), y = c(-1.2, 23.4))
+
+# the axis lines start and end at the outer breaks
+# (jaspGraphs:: is needed because library(ggplot2) masks these functions)
+ggplot(df, aes(x, y)) +
+  geom_point() +
+  jaspGraphs::scale_x_continuous() +
+  jaspGraphs::scale_y_continuous() +
+  geom_rangeframe() +
+  themeJaspRaw()
+
+# explicit lower limit, the upper limit spans the breaks of the data
+ggplot(df, aes(x, y)) +
+  geom_point() +
+  jaspGraphs::scale_y_continuous(limits = c(-10, NA)) +
+  geom_rangeframe() +
+  themeJaspRaw()
+
 }
