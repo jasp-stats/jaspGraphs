@@ -28,6 +28,14 @@ getPlotEditingOptions <- function(graph) {
 }
 
 #' @exportS3Method
+getPlotEditingOptions.jaspPlotRecipe <- function(graph) {
+  if (!is.null(graph[["editOptions"]]))
+    return(graph[["editOptions"]])
+
+  getPlotEditingOptions(materializeJaspPlotRecipe(graph, applyEdits = FALSE))
+}
+
+#' @exportS3Method
 getPlotEditingOptions.gg <- function(graph) {
   # ensures    that loading an edited graph returns the final set of options
   if (!is.null(graph[["plot_env"]][[".____plotEditingOptions____"]][["oldOptions"]]))
