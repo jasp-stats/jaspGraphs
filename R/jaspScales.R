@@ -2,23 +2,78 @@
 # consider opening an issue for this.
 
 #' @title Continuous axis scales
-#' @param name see details
-#' @param breaks see details
-#' @param minor_breaks see details
-#' @param n.breaks see details
-#' @param labels see details
-#' @param limits see details
-#' @param expand see details
-#' @param oob see details
-#' @param na.value see details
-#' @param trans see details
-#' @param transform see details
-#' @param guide see details
-#' @param position see details
-#' @param sec.axis see details
-#' @details These functions are virtually identical to \code{\link[ggplot2]{scale_x_continuous}} and \code{\link[ggplot2]{scale_y_continuous}}
-#' except that default values are different, these use a different function to determine the default
-#' axis breaks.
+#'
+#' @description Drop-in replacements for [ggplot2::scale_x_continuous()] and
+#' [ggplot2::scale_y_continuous()] that by default choose the axis limits and breaks such
+#' that the outer breaks coincide with the limits. As a result, the axis line drawn by
+#' [geom_rangeframe()] always starts and ends at a labelled break.
+#'
+#' @param name The name of the scale, used as the axis title. See [ggplot2::continuous_scale()].
+#' @param breaks One of `NULL` for no breaks, a numeric vector of positions, or a function
+#'   that takes the limits as input and returns breaks as output. Defaults to
+#'   [getPrettyAxisBreaks()]. See details for how the breaks are computed when a function is supplied.
+#' @param minor_breaks One of `NULL` for no minor breaks, `waiver()` for the default, a numeric
+#'   vector of positions, or a function. See [ggplot2::continuous_scale()].
+#' @param n.breaks An integer guiding the number of major breaks, only used when `breaks` is
+#'   `waiver()`. See [ggplot2::continuous_scale()].
+#' @param labels One of `NULL` for no labels, `waiver()` for the default, a character vector,
+#'   or a function that takes the breaks as input and returns labels as output. Defaults to
+#'   [axesLabeller()].
+#' @param limits Either `"JASP"` (the default), `NULL`, or a numeric vector of length two.
+#'   See details.
+#' @param expand A vector of range expansion constants, e.g., created with
+#'   [ggplot2::expansion()]. See [ggplot2::continuous_scale()].
+#' @param oob A function that handles values outside the limits. Defaults to [scales::censor()].
+#' @param na.value The value that missing values are replaced with.
+#' @param trans Deprecated in favor of `transform`. Only used with ggplot2 < 4.0.0.
+#' @param transform A transformation object (e.g., [scales::transform_log10()]) or its name
+#'   (e.g., `"log10"`). Only used with ggplot2 >= 4.0.0.
+#' @param guide A function used to create a guide or its name. See [ggplot2::guides()].
+#' @param position For position scales, the position of the axis: `"bottom"` or `"top"`
+#'   for the x-axis, `"left"` or `"right"` for the y-axis.
+#' @param sec.axis A secondary axis created with [ggplot2::sec_axis()] or [ggplot2::dup_axis()].
+#'
+#' @details Apart from different default values, these functions differ from their ggplot2
+#' counterparts in how the limits and breaks are determined (with ggplot2 >= 4.0.0):
+#'
+#' * **Limits**: with `limits = "JASP"` or `limits = NULL`, the limits span the breaks of the data,
+#'   rather than the range of the data, so the outer breaks are never cut off. When the limits
+#'   are only partially specified, e.g., `limits = c(NA, 10)`, the missing side likewise spans the
+#'   breaks of the data.
+#' * **Breaks**: ggplot2 computes the breaks from the expanded view range, which can yield a
+#'   coarser step whose outer breaks fall outside the limits. Instead, when `breaks` is a function,
+#'   it is applied to the range of the data, where explicitly specified limits replace the
+#'   corresponding side of the data range. The breaks then coincide with the limits.
+#' * **Transformations**: for transformed scales, the breaks are computed on the original scale.
+#'   If that yields breaks outside the domain of the transformation (e.g., 0 for a log
+#'   transformation), the breaks of the transformation itself are used (e.g., 1, 10, 100). If
+#'   these do not cover the range either, the breaks are computed on the transformed scale.
+#'
+#' When `breaks` is not a function (e.g., a numeric vector or `waiver()`), or when the coord sets the view range, e.g.,
+#' `coord_cartesian(xlim = ...)`, the standard ggplot2 behavior is used for the breaks.
+#'
+#' With ggplot2 < 4.0.0, only `limits = "JASP"` changes the limits (to span the breaks of the
+#' data) and the breaks are computed by ggplot2 as usual.
+#'
+#' @examples
+#' library(ggplot2)
+#' df <- data.frame(x = c(0.3, 9.6), y = c(-1.2, 23.4))
+#'
+#' # the axis lines start and end at the outer breaks
+#' # (jaspGraphs:: is needed because library(ggplot2) masks these functions)
+#' ggplot(df, aes(x, y)) +
+#'   geom_point() +
+#'   jaspGraphs::scale_x_continuous() +
+#'   jaspGraphs::scale_y_continuous() +
+#'   geom_rangeframe() +
+#'   themeJaspRaw()
+#'
+#' # explicit lower limit, the upper limit spans the breaks of the data
+#' ggplot(df, aes(x, y)) +
+#'   geom_point() +
+#'   jaspGraphs::scale_y_continuous(limits = c(-10, NA)) +
+#'   geom_rangeframe() +
+#'   themeJaspRaw()
 #'
 #' @rdname scale_x_continuous
 #' @export
@@ -193,23 +248,85 @@ get_ggplot_global <- function() {
 
 
 # Custom scale prototype for ggplot2 >= 4.0.0
+#
+# Improvements over the default ScaleContinuousPosition:
+# 1. get_limits: by default, the limits span the pretty breaks of the data, so
+#    the outer breaks (and the axis line drawn by geom_rangeframe) are never cut off.
+#    The same holds for the missing side of one-sided limits, e.g., c(NA, 10).
+# 2. get_breaks: ggplot2 computes breaks from the expanded view range, which can
+#    yield a coarser step whose outer breaks fall outside the limits. Instead,
+#    breaks are derived from the data and the explicit limits, so they coincide
+#    with the limits. When the coord sets the view range, e.g.,
+#    coord_cartesian(xlim = ...), the standard ggplot2 behavior is used.
 ScaleContinuousPositionJASP <- ggplot2::ggproto(
   "ScaleContinuousPositionJASP",
   ggplot2::ScaleContinuousPosition,
 
   get_limits = function(self) {
-    if (self$is_empty()) {
-      return(c(0, 1))
-    }
+    if (self$is_empty()) return(c(0, 1))
 
-    if (identical(self$limits, "JASP")) {
-      # ensures that outer breakpoints are always included in plot
-      rng <- self$range$range
-      range(getPrettyAxisBreaks(rng))
-    } else if (!is.null(self$limits)) {
-      ifelse(!is.na(self$limits), self$limits, self$range$range)
+    if (!is.null(self$limits)) {
+      # Explicit limits, a missing side (e.g., limits = c(NA, 10)) spans the breaks
+      ifelse(!is.na(self$limits), self$limits, range(jaspDataBreaks(self)))
     } else {
-      self$range$range
+      # JASP default: span the breaks of the data. range() also sorts the
+      # limits for order-reversing transforms (reverse, reciprocal).
+      range(jaspDataBreaks(self))
     }
+  },
+
+  get_breaks = function(self, limits = self$get_limits()) {
+    if (self$is_empty()) return(numeric())
+
+    # Fixed breaks, or a view range set by the coord: standard ggplot2 behavior
+    if (!is.function(self$breaks) || !jaspIsDefaultViewRange(self, limits))
+      return(ggplot2::ggproto_parent(ggplot2::ScaleContinuousPosition, self)$get_breaks(limits))
+
+    # Breaks of the data and explicit limits rather than of the expanded view range
+    jaspDataBreaks(self, self$breaks)
   }
 )
+
+# Breaks of the trained data range, where the explicit sides of the limits replace
+# those of the data range, on the transformed scale. These are computed on the
+# original scale, unless that yields breaks outside the domain of the
+# transformation (e.g., 0 for a log transformation). In that case, the breaks of
+# the transformation are used instead (e.g., 1, 10, 100 for a log transformation),
+# and if these do not cover the range either, breaks computed on the transformed scale.
+jaspDataBreaks <- function(self, breaks = getPrettyAxisBreaks) {
+  transformation <- self$get_transformation()
+  range          <- self$range$range
+  if (!is.null(self$limits))
+    range <- sort(ifelse(!is.na(self$limits), self$limits, range))
+  originalRange  <- transformation$inverse(range)
+
+  # the breaks must be finite and cover the range, otherwise the axis is cut off
+  tol     <- 1e-8 * max(1, abs(range))
+  isValid <- function(x) length(x) > 0L && all(is.finite(x)) && min(x) <= range[1L] + tol && max(x) >= range[2L] - tol
+
+  result <- suppressWarnings(transformation$transform(breaks(originalRange)))
+  if (!isValid(result))
+    result <- suppressWarnings(transformation$transform(transformation$breaks(originalRange)))
+  if (!isValid(result))
+    result <- breaks(range)
+  result
+}
+
+# TRUE if viewRange consists of the limits of the scale plus at most the expansion
+# of the scale, FALSE if the coord sets the view range (e.g., coord_cartesian(xlim = ...)).
+jaspIsDefaultViewRange <- function(self, viewRange) {
+  limits    <- sort(self$get_limits())
+  viewRange <- sort(viewRange)
+
+  expand <- if (ggplot2::is_waiver(self$expand)) ggplot2::expansion(mult = 0.05) else self$expand
+  if (length(expand) == 2L)
+    expand <- rep(expand, 2L)
+
+  width    <- diff(limits)
+  maxRange <- c(limits[1L] - width * expand[1L] - expand[2L],
+                limits[2L] + width * expand[3L] + expand[4L])
+  tol      <- 1e-8 * max(1, abs(maxRange))
+
+  viewRange[1L] <= limits[1L]   + tol && viewRange[2L] >= limits[2L]   - tol &&
+  viewRange[1L] >= maxRange[1L] - tol && viewRange[2L] <= maxRange[2L] + tol
+}

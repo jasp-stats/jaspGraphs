@@ -183,6 +183,8 @@ plotPieChartCartesian <- function(value, group,
   g <- ggplot2::ggplot(dfP, ggplot2::aes(x = .data$x, y = .data$y, fill = .data$grp, color = .data$grp)) +
     ggplot2::geom_polygon(show.legend = TRUE, color = "black") +
     scale_fill +
+    # the axes are hidden, so the jaspGraphs position scales would only add padding around the pie
+    ggplot2::scale_x_continuous() + ggplot2::scale_y_continuous() +
     getEmptyTheme() +
     ggplot2::coord_fixed()
 
