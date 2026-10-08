@@ -34,6 +34,13 @@ test_that("plotPieChart: polar, non-polar, axis ticks and large group variants",
 
 })
 
+test_that("plotPieChart: polar coordinates remain available with a deprecation warning", {
+  rlang::local_options(lifecycle_verbosity = "warning")
+  expect_warning(p <- plotPieChart(c(25, 25, 50), letters[1:3], polarAxis = TRUE), "deprecated")
+  expect_s3_class(p$coordinates, "CoordPolar")
+  expect_s3_class(ggplot2::ggplot_build(p), "ggplot_built")
+})
+
 test_that("plotPieChartCartesian: labels match slice boundaries, are rounded, and do not overlap", {
   skip_on_cran()
 

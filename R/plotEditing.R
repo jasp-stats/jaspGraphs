@@ -64,7 +64,7 @@ optionsDiff <- function(new, old) {
 }
 
 #' @title Edit a plot
-#' @param graph a ggplot2 object or a jaspGraphsPlot object
+#' @param graph a ggplot2 object, a jaspGraphsPlot object, or a jaspPlotRecipe object
 #' @param newOptions an options list
 #'
 #' @export
@@ -82,21 +82,21 @@ plotEditing.jaspGraphsPlot <- function(graph, newOptions) {
   if (length(graph) != 1L)
     stop2("This plot cannot be edited because it consists of multiple smaller figures.")
 
-  if (isJaspPlotRecipe(graph)) {
-    if (isTRUE(newOptions[["resetPlot"]]))
-      return(setJaspPlotRecipeEditOptions(graph, newOptions))
-
-    # Validate against the materialized plot, but keep the serialized state as
-    # a recipe plus edit options rather than storing the edited ggplot object.
-    plotEditing(materializeJaspPlotRecipe(graph, applyEdits = FALSE), newOptions)
-    return(setJaspPlotRecipeEditOptions(graph, newOptions))
-  }
-
   if (!is_ggplot(graph))
     stop2("graph should be a ggplot2")
 
   graph[[1L]] <- plotEditing(graph[[1L]], newOptions)
   return(graph)
+}
+
+#' @export
+plotEditing.jaspPlotRecipe <- function(graph, newOptions) {
+  if (isTRUE(newOptions[["resetPlot"]]))
+    return(setJaspPlotRecipeEditOptions(graph, newOptions))
+
+  # Validate against the materialized plot, but store only the recipe and edits.
+  plotEditing(materializeJaspPlotRecipe(graph, applyEdits = FALSE), newOptions)
+  setJaspPlotRecipeEditOptions(graph, newOptions)
 }
 
 #' @export
