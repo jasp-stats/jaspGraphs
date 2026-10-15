@@ -18,11 +18,13 @@ Imports:
     htmlwidgets,
     jsonlite,
     lifecycle,
+    patchwork,
     plotly,
     R6,
     rlang,
     scales
 Suggests:
+    MASS,
     testthat,
     vdiffr
 Roxygen: list(markdown = TRUE)
