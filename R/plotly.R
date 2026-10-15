@@ -73,17 +73,17 @@ geom2trace.GeomBoxplotCustomOverride <- function(data, params, p) {
           q3 = data[["upper"]],
           lowerfence = data[["ymin"]],
           upperfence = data[["ymax"]],
-          fillcolor = plotly:::toRGB(
+          fillcolor = plotly::toRGB(
             plotly:::aes2plotly(data, params, "fill"),
             plotly:::aes2plotly(data, params, "alpha")
           ),
           boxpoints = if (hide_outliers) FALSE,
           marker = list(
               opacity = point_defaults$alpha,
-              outliercolor = plotly:::toRGB(point_defaults$colour),
+              outliercolor = plotly::toRGB(point_defaults$colour),
               line = list(
                   width = plotly:::mm2pixels(point_defaults$stroke),
-                  color = plotly:::toRGB(point_defaults$colour)
+                  color = plotly::toRGB(point_defaults$colour)
               ),
               size = plotly:::mm2pixels(point_defaults$size)
           ),
@@ -104,7 +104,7 @@ geom2trace.GeomBoxplotCustomOverride <- function(data, params, p) {
       frame = data[["frame"]],
       ids = data[["ids"]],
       type = "box",
-      fillcolor = plotly:::toRGB(
+      fillcolor = plotly::toRGB(
         plotly:::aes2plotly(data, params, "fill"),
         plotly:::aes2plotly(data, params, "alpha")
       ),
@@ -112,10 +112,10 @@ geom2trace.GeomBoxplotCustomOverride <- function(data, params, p) {
       # markers/points
       marker = list(
           opacity = point_defaults$alpha,
-          outliercolor = plotly:::toRGB(point_defaults$colour),
+          outliercolor = plotly::toRGB(point_defaults$colour),
           line = list(
               width = plotly:::mm2pixels(point_defaults$stroke),
-              color = plotly:::toRGB(point_defaults$colour)
+              color = plotly::toRGB(point_defaults$colour)
           ),
           size = plotly:::mm2pixels(point_defaults$size)
       ),

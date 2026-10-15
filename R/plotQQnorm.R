@@ -67,7 +67,7 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
 
     ciLayer <- ggplot2::geom_ribbon(
       data = df,
-      mapping = ggplot2::aes(x = x, ymin = ymin, ymax = ymax),
+      mapping = ggplot2::aes(x = .data$x, ymin = .data$ymin, ymax = .data$ymax),
       fill = fillColor, alpha = ciAlpha, color = ciLineColor,
       inherit.aes = FALSE
     )

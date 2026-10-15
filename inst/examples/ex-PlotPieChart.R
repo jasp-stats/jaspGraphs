@@ -22,7 +22,9 @@ g <- plotPieChart(value, gg, polarAxis = TRUE)
 print(g)
 plotPieChart(value, gg, ga, polarAxis = TRUE)
 plotPieChart(value, gg, ga, showAxisTicks = FALSE, polarAxis = TRUE)
-plotPieChart(value, gg, ga, showAxisTicks = FALSE, legend.position = "none", polarAxis = TRUE) # hide the legend
+# hide the legend
+plotPieChart(value, gg, ga, showAxisTicks = FALSE,
+             legend.position = "none", polarAxis = TRUE)
 
 # axis can still be modified
 print(g + scale_y_continuous(breaks = c(50, 75, 0)))

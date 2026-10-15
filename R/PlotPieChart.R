@@ -48,7 +48,8 @@ plotPieChart <- function(value, group,
 
     lifecycle::deprecate_warn(
       when = "0.20.0",
-      what = "plotPieChart(polarAxis = 'must be FALSE')"
+      what = "plotPieChart(polarAxis = 'must be FALSE')",
+      details = "Use `polarAxis = FALSE` for a pie chart compatible with interactive graphs."
     )
 
     g <- plotPieChartPolar(
