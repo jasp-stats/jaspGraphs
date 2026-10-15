@@ -24,6 +24,7 @@ Imports:
     rlang,
     scales
 Suggests:
+    MASS,
     testthat,
     vdiffr
 Roxygen: list(markdown = TRUE)

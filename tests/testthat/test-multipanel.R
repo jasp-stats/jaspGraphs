@@ -179,7 +179,7 @@ test_that("multipanel plots match snapshots", {
       data.frame(x = x, y = y, z = z),
       diagonalPlotArgs       = list(densityOverlay = TRUE),
       bottomLeftPlotFunction = jaspBivariate,
-      bottomLeftPlotArgs     = list(type = "contour", predict = "ellipse")
+      bottomLeftPlotArgs     = list(predict = "ellipse")
     )
   )
 })
