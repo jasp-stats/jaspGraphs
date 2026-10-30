@@ -5,7 +5,7 @@
 #' @param legendName Character, title of the legend.
 #' @param legendLabels Character vector with names for the legend.
 #' @param legendColors Character vector with colors.
-#' @param showAxisText Logical, should the axis text be shown?
+#' @param showAxisText Logical, should each slice be labelled with its percentage (for \code{polarAxis = TRUE}: should the axis text be shown)?
 #' @param asPercentages Logical, should value be transformed to percentages? Recommended to be true.
 #' @param showAxisTicks Logical, should the ticks on the polar coordinates be shown?
 #' @param palette Character vector with palette name. If this option is set then legendColors is ignored. If palette is NULL then legendColors are used.
@@ -187,42 +187,47 @@ plotPieChartCartesian <- function(value, group,
     # the axes are hidden, so the jaspGraphs position scales would only add padding around the pie
     ggplot2::scale_x_continuous() + ggplot2::scale_y_continuous() +
     getEmptyTheme() +
-    ggplot2::coord_fixed()
+    # slice labels may extend a little beyond the panel when the plot is smaller than the label boxes assume
+    ggplot2::coord_fixed(clip = "off")
 
   if (showAxisText) {
 
     r <- 1.05
-    t <- fromTheta[, 1]
+    t <- rowMeans(fromTheta)
 
-    # cumulative percentage at the start of each slice, running in the same (counterclockwise) direction as the slices
-    cumPerc <- 100 * fromPerc[, 1]
-
-    # drop labels that would overlap with the previous label or with "0 / 100"
-    minGap <- 5
-    keep     <- logical(length(cumPerc))
-    keep[1L] <- TRUE
-    lastKept <- 0
-    for (i in seq_along(cumPerc)[-1L]) {
-      if (cumPerc[i] - lastKept >= minGap && 100 - cumPerc[i] >= minGap) {
-        keep[i]  <- TRUE
-        lastKept <- cumPerc[i]
-      }
-    }
-
-    labels <- c("0 / 100", as.character(round(cumPerc[-1L], 1)))[keep]
+    # percentage of each slice, placed just outside the middle of the slice
+    slicePerc <- 100 * (fromPerc[, 2] - fromPerc[, 1])
+    labels    <- sprintf("%.1f%%", slicePerc)
 
     dfTxt <- data.frame(
-      x = r * cos(t[keep]),
-      y = r * sin(t[keep]),
+      x = r * cos(t),
+      y = r * sin(t),
       l = labels,
       # anchor the text on the side facing the pie so labels grow outwards
-      h = (1 - cos(t[keep])) / 2,
-      v = (1 - sin(t[keep])) / 2
+      h = (1 - cos(t)) / 2,
+      v = (1 - sin(t)) / 2
     )
-    g <- g + ggplot2::geom_text(data = dfTxt, aes(x = .data$x, y = .data$y, label = .data$l, hjust = .data$h, vjust = .data$v),
-                           parse = needsParsing(labels),
-                           size = getGraphOption("fontsize") / ggplot2::.pt, inherit.aes = FALSE) +
-      ggplot2::expand_limits(x = c(-1.35, 1.35), y = c(-1.2, 1.2))
+
+    # approximate label boxes (padded by one character) in data units, assuming a pie radius of ~75pt as in a default-sized JASP plot
+    fontsize   <- getGraphOption("fontsize")
+    ptPerUnit  <- 75
+    textWidth  <- 0.6 * (nchar(labels) + 1) * fontsize / ptPerUnit
+    textHeight <- fontsize / ptPerUnit
+    xmin <- dfTxt$x - dfTxt$h * textWidth
+    xmax <- xmin + textWidth
+    ymin <- dfTxt$y - dfTxt$v * textHeight
+    ymax <- ymin + textHeight
+
+    # drop labels that would overlap, labelling the largest slices first
+    keep <- logical(length(labels))
+    for (i in order(slicePerc, decreasing = TRUE)) {
+      if (!any(keep & xmin < xmax[i] & xmax > xmin[i] & ymin < ymax[i] & ymax > ymin[i]))
+        keep[i] <- TRUE
+    }
+
+    g <- g + ggplot2::geom_text(data = dfTxt[keep, ], aes(x = .data$x, y = .data$y, label = .data$l, hjust = .data$h, vjust = .data$v),
+                           size = fontsize / ggplot2::.pt, inherit.aes = FALSE) +
+      ggplot2::expand_limits(x = c(xmin[keep], xmax[keep]), y = c(ymin[keep], ymax[keep]))
 
   }
 
