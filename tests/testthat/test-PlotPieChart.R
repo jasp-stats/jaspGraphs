@@ -120,15 +120,27 @@ test_that("plotPieChart: polar coordinates remain available with a deprecation w
 test_that("plotPieChartCartesian: labels show slice percentages, are rounded, and do not overlap", {
   skip_on_cran()
 
-  # Case A: each slice is labelled with its own percentage, in the middle of the (counterclockwise) slice
+  # Case A: each slice is labelled with its own percentage, in the middle of the clockwise slice
   p1 <- plotPieChartCartesian(c(145, 79) / 224 * 100, c("1", "2"))
   labs1 <- ggplot2::layer_data(p1, 2L)
   testthat::expect_equal(labs1$label, c("64.7%", "35.3%"))
-  testthat::expect_equal(atan2(labs1$y[1L], labs1$x[1L]) %% (2 * pi), (pi / 2 + pi * 145 / 224) %% (2 * pi))
+  testthat::expect_equal(atan2(labs1$y[1L], labs1$x[1L]) %% (2 * pi), (pi / 2 - pi * 145 / 224) %% (2 * pi))
 
   # Case B: labels of small neighbouring slices that would overlap a larger slice's label are dropped
   value <- c(1, 1, 3, 4, 10, 14, 10, 5)
   p2 <- plotPieChartCartesian(value / sum(value) * 100, as.character(seq_along(value)))
   testthat::expect_equal(ggplot2::layer_data(p2, 2L)$label, c("6.2%", "8.3%", "20.8%", "29.2%", "20.8%", "10.4%"))
 
+})
+
+test_that("plotPieChart: slices and labels follow input order clockwise from the top", {
+  p <- plotPieChart(c(25, 25, 50), letters[1:3], legendName = "Group")
+  slices <- split(p$data, p$data$grp)
+  expect_true(all(slices$a$x >= -1e-12 & slices$a$y >= -1e-12))
+  expect_true(all(slices$b$x >= -1e-12 & slices$b$y <= 1e-12))
+  expect_true(all(slices$c$x <= 1e-12))
+  labels <- ggplot2::layer_data(p, 2L)
+  expect_equal(labels$label, c("25.0%", "25.0%", "50.0%"))
+  expect_equal(labels$x, 1.05 * c(sqrt(0.5), sqrt(0.5), -1))
+  expect_equal(labels$y, 1.05 * c(sqrt(0.5), -sqrt(0.5), 0))
 })

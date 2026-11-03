@@ -170,7 +170,8 @@ plotPieChartCartesian <- function(value, group,
   fromTheta <- 2 * pi * fromPerc
 
   offset <- pi / 2
-  fromTheta <- fromTheta + offset
+  # Start at 12 o'clock and follow the input slices clockwise.
+  fromTheta <- offset - fromTheta
   n <- 256
   r <- c(0, rep(1, n), 0) # radius
   dfP <- do.call(rbind, lapply(1:nrow(fromTheta), function(i) {
