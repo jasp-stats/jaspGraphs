@@ -62,8 +62,12 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
     zLower <- stats::qnorm(pLower)
     zUpper <- stats::qnorm(pUpper)
 
-    df$ymin <- int + slope * zLower[order(order(residuals))]
-    df$ymax <- int + slope * zUpper[order(order(residuals))]
+    # the band surrounds the reference line that is drawn: y = x for ablineOrigin, otherwise the quartile line
+    bandInt   <- if (abline && ablineOrigin) 0 else int
+    bandSlope <- if (abline && ablineOrigin) 1 else slope
+
+    df$ymin <- bandInt + bandSlope * zLower[order(order(residuals))]
+    df$ymax <- bandInt + bandSlope * zUpper[order(order(residuals))]
 
     ciLayer <- ggplot2::geom_ribbon(
       data = df,
