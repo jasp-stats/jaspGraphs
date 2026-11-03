@@ -30,8 +30,19 @@
 plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, ablineOrigin = FALSE, ablineColor = "red", identicalAxes = FALSE, na.rm = TRUE,
                        ciLevel = NULL, fillColor = "steelblue", ciAlpha = 0.25, ciLineColor = "black", xName = gettext("Theoretical quantiles",domain="R-jaspGraphs"), yName = gettext("Observed quantiles",domain="R-jaspGraphs")) {
 
-  n <- length(residuals)
   hasErrorbars <- !is.null(lower) && !is.null(upper)
+
+  # drop missing values first: they would otherwise break stats::quantile below and shift the theoretical quantiles
+  if (isTRUE(na.rm)) {
+    keep <- !is.na(residuals)
+    residuals <- residuals[keep]
+    if (hasErrorbars) {
+      lower <- lower[keep]
+      upper <- upper[keep]
+    }
+  }
+
+  n <- length(residuals)
 
   df <- data.frame(
     y = residuals,
@@ -75,10 +86,6 @@ plotQQnorm <- function(residuals, lower = NULL, upper = NULL, abline = TRUE, abl
       fill = fillColor, alpha = ciAlpha, color = ciLineColor,
       inherit.aes = FALSE
     )
-  }
-
-  if (isTRUE(na.rm)) {
-    df <- df[!(is.na(residuals)), ]
   }
 
   # determine axes breaks

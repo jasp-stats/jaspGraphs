@@ -23,3 +23,24 @@ test_that("plotQQnorm: default, error bars, abline-origin/identical axes variant
   vdiffr::expect_doppelganger("plotQQnorm-abline-origin-identicalaxes", p3)
 
 })
+
+test_that("plotQQnorm: missing values are dropped before the quantiles are computed (na.rm = TRUE)", {
+  set.seed(2026)
+  x <- rnorm(30)
+  xNA <- x
+  xNA[c(3, 17, 25)] <- NA
+  xComplete <- xNA[!is.na(xNA)]
+
+  # the plot of the incomplete data equals the plot of its complete cases (points and reference line)
+  pNA <- plotQQnorm(xNA)
+  pComplete <- plotQQnorm(xComplete)
+  testthat::expect_true(ggplot2::is_ggplot(pNA))
+  testthat::expect_equal(pNA$data, pComplete$data)
+  testthat::expect_equal(pNA$layers[[1]]$data, pComplete$layers[[1]]$data)
+
+  # confidence bands and error bars use the same complete cases
+  testthat::expect_equal(plotQQnorm(xNA, ciLevel = 0.95)$data,
+                         plotQQnorm(xComplete, ciLevel = 0.95)$data)
+  testthat::expect_equal(plotQQnorm(xNA, lower = xNA - 0.1, upper = xNA + 0.1)$data,
+                         plotQQnorm(xComplete, lower = xComplete - 0.1, upper = xComplete + 0.1)$data)
+})
