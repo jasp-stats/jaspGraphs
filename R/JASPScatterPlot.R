@@ -1,7 +1,7 @@
 #' @importFrom ggplot2 geom_smooth theme_void geom_ribbon
 #' @importFrom rlang .data
 
-#' @title Create a scatter plot with density
+#' @title DEPRECATED, use [jaspBivariateWithMargins] instead. Create a scatter plot with density
 #'
 #' @param x x variable.
 #' @param y y variable.
@@ -38,6 +38,12 @@ JASPScatterPlot <- function(x, y, group = NULL, xName = NULL, yName = NULL,
                             legendTitle = NULL,
                             emulateGgMarginal = FALSE,
                             ...) {
+
+  lifecycle::deprecate_soft(
+    "0.21.0",
+    "JASPScatterPlot()",
+    "jaspBivariateWithMargins()"
+  )
 
   # TODO: make actual error messages
   stopifnot(
