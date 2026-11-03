@@ -41,18 +41,18 @@ test_that("plotPieChart: polar coordinates remain available with a deprecation w
   expect_s3_class(ggplot2::ggplot_build(p), "ggplot_built")
 })
 
-test_that("plotPieChartCartesian: labels match slice boundaries, are rounded, and do not overlap", {
+test_that("plotPieChartCartesian: labels show slice percentages, are rounded, and do not overlap", {
   skip_on_cran()
 
-  # Case A: label at the end of the first (counterclockwise) slice reads 145 / 224 = 64.7
+  # Case A: each slice is labelled with its own percentage, in the middle of the (counterclockwise) slice
   p1 <- plotPieChartCartesian(c(145, 79) / 224 * 100, c("1", "2"))
   labs1 <- ggplot2::layer_data(p1, 2L)
-  testthat::expect_equal(labs1$label, c("0 / 100", "64.7"))
-  testthat::expect_equal(atan2(labs1$y[2L], labs1$x[2L]) %% (2 * pi), (pi / 2 + 2 * pi * 145 / 224) %% (2 * pi))
+  testthat::expect_equal(labs1$label, c("64.7%", "35.3%"))
+  testthat::expect_equal(atan2(labs1$y[1L], labs1$x[1L]) %% (2 * pi), (pi / 2 + pi * 145 / 224) %% (2 * pi))
 
-  # Case B: boundaries closer than 5 percentage points to the previous label (or to 0 / 100) are dropped
-  value <- c(3, 1, 4, 5, 8, 10, 11, 6)
+  # Case B: labels of small neighbouring slices that would overlap a larger slice's label are dropped
+  value <- c(1, 1, 3, 4, 10, 14, 10, 5)
   p2 <- plotPieChartCartesian(value / sum(value) * 100, as.character(seq_along(value)))
-  testthat::expect_equal(ggplot2::layer_data(p2, 2L)$label, c("0 / 100", "6.2", "16.7", "27.1", "43.8", "64.6", "87.5"))
+  testthat::expect_equal(ggplot2::layer_data(p2, 2L)$label, c("6.2%", "8.3%", "20.8%", "29.2%", "20.8%", "10.4%"))
 
 })
