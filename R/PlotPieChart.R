@@ -208,9 +208,10 @@ plotPieChartCartesian <- function(value, group,
       v = (1 - sin(t)) / 2
     )
 
-    # approximate label boxes (padded by one character) in data units, assuming a pie radius of ~75pt as in a default-sized JASP plot
+    # Approximate a compact (320px) plot with a right-hand legend. Padded label
+    # boxes reserve space for the text; larger plots may show fewer labels.
     fontsize   <- getGraphOption("fontsize")
-    ptPerUnit  <- 75
+    ptPerUnit  <- 50
     textWidth  <- 0.6 * (nchar(labels) + 1) * fontsize / ptPerUnit
     textHeight <- fontsize / ptPerUnit
     xmin <- dfTxt$x - dfTxt$h * textWidth
@@ -225,9 +226,13 @@ plotPieChartCartesian <- function(value, group,
         keep[i] <- TRUE
     }
 
+    # Reserve five-character labels at the sides; 100.0% sits below the pie.
+    # Fixed bounds keep equal-sized plots with the same legend layout comparable.
+    maxSideTextWidth <- 0.6 * (nchar("99.9%") + 1) * fontsize / ptPerUnit
+
     g <- g + ggplot2::geom_text(data = dfTxt[keep, ], aes(x = .data$x, y = .data$y, label = .data$l, hjust = .data$h, vjust = .data$v),
                            size = fontsize / ggplot2::.pt, inherit.aes = FALSE) +
-      ggplot2::expand_limits(x = c(xmin[keep], xmax[keep]), y = c(ymin[keep], ymax[keep]))
+      ggplot2::expand_limits(x = c(-1, 1) * (r + maxSideTextWidth), y = c(-1, 1) * (r + textHeight))
 
   }
 
