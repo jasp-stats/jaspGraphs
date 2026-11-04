@@ -29,7 +29,7 @@ plotPieChart(
 
 \item{legendColors}{Character vector with colors.}
 
-\item{showAxisText}{Logical, should the axis text be shown?}
+\item{showAxisText}{Logical, should each slice be labelled with its percentage (for \code{polarAxis = TRUE}: should the axis text be shown)?}
 
 \item{showAxisTicks}{Logical, should the ticks on the polar coordinates be shown?}
 
