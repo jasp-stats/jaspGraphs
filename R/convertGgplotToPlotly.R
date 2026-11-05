@@ -42,7 +42,7 @@ convertGgplotToPlotly <- function(ggplotObj, returnJSON = TRUE) {
       json <- toJSON(list(data = converted$plotly$x$data, layout = converted$plotly$x$layout, hasRangeFrame = converted$hasRangeFrame))
       json
     } else {
-      converted$plotly
+      converted
     }
   })
   return(e)
