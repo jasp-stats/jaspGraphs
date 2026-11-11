@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspGraphs 0.20.0\n"
 "POT-Creation-Date: 2025-04-26 03:23\n"
-"PO-Revision-Date: 2026-11-11 19:09+0000\n"
+"PO-Revision-Date: 2026-11-12 10:34+0000\n"
 "Last-Translator: Fahad Mahfouz Al-Subhi "
 "<fahadalsubhi@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/jasp/jaspgraphs/"
@@ -16,82 +16,87 @@ msgstr ""
 "X-Generator: Weblate 2026.11.2.dev0\n"
 
 msgid "data | H0"
-msgstr ""
+msgstr "البيانات | H0"
 
 msgid "data | H1"
-msgstr ""
+msgstr "البيانات | H1"
 
 msgid "data | H-"
-msgstr ""
+msgstr "البيانات | H-"
 
 msgid "data | H+"
-msgstr ""
+msgstr "البيانات | H+"
 
 msgid "BF%s"
-msgstr ""
+msgstr "BF%s"
 
 msgid "log(BF%s)"
-msgstr ""
+msgstr "log(BF%s)"
 
 msgid "Density"
 msgstr "الكثافة"
 
 msgid "Median:"
-msgstr ""
+msgstr "الوسيط:"
 
 msgid "Anecdotal"
-msgstr ""
+msgstr "ضعيف"
 
 msgid "Moderate"
-msgstr ""
+msgstr "متوسط"
 
 msgid "Strong"
-msgstr ""
+msgstr "قوي"
 
 msgid "Very Strong"
-msgstr ""
+msgstr "قوي جدًا"
 
 msgid "Extreme"
-msgstr ""
+msgstr "بالغ القوة"
 
 msgid "Evidence"
-msgstr ""
+msgstr "الدليل"
 
 msgid "Evidence for H%s:"
-msgstr ""
+msgstr "الدليل لصالح H%s:"
 
 msgid "Evidence for H%s"
-msgstr ""
+msgstr "الدليل لصالح H%s"
 
 msgid "Counts"
-msgstr ""
+msgstr "الأعداد"
 
 msgid "Computing plotEditingOptions gave an error: %s"
-msgstr ""
+msgstr "حدث خطأ عند حساب plotEditingOptions: %s"
 
 msgid "This plot cannot be edited because it was created with qgraph instead of ggplot."
-msgstr ""
+msgstr "لا يمكن تحرير هذا المخطط لأنه أُنشئ باستخدام qgraph بدلًا من ggplot."
 
 msgid "This plot cannot be edited because it consists of multiple smaller figures."
-msgstr ""
+msgstr "لا يمكن تحرير هذا المخطط لأنه يتكون من عدة أشكال أصغر."
 
 msgid "This plot cannot be edited because it was created with base R instead of ggplot."
 msgstr ""
+"لا يمكن تحرير هذا المخطط لأنه أُنشئ بأدوات الرسم الأساسية في R بدلًا من ggplot."
 
 msgid "cannot create plotEditingOptions for object of class: %s."
-msgstr ""
+msgstr "يتعذّر إنشاء plotEditingOptions لكائن من الفئة: %s."
 
 msgid "Converting plotEditingOptions to JSON gave an error: %s."
-msgstr ""
+msgstr "حدث خطأ عند تحويل plotEditingOptions إلى JSON: %s."
 
 msgid "Plot editing terminated unexpectedly. Fatal error in plotEditingOptions: %s To receive assistance with this problem, please report the message above at: https://jasp-stats.org/bug-reports"
 msgstr ""
+"انتهى تحرير المخطط بصورة غير متوقعة. خطأ جسيم في plotEditingOptions: %s "
+"للحصول على مساعدة، أبلغ عن الرسالة أعلاه في: https://jasp-stats.org/bug-"
+"reports"
 
 msgid "This plot cannot be edited because it uses polar coordinates (e.g., pie chart)."
 msgstr ""
+"لا يمكن تحرير هذا المخطط لأنه يستخدم إحداثيات قطبية (مثل المخطط الدائري)."
 
 msgid "Theoretical quantiles"
-msgstr ""
+msgstr "الكُميّات النظرية"
 
 msgid "Observed quantiles"
-msgstr ""
+msgstr "القيم الكمية (Quantiles) المشاهدة"
