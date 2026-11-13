@@ -95,6 +95,12 @@ getPlotEditingOptions.jaspGraphsPlot <- function(graph) {
   return(getPlotEditingOptions(graph[[1L]]))
 }
 
+#' @exportS3Method
+getPlotEditingOptions.patchwork <- function(graph) {
+  # patchwork objects also inherit from gg/ggplot, but `[[` only accepts numeric indices on them
+  plotEditingOptionsError(gettext("This plot cannot be edited because it consists of multiple smaller figures."))
+}
+
 #' @exportS3Method getPlotEditingOptions "function"
 getPlotEditingOptions.function <- function(graph) {
   plotEditingOptionsError(gettext("This plot cannot be edited because it was created with base R instead of ggplot."))

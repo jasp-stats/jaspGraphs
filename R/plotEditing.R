@@ -100,6 +100,11 @@ plotEditing.jaspPlotRecipe <- function(graph, newOptions) {
 }
 
 #' @export
+plotEditing.patchwork <- function(graph, newOptions) {
+  stop2("This plot cannot be edited because it consists of multiple smaller figures.")
+}
+
+#' @export
 plotEditing.ggplot <- function(graph, newOptions) {
 
 
